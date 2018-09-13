@@ -94,6 +94,8 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderer\PhotoTakerRenderer.cs" />
+    <Compile Include="UICameraPreview.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -156,5 +158,8 @@
       <Project>{3EB60500-6B05-4CAC-8339-8304C19AA370}</Project>
       <Name>PhotoTaker</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Renderer\" />
   </ItemGroup>
 </Project>
