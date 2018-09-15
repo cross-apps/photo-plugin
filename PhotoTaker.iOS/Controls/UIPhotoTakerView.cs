@@ -10,20 +10,24 @@ namespace PhotoTaker.iOS.Controls
     {
         UICameraPreview cameraPreview = null;
         UIControlsOverlayView controlsOverlayView = null;
+        UILatestPhotosOverlayView latestPhotosOverlayView = null;
 
         public UIPhotoTakerView(CameraOptions options)
         {
             cameraPreview = new UICameraPreview(options);
             controlsOverlayView = new UIControlsOverlayView(this.Frame);
-        
+            latestPhotosOverlayView = new UILatestPhotosOverlayView(this.Frame);
+
             this.AddSubview(cameraPreview);
             this.AddSubview(controlsOverlayView);
+            this.AddSubview(latestPhotosOverlayView);
         }
 
         public override void Draw(CGRect rect)
         {
             cameraPreview.Draw(rect);
             controlsOverlayView.Draw(rect);
+            latestPhotosOverlayView.Draw(new CGRect(0, rect.Height - 220f, rect.Width, 100f));
 
             base.Draw(rect);
         }

@@ -37,6 +37,12 @@ namespace PhotoTaker.iOS.Controls
                 var svgCameraButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
                 svgCameraButton.Load("camera_button.svg");
 
+                var svgFlashButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
+                svgFlashButton.Load("flash_button.svg");
+
+                var svgCloseButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
+                svgCloseButton.Load("close_button.svg");
+
                 // get the size of the canvas
                 float canvasMin = Math.Min(e.Info.Width, e.Info.Height);
 
@@ -48,9 +54,19 @@ namespace PhotoTaker.iOS.Controls
 
                 // create a scale matrix
                 var matrix = SKMatrix.MakeScale(scale, scale);
+                // 667 iphone 8, // 813 iphone x // 736 iphone 8 plus
+                var max = (float)UIScreen.MainScreen.Bounds.Height;
 
                 var x = e.Info.Width / 2 - (svgTakeButton.Picture.CullRect.Width * scale) / 2;
                 var y = e.Info.Height - 2 * svgTakeButton.Picture.CullRect.Height;
+
+                float xOffset = 0f;
+                if (max > 800) 
+                {
+                    y -= 100f;
+                    xOffset = 30f;
+                }
+
                 surface.Canvas.Translate(x, y);
 
                 SKPaint paint = new SKPaint();
@@ -65,7 +81,7 @@ namespace PhotoTaker.iOS.Controls
 
                 viewBox = new SKRect(x, y, x + 100f, y + 100f);
 
-                x = 0 + 30f;
+                x = 0 + 30f + xOffset;
 
                 var matrix2 = SKMatrix.MakeScale(2.5f, 2.5f);
 
@@ -74,8 +90,20 @@ namespace PhotoTaker.iOS.Controls
                 surface.Canvas.DrawPicture(svgGalleryButton.Picture, ref matrix2, paint);
 
                 surface.Canvas.ResetMatrix();
-                surface.Canvas.Translate(e.Info.Width - 65f - svgCameraButton.Picture.CullRect.Width * scale, y + (svgCameraButton.Picture.CullRect.Height * scale));
+                surface.Canvas.Translate(e.Info.Width - xOffset - 65f - svgCameraButton.Picture.CullRect.Width * scale, y + (svgCameraButton.Picture.CullRect.Height * scale));
                 surface.Canvas.DrawPicture(svgCameraButton.Picture, ref matrix2, paint);
+
+                var scaleFlash = SKMatrix.MakeScale(1.5f, 1.5f);
+
+                surface.Canvas.ResetMatrix();
+                surface.Canvas.Translate(e.Info.Width - xOffset - 65f - svgFlashButton.Picture.CullRect.Width * scale, xOffset + svgFlashButton.Picture.CullRect.Height * scale);
+                surface.Canvas.DrawPicture(svgFlashButton.Picture, ref scaleFlash, paint);
+
+                var scaleClose = SKMatrix.MakeScale(1f, 1f);
+
+                surface.Canvas.ResetMatrix();
+                surface.Canvas.Translate(x, xOffset + svgCloseButton.Picture.CullRect.Height * scale);
+                surface.Canvas.DrawPicture(svgCloseButton.Picture, ref scaleClose, paint);
 
                 // draw on the canvas
                 canvas.Flush();
@@ -115,10 +143,8 @@ namespace PhotoTaker.iOS.Controls
                 this.SetNeedsLayout();
                 return true;
              });
-
         }
 
-        
         public override void Draw(CGRect rect)
         {
             this.Frame = rect;

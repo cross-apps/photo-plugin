@@ -98,6 +98,7 @@
     <Compile Include="Controls\UICameraPreview.cs" />
     <Compile Include="Controls\UIPhotoTakerView.cs" />
     <Compile Include="Controls\UIControlsOverlayView.cs" />
+    <Compile Include="Controls\UILatestPhotosOverlayView.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -185,5 +186,7 @@
     <Content Include="button_touched.svg" />
     <Content Include="button_gallery.svg" />
     <Content Include="camera_button.svg" />
+    <Content Include="flash_button.svg" />
+    <Content Include="close_button.svg" />
   </ItemGroup>
 </Project>
