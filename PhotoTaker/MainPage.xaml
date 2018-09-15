@@ -4,7 +4,11 @@
              xmlns:local="clr-namespace:PhotoTaker" 
              xmlns:custom="clr-namespace:PhotoTaker.Custom"
              x:Class="PhotoTaker.MainPage">
-    <StackLayout>
-        <custom:PhotoTakerView Camera="Front" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-    </StackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <custom:PhotoTakerView Grid.Row="0" Camera="Front" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+    </Grid>
 </ContentPage>

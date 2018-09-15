@@ -6,7 +6,7 @@ using Foundation;
 using PhotoTaker.Custom;
 using UIKit;
 
-namespace PhotoTaker.iOS
+namespace PhotoTaker.iOS.Controls
 {
     public class UICameraPreview: UIView
     {
@@ -28,8 +28,8 @@ namespace PhotoTaker.iOS
 
         public override void Draw(CGRect rect)
         {
-            base.Draw(rect);
             previewLayer.Frame = rect;
+            base.Draw(rect);
         }
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -68,7 +68,7 @@ namespace PhotoTaker.iOS
             NSError error;
             var input = new AVCaptureDeviceInput(device, out error);
             CaptureSession.AddInput(input);
-            Layer.AddSublayer(previewLayer);
+            this.Layer.AddSublayer(previewLayer);
             CaptureSession.StartRunning();
             IsPreviewing = true;
         }
