@@ -93,16 +93,16 @@ namespace PhotoTaker.iOS.Controls
                 surface.Canvas.Translate(e.Info.Width - xOffset - 65f - svgCameraButton.Picture.CullRect.Width * scale, y + (svgCameraButton.Picture.CullRect.Height * scale));
                 surface.Canvas.DrawPicture(svgCameraButton.Picture, ref matrix2, paint);
 
-                var scaleFlash = SKMatrix.MakeScale(1.5f, 1.5f);
+                var scaleFlash = SKMatrix.MakeScale(0.8f, 0.8f);
 
                 surface.Canvas.ResetMatrix();
-                surface.Canvas.Translate(e.Info.Width - xOffset - 65f - svgFlashButton.Picture.CullRect.Width * scale, xOffset + svgFlashButton.Picture.CullRect.Height * scale);
+                surface.Canvas.Translate(e.Info.Width - xOffset - 30f - svgFlashButton.Picture.CullRect.Width, xOffset + svgFlashButton.Picture.CullRect.Height );
                 surface.Canvas.DrawPicture(svgFlashButton.Picture, ref scaleFlash, paint);
 
-                var scaleClose = SKMatrix.MakeScale(1f, 1f);
-
+                var scaleClose = SKMatrix.MakeScale(0.8f, 0.8f);
+                
                 surface.Canvas.ResetMatrix();
-                surface.Canvas.Translate(x, xOffset + svgCloseButton.Picture.CullRect.Height * scale);
+                surface.Canvas.Translate(x, xOffset + svgCloseButton.Picture.CullRect.Height);
                 surface.Canvas.DrawPicture(svgCloseButton.Picture, ref scaleClose, paint);
 
                 // draw on the canvas

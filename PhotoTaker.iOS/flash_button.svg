@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="37px" height="66px" viewBox="0 0 37 66" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="66px" height="66px" viewBox="0 0 66 66" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
     <title>Artboard</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="if_weather_lightning_573148" transform="translate(1.000000, 1.000000)" fill="#FFFFFF" fill-rule="nonzero">
-            <path d="M13.695,38 L7.034,62.74 L8.81,63.585 L34.81,27.585 L34,26 L21.166,26 L24.989,1.152 L23.158,0.462 L0.158,36.462 L1,38 L13.695,38 Z M22.291,5.532 L19.012,26.848 L20,28 L32.044,28 L10.384,57.991 L15.966,37.26 L15,36 L2.826,36 L22.291,5.532 Z" id="Shape"></path>
+        <g id="if_weather_lightning_573148" transform="translate(15.000000, 1.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <path d="M14.0636038,38.0595346 L7.14348378,63.14326 L8.98857209,64 L36,27.4998337 L35.1584901,25.8928124 L21.8252338,25.8928124 L25.7969526,0.699586522 L23.8947247,0 L0,36.5001663 L0.874754704,38.0595346 L14.0636038,38.0595346 Z M22.9859676,5 L19.6192073,26.535828 L20.6336505,27.6997083 L33,27.6997083 L10.7602848,58 L16.4916832,37.055205 L15.4998289,35.7822109 L3,35.7822109 L22.9859676,5 Z" id="Shape"></path>
         </g>
     </g>
 </svg>
