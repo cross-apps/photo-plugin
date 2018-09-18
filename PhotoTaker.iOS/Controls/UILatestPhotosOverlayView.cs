@@ -40,7 +40,7 @@ namespace PhotoTaker.iOS.Controls
 
         public nint GetItemsCount(UICollectionView collectionView, nint section)
         {
-            return 30;
+            return fetchResults.Count;
         }
     }
 }
