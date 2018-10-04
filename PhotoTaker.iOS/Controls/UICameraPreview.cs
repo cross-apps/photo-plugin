@@ -16,6 +16,7 @@ namespace PhotoTaker.iOS.Controls
         public event EventHandler<EventArgs> Tapped;
 
         public AVCaptureSession CaptureSession { get; private set; }
+        public AVCapturePhotoOutput PhotoOutput { get; private set; }
 
         public bool IsPreviewing { get; set; }
 
@@ -50,6 +51,7 @@ namespace PhotoTaker.iOS.Controls
         void Initialize()
         {
             CaptureSession = new AVCaptureSession();
+            PhotoOutput = new AVCapturePhotoOutput();
             previewLayer = new AVCaptureVideoPreviewLayer(CaptureSession)
             {
                 Frame = Bounds,
@@ -71,6 +73,12 @@ namespace PhotoTaker.iOS.Controls
             this.Layer.AddSublayer(previewLayer);
             CaptureSession.StartRunning();
             IsPreviewing = true;
+
+            CaptureSession.AddOutput(PhotoOutput);
+        }
+
+        public void Capture() {
+            
         }
     }
 }

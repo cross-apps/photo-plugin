@@ -75,6 +75,7 @@ namespace PhotoTaker.iOS.Controls
                 if (takeButtonTouched) 
                 {
                     surface.Canvas.DrawPicture(svgButtonTouched.Picture, ref matrix, paint);
+                    //
                 }
 
                 surface.Canvas.DrawPicture(svgTakeButton.Picture, ref matrix, paint);

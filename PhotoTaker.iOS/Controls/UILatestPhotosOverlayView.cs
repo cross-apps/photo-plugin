@@ -19,6 +19,9 @@ namespace PhotoTaker.iOS.Controls
             this.RegisterClassForCell(typeof(UIImageViewCell), imageViewCellId);
             this.fetchResults = PHAsset.FetchAssets(PHAssetMediaType.Image, null);
             this.manager = new PHImageManager();
+
+            var tapRecognizer = new UITapGestureRecognizer(() => Console.Write("test"));
+            this.AddGestureRecognizer(tapRecognizer);
         }
 
         public override void Draw(CGRect rect)
