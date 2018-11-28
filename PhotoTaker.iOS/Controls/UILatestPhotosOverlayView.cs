@@ -14,7 +14,6 @@ namespace PhotoTaker.iOS.Controls
 
         public UILatestPhotosOverlayView(CGRect frame) : base(frame, new UIHorizontalScrollLayout())
         {
-            this.BackgroundColor = UIColor.LightGray;
             this.DataSource = this;
             this.RegisterClassForCell(typeof(UIImageViewCell), imageViewCellId);
             this.fetchResults = PHAsset.FetchAssets(PHAssetMediaType.Image, null);
@@ -22,6 +21,8 @@ namespace PhotoTaker.iOS.Controls
 
             var tapRecognizer = new UITapGestureRecognizer(() => Console.Write("test"));
             this.AddGestureRecognizer(tapRecognizer);
+            this.TranslatesAutoresizingMaskIntoConstraints = false;
+            this.BackgroundColor = UIColor.Clear;
         }
 
         public override void Draw(CGRect rect)
@@ -33,8 +34,8 @@ namespace PhotoTaker.iOS.Controls
         public UICollectionViewCell GetCell(UICollectionView collectionView, NSIndexPath indexPath)
         {
             UIImageViewCell cell = (UIImageViewCell)collectionView.DequeueReusableCell(imageViewCellId, indexPath);
-            manager.RequestImageForAsset((PHAsset)fetchResults[indexPath.Item], new CGSize(150f, 150f),
-            PHImageContentMode.AspectFill, new PHImageRequestOptions(), (img, info) => {
+            manager.RequestImageForAsset((PHAsset)fetchResults[indexPath.Item], new CGSize(240f, 240f),
+                                         PHImageContentMode.AspectFill, new PHImageRequestOptions(), (img, info) => {
                 cell.ImageView.Image = img;
             });
 
