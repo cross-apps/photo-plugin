@@ -106,6 +106,8 @@
     <Compile Include="Controls\UILatestPhotosOverlayView.cs" />
     <Compile Include="Controls\UIImageViewCell.cs" />
     <Compile Include="Controls\UIHorizontalScrollLayout.cs" />
+    <Compile Include="Controls\SvgButton.cs" />
+    <None Include="flash_button_touched.svg" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

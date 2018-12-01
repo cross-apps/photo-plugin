@@ -14,6 +14,9 @@ namespace PhotoTaker.iOS.Controls
 
         private bool takeButtonTouched = false;
 
+        private SvgButton flashButton = new SvgButton("flash_button.svg", "flash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        private SvgButton closeButton = new SvgButton("close_button.svg", "close_button.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+
         public void Handle_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
             if (e.Surface != null)
@@ -36,12 +39,6 @@ namespace PhotoTaker.iOS.Controls
 
                 var svgCameraButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
                 svgCameraButton.Load("camera_button.svg");
-
-                var svgFlashButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
-                svgFlashButton.Load("flash_button.svg");
-
-                var svgCloseButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
-                svgCloseButton.Load("close_button.svg");
 
                 // get the size of the canvas
                 float canvasMin = Math.Min(e.Info.Width, e.Info.Height);
@@ -75,7 +72,6 @@ namespace PhotoTaker.iOS.Controls
                 if (takeButtonTouched) 
                 {
                     surface.Canvas.DrawPicture(svgButtonTouched.Picture, ref matrix, paint);
-                    //
                 }
 
                 surface.Canvas.DrawPicture(svgTakeButton.Picture, ref matrix, paint);
@@ -94,17 +90,17 @@ namespace PhotoTaker.iOS.Controls
                 surface.Canvas.Translate(e.Info.Width - xOffset - 65f - svgCameraButton.Picture.CullRect.Width * scale, y + (svgCameraButton.Picture.CullRect.Height * scale));
                 surface.Canvas.DrawPicture(svgCameraButton.Picture, ref matrix2, paint);
 
-                var scaleFlash = SKMatrix.MakeScale(0.8f, 0.8f);
+                // -------------------
+                surface.Canvas.ResetMatrix();
+                surface.Canvas.Translate(e.Info.Width - xOffset - flashButton.SvgTouched.Picture.CullRect.Width,
+                                         xOffset + flashButton.SvgTouched.Picture.CullRect.Height);
+
+                flashButton.Draw(surface.Canvas, paint);
 
                 surface.Canvas.ResetMatrix();
-                surface.Canvas.Translate(e.Info.Width - xOffset - 30f - svgFlashButton.Picture.CullRect.Width, xOffset + svgFlashButton.Picture.CullRect.Height );
-                surface.Canvas.DrawPicture(svgFlashButton.Picture, ref scaleFlash, paint);
+                surface.Canvas.Translate(x, xOffset + closeButton.SvgTouched.Picture.CullRect.Height);
 
-                var scaleClose = SKMatrix.MakeScale(0.8f, 0.8f);
-                
-                surface.Canvas.ResetMatrix();
-                surface.Canvas.Translate(x, xOffset + svgCloseButton.Picture.CullRect.Height);
-                surface.Canvas.DrawPicture(svgCloseButton.Picture, ref scaleClose, paint);
+                closeButton.Draw(surface.Canvas, paint);
 
                 // draw on the canvas
                 canvas.Flush();
