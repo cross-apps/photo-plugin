@@ -107,7 +107,6 @@
     <Compile Include="Controls\UIImageViewCell.cs" />
     <Compile Include="Controls\UIHorizontalScrollLayout.cs" />
     <Compile Include="Controls\SvgButton.cs" />
-    <None Include="flash_button_touched.svg" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -194,11 +193,12 @@
     <Content Include="image.svg" />
     <Content Include="freesample.svg" />
     <Content Include="gray_circle.svg" />
-    <Content Include="photo_button.svg" />
-    <Content Include="button_touched.svg" />
-    <Content Include="button_gallery.svg" />
+    <Content Include="take_button.svg" />
+    <Content Include="take_button_touched.svg" />
+    <Content Include="gallery_button.svg" />
     <Content Include="camera_button.svg" />
     <Content Include="flash_button.svg" />
     <Content Include="close_button.svg" />
+    <Content Include="flash_button_touched.svg" />
   </ItemGroup>
 </Project>

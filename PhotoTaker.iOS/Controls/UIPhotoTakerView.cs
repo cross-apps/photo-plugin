@@ -17,10 +17,18 @@ namespace PhotoTaker.iOS.Controls
             cameraPreview = new UICameraPreview(options);
             controlsOverlayView = new UIControlsOverlayView(this.Frame);
             latestPhotosOverlayView = new UILatestPhotosOverlayView(this.Frame);
-            //-------------------------//
+
             this.AddSubview(cameraPreview);
             this.AddSubview(controlsOverlayView);
             this.AddSubview(latestPhotosOverlayView);
+
+            // Register all events...
+            controlsOverlayView.TakeButtonTouched += ControlsOverlayView_TakeButtonTouched;
+        }
+
+        void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
+        {
+
         }
 
         public override void Draw(CGRect rect)

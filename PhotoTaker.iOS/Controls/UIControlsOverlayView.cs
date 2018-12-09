@@ -16,6 +16,10 @@ namespace PhotoTaker.iOS.Controls
 
         private SvgButton flashButton = new SvgButton("flash_button.svg", "flash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
         private SvgButton closeButton = new SvgButton("close_button.svg", "close_button.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        private SvgButton cameraButton = new SvgButton("camera_button.svg", "camera_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        private SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+
+        public EventHandler TakeButtonTouched { get; set; }
 
         public void Handle_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
@@ -29,16 +33,10 @@ namespace PhotoTaker.iOS.Controls
                 canvas.Clear(SkiaSharp.SKColors.Transparent);
 
                 var svgButtonTouched = new SkiaSharp.Extended.Svg.SKSvg(190f);
-                svgButtonTouched.Load("button_touched.svg");
+                svgButtonTouched.Load("take_button_touched.svg");
 
                 var svgTakeButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
-                svgTakeButton.Load("photo_button.svg");
-
-                var svgGalleryButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
-                svgGalleryButton.Load("button_gallery.svg");
-
-                var svgCameraButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
-                svgCameraButton.Load("camera_button.svg");
+                svgTakeButton.Load("take_button.svg");
 
                 // get the size of the canvas
                 float canvasMin = Math.Min(e.Info.Width, e.Info.Height);
@@ -80,27 +78,21 @@ namespace PhotoTaker.iOS.Controls
 
                 x = 0 + 30f + xOffset;
 
-                var matrix2 = SKMatrix.MakeScale(2.5f, 2.5f);
+                float galleryPositionX = x;
+                float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
+                galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
 
-                surface.Canvas.ResetMatrix();
-                surface.Canvas.Translate(x, y + (svgGalleryButton.Picture.CullRect.Height * scale));
-                surface.Canvas.DrawPicture(svgGalleryButton.Picture, ref matrix2, paint);
+                float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
+                float cameraPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
+                cameraButton.Draw(surface.Canvas, cameraPositionX, cameraPoisitonY, paint);
 
-                surface.Canvas.ResetMatrix();
-                surface.Canvas.Translate(e.Info.Width - xOffset - 65f - svgCameraButton.Picture.CullRect.Width * scale, y + (svgCameraButton.Picture.CullRect.Height * scale));
-                surface.Canvas.DrawPicture(svgCameraButton.Picture, ref matrix2, paint);
+                float flashPositionX = e.Info.Width - xOffset - flashButton.SvgTouched.Picture.CullRect.Width;
+                float flashPositionY = xOffset + flashButton.SvgTouched.Picture.CullRect.Height;
+                flashButton.Draw(surface.Canvas, flashPositionX, flashPositionY, paint);
 
-                // -------------------
-                surface.Canvas.ResetMatrix();
-                surface.Canvas.Translate(e.Info.Width - xOffset - flashButton.SvgTouched.Picture.CullRect.Width,
-                                         xOffset + flashButton.SvgTouched.Picture.CullRect.Height);
-
-                flashButton.Draw(surface.Canvas, paint);
-
-                surface.Canvas.ResetMatrix();
-                surface.Canvas.Translate(x, xOffset + closeButton.SvgTouched.Picture.CullRect.Height);
-
-                closeButton.Draw(surface.Canvas, paint);
+                float closePositionX = x;
+                float closePositionY = xOffset + closeButton.SvgTouched.Picture.CullRect.Height;
+                closeButton.Draw(surface.Canvas, closePositionX, closePositionY, paint);
 
                 // draw on the canvas
                 canvas.Flush();
@@ -114,20 +106,58 @@ namespace PhotoTaker.iOS.Controls
 
             var cgPoint = touch.LocationInView(this);
             var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
+
+            var rect = new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f);
+
+            cameraButton.CheckIntersection(rect);
+            flashButton.CheckIntersection(rect);
+
             takeButtonTouched = viewBox.IntersectsWithInclusive(new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f));
+        }
+
+        public override void TouchesMoved(NSSet touches, UIEvent evt)
+        {
+            base.TouchesMoved(touches, evt);
         }
 
         public override void TouchesEnded(NSSet touches, UIEvent evt)
         {
             base.TouchesEnded(touches, evt);
+            UITouch touch = touches.AnyObject as UITouch;
+
+            var cgPoint = touch.LocationInView(this);
+            var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
+            var rect = new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f);
+
+            var touchEnded = viewBox.IntersectsWithInclusive(rect);
+
+            // if touch ended within current viewbox!
+            if (touchEnded) 
+            {
+                System.Diagnostics.Debug.WriteLine("touched Take button!");
+            }
+
+            if (flashButton.TouchUpInside(rect)) 
+            {
+                System.Diagnostics.Debug.WriteLine("Flash button touched!");
+            }
+
             takeButtonTouched = false;
+            cameraButton.Touched = false;
+            flashButton.Touched = false;
+            galleryButton.Touched = false;
         }
+
 
         public override void TouchesCancelled(NSSet touches, UIEvent evt)
         {
             base.TouchesCancelled(touches, evt);
+
             takeButtonTouched = false;
+            cameraButton.Touched = false;
+            flashButton.Touched = false;
         }
+
 
         public UIControlsOverlayView(CGRect frame)// : base(new CGRect(0,0, 100, 100))
         {
@@ -135,11 +165,10 @@ namespace PhotoTaker.iOS.Controls
             this.BackgroundColor = UIColor.Clear;
 
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
-             {
-                // this.InvalidateSurface();
+            {
                 this.SetNeedsLayout();
                 return true;
-             });
+            });
         }
 
         public override void Draw(CGRect rect)
