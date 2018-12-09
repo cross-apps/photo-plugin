@@ -18,12 +18,24 @@ namespace PhotoTaker.iOS.Controls
             controlsOverlayView = new UIControlsOverlayView(this.Frame);
             latestPhotosOverlayView = new UILatestPhotosOverlayView(this.Frame);
 
-            this.AddSubview(cameraPreview);
-            this.AddSubview(controlsOverlayView);
-            this.AddSubview(latestPhotosOverlayView);
+            AddSubview(cameraPreview);
+            AddSubview(controlsOverlayView);
+            AddSubview(latestPhotosOverlayView);
 
             // Register all events...
             controlsOverlayView.TakeButtonTouched += ControlsOverlayView_TakeButtonTouched;
+            controlsOverlayView.FlashButtonTouched += ControlsOverlayView_FlashButtonTouched;
+            controlsOverlayView.CloseButtonTouched += ControlsOverlayView_CloseButtonTouched;
+        }
+
+        void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
+        {
+
+        }
+
+        void ControlsOverlayView_FlashButtonTouched(object sender, EventArgs e)
+        {
+
         }
 
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
@@ -38,16 +50,6 @@ namespace PhotoTaker.iOS.Controls
             latestPhotosOverlayView.Draw(new CGRect(0, rect.Height - 220f, rect.Width, 100f));
 
             base.Draw(rect);
-        }
-
-        public void AddTouchEvents() 
-        {
-            //cameraPreview.Tapped += OnCameraPreviewTapped;
-        }
-
-        public void RemoveTouchEvents() 
-        {
-            // cameraPreview.Tapped -= OnCameraPreviewTapped;
         }
 
         void OnCameraPreviewTapped(object sender, EventArgs e)

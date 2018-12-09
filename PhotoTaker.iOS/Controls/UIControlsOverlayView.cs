@@ -17,6 +17,8 @@ namespace PhotoTaker.iOS.Controls
         private SvgButton takeButton = new SvgButton("take_button.svg", "take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
 
         public EventHandler TakeButtonTouched { get; set; }
+        public EventHandler FlashButtonTouched { get; set; }
+        public EventHandler CloseButtonTouched { get; set; }
 
         public void Handle_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
@@ -145,7 +147,6 @@ namespace PhotoTaker.iOS.Controls
             closeButton.Touched = false;
         }
 
-
         public override void TouchesCancelled(NSSet touches, UIEvent evt)
         {
             base.TouchesCancelled(touches, evt);
@@ -157,8 +158,7 @@ namespace PhotoTaker.iOS.Controls
             closeButton.Touched = false;
         }
 
-
-        public UIControlsOverlayView(CGRect frame)// : base(new CGRect(0,0, 100, 100))
+        public UIControlsOverlayView(CGRect frame)
         {
             this.PaintSurface += Handle_PaintSurface;
             this.BackgroundColor = UIColor.Clear;
