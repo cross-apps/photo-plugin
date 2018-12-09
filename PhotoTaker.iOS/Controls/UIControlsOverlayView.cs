@@ -10,14 +10,11 @@ namespace PhotoTaker.iOS.Controls
 {
     public class UIControlsOverlayView : SKCanvasView 
     {
-        SKRect viewBox = SKRect.Empty;
-
-        private bool takeButtonTouched = false;
-
         private SvgButton flashButton = new SvgButton("flash_button.svg", "flash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        private SvgButton closeButton = new SvgButton("close_button.svg", "close_button.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        private SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
         private SvgButton cameraButton = new SvgButton("camera_button.svg", "camera_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
         private SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        private SvgButton takeButton = new SvgButton("take_button.svg", "take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
 
         public EventHandler TakeButtonTouched { get; set; }
 
@@ -67,14 +64,7 @@ namespace PhotoTaker.iOS.Controls
                 SKPaint paint = new SKPaint();
                 paint.IsAntialias = true;
 
-                if (takeButtonTouched) 
-                {
-                    surface.Canvas.DrawPicture(svgButtonTouched.Picture, ref matrix, paint);
-                }
-
-                surface.Canvas.DrawPicture(svgTakeButton.Picture, ref matrix, paint);
-
-                viewBox = new SKRect(x, y, x + 100f, y + 100f);
+                takeButton.Draw(surface.Canvas, x, y, paint);
 
                 x = 0 + 30f + xOffset;
 
@@ -111,8 +101,8 @@ namespace PhotoTaker.iOS.Controls
 
             cameraButton.CheckIntersection(rect);
             flashButton.CheckIntersection(rect);
-
-            takeButtonTouched = viewBox.IntersectsWithInclusive(new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f));
+            takeButton.CheckIntersection(rect);
+            closeButton.CheckIntersection(rect);
         }
 
         public override void TouchesMoved(NSSet touches, UIEvent evt)
@@ -129,11 +119,12 @@ namespace PhotoTaker.iOS.Controls
             var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
             var rect = new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f);
 
-            var touchEnded = viewBox.IntersectsWithInclusive(rect);
-
             // if touch ended within current viewbox!
-            if (touchEnded) 
+            if (takeButton.TouchUpInside(rect)) 
             {
+                // fire Event
+                TakeButtonTouched?.Invoke(this, new EventArgs());
+
                 System.Diagnostics.Debug.WriteLine("touched Take button!");
             }
 
@@ -142,10 +133,16 @@ namespace PhotoTaker.iOS.Controls
                 System.Diagnostics.Debug.WriteLine("Flash button touched!");
             }
 
-            takeButtonTouched = false;
+            if (closeButton.TouchUpInside(rect)) 
+            {
+                System.Diagnostics.Debug.WriteLine("Close button touched!");
+            }
+
+            takeButton.Touched = false;
             cameraButton.Touched = false;
             flashButton.Touched = false;
             galleryButton.Touched = false;
+            closeButton.Touched = false;
         }
 
 
@@ -153,9 +150,11 @@ namespace PhotoTaker.iOS.Controls
         {
             base.TouchesCancelled(touches, evt);
 
-            takeButtonTouched = false;
+            takeButton.Touched = false;
             cameraButton.Touched = false;
             flashButton.Touched = false;
+            galleryButton.Touched = false;
+            closeButton.Touched = false;
         }
 
 

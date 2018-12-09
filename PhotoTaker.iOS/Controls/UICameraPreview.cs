@@ -13,10 +13,9 @@ namespace PhotoTaker.iOS.Controls
         AVCaptureVideoPreviewLayer previewLayer;
         CameraOptions cameraOptions;
 
-        public event EventHandler<EventArgs> Tapped;
-
         public AVCaptureSession CaptureSession { get; private set; }
         public AVCapturePhotoOutput PhotoOutput { get; private set; }
+        AVCaptureDeviceInput captureDeviceInput = null;
 
         public bool IsPreviewing { get; set; }
 
@@ -24,7 +23,7 @@ namespace PhotoTaker.iOS.Controls
         {
             cameraOptions = options;
             IsPreviewing = false;
-            Initialize();
+            SetupLiveStream();
         }
 
         public override void Draw(CGRect rect)
@@ -33,22 +32,7 @@ namespace PhotoTaker.iOS.Controls
             base.Draw(rect);
         }
 
-        public override void TouchesBegan(NSSet touches, UIEvent evt)
-        {
-            base.TouchesBegan(touches, evt);
-            OnTapped();
-        }
-
-        protected virtual void OnTapped()
-        {
-            var eventHandler = Tapped;
-            if (eventHandler != null)
-            {
-                eventHandler(this, new EventArgs());
-            }
-        }
-
-        void Initialize()
+        void SetupLiveStream()
         {
             CaptureSession = new AVCaptureSession();
             PhotoOutput = new AVCapturePhotoOutput();
@@ -68,8 +52,8 @@ namespace PhotoTaker.iOS.Controls
             }
 
             NSError error;
-            var input = new AVCaptureDeviceInput(device, out error);
-            CaptureSession.AddInput(input);
+            captureDeviceInput = new AVCaptureDeviceInput(device, out error);
+            CaptureSession.AddInput(captureDeviceInput);
             this.Layer.AddSublayer(previewLayer);
             CaptureSession.StartRunning();
             IsPreviewing = true;

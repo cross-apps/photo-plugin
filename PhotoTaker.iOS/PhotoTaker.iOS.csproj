@@ -200,5 +200,6 @@
     <Content Include="flash_button.svg" />
     <Content Include="close_button.svg" />
     <Content Include="flash_button_touched.svg" />
+    <Content Include="close_button_touched.svg" />
   </ItemGroup>
 </Project>

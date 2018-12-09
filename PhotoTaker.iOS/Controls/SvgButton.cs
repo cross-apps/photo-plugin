@@ -30,6 +30,8 @@ namespace PhotoTaker.iOS.Controls
             canvas.ResetMatrix();
             canvas.Translate(x, y);
 
+            ViewBox = new SKRect(x, y, x + 100f, y + 100f);
+
             if (Touched)
             {
                 canvas.DrawPicture(SvgTouched.Picture, ref scale, paint);
@@ -40,12 +42,12 @@ namespace PhotoTaker.iOS.Controls
 
         public void CheckIntersection(SKRect rect) 
         {
-            Touched = this.SvgDefault.ViewBox.IntersectsWithInclusive(rect);
+            Touched = this.ViewBox.IntersectsWithInclusive(rect);
         }
 
         public bool TouchUpInside(SKRect rect) 
         {
-            return Touched && this.SvgDefault.ViewBox.IntersectsWithInclusive(rect);
+            return Touched && this.ViewBox.IntersectsWithInclusive(rect);
         }
     }
 }

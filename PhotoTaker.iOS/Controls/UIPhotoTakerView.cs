@@ -42,12 +42,12 @@ namespace PhotoTaker.iOS.Controls
 
         public void AddTouchEvents() 
         {
-            cameraPreview.Tapped += OnCameraPreviewTapped;
+            //cameraPreview.Tapped += OnCameraPreviewTapped;
         }
 
         public void RemoveTouchEvents() 
         {
-            cameraPreview.Tapped -= OnCameraPreviewTapped;
+            // cameraPreview.Tapped -= OnCameraPreviewTapped;
         }
 
         void OnCameraPreviewTapped(object sender, EventArgs e)
