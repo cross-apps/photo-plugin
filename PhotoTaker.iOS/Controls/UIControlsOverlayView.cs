@@ -19,6 +19,7 @@ namespace PhotoTaker.iOS.Controls
         public EventHandler TakeButtonTouched { get; set; }
         public EventHandler FlashButtonTouched { get; set; }
         public EventHandler CloseButtonTouched { get; set; }
+        public EventHandler CameraButtonTouched { get; set; }
 
         public void Handle_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
@@ -132,7 +133,14 @@ namespace PhotoTaker.iOS.Controls
 
             if (flashButton.TouchUpInside(rect)) 
             {
+                FlashButtonTouched?.Invoke(this, new EventArgs());
+
                 System.Diagnostics.Debug.WriteLine("Flash button touched!");
+            }
+
+            if (cameraButton.TouchUpInside(rect))
+            {
+                CameraButtonTouched?.Invoke(this, new EventArgs());
             }
 
             if (closeButton.TouchUpInside(rect)) 

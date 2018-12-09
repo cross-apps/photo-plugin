@@ -16,6 +16,7 @@ namespace PhotoTaker.iOS.Controls
         public AVCaptureSession CaptureSession { get; private set; }
         public AVCapturePhotoOutput PhotoOutput { get; private set; }
         AVCaptureDeviceInput captureDeviceInput = null;
+        AVCaptureStillImageOutput captureStillImageOutput = null;
 
         public bool IsPreviewing { get; set; }
 
@@ -35,7 +36,7 @@ namespace PhotoTaker.iOS.Controls
         void SetupLiveStream()
         {
             CaptureSession = new AVCaptureSession();
-            PhotoOutput = new AVCapturePhotoOutput();
+            // PhotoOutput = new AVCapturePhotoOutput();
             previewLayer = new AVCaptureVideoPreviewLayer(CaptureSession)
             {
                 Frame = Bounds,
@@ -55,14 +56,84 @@ namespace PhotoTaker.iOS.Controls
             captureDeviceInput = new AVCaptureDeviceInput(device, out error);
             CaptureSession.AddInput(captureDeviceInput);
             this.Layer.AddSublayer(previewLayer);
+
+            captureStillImageOutput = new AVCaptureStillImageOutput()
+            {
+                OutputSettings = new NSDictionary()
+            };
+
+            CaptureSession.AddOutput(captureStillImageOutput);
+
             CaptureSession.StartRunning();
             IsPreviewing = true;
-
-            CaptureSession.AddOutput(PhotoOutput);
+            // CaptureSession.AddOutput(PhotoOutput);
         }
 
-        public void Capture() {
-            
+        public async void TakeButtonTapped() 
+        {
+            var videoConnection = captureStillImageOutput.ConnectionFromMediaType(AVMediaType.Video);
+            var sampleBuffer = await captureStillImageOutput.CaptureStillImageTaskAsync(videoConnection);
+
+            var jpegImageAsNsData = AVCaptureStillImageOutput.JpegStillToNSData(sampleBuffer);
+            var jpegAsByteArray = jpegImageAsNsData.ToArray();
+        }
+
+        public void FlashButtonTapped()
+        {
+            var device = captureDeviceInput.Device;
+
+            var error = new NSError();
+            if (device.HasFlash)
+            {
+                if (device.FlashMode == AVCaptureFlashMode.On)
+                {
+                    device.LockForConfiguration(out error);
+                    device.FlashMode = AVCaptureFlashMode.Off;
+                    device.UnlockForConfiguration();
+                }
+                else
+                {
+                    device.LockForConfiguration(out error);
+                    device.FlashMode = AVCaptureFlashMode.On;
+                    device.UnlockForConfiguration();
+                }
+            }
+        }
+
+        public void CameraButtonTapped()
+        {
+            var devicePosition = captureDeviceInput.Device.Position;
+            if (devicePosition == AVCaptureDevicePosition.Front)
+            {
+                devicePosition = AVCaptureDevicePosition.Back;
+            }
+            else
+            {
+                devicePosition = AVCaptureDevicePosition.Front;
+            }
+
+            var device = GetCameraForOrientation(devicePosition);
+            // ConfigureCameraForDevice(device);
+
+            CaptureSession.BeginConfiguration();
+            CaptureSession.RemoveInput(captureDeviceInput);
+            captureDeviceInput = AVCaptureDeviceInput.FromDevice(device);
+            CaptureSession.AddInput(captureDeviceInput);
+            CaptureSession.CommitConfiguration();
+        }
+
+        public AVCaptureDevice GetCameraForOrientation(AVCaptureDevicePosition orientation)
+        {
+            var devices = AVCaptureDevice.DevicesWithMediaType(AVMediaType.Video);
+            foreach (var device in devices)
+            {
+                if (device.Position == orientation)
+                {
+                    return device;
+                }
+            }
+
+            return null;
         }
     }
 }

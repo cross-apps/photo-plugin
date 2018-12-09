@@ -23,11 +23,11 @@ namespace PhotoTaker.iOS.Renderer
             }
             if (e.OldElement != null)
             {
-                photoTakerView.RemoveTouchEvents();
+                // photoTakerView.RemoveTouchEvents();
             }
             if (e.NewElement != null)
             {
-                photoTakerView.AddTouchEvents();
+                // photoTakerView.AddTouchEvents();
             }
         }
 

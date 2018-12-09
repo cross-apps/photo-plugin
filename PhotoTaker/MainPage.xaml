@@ -9,6 +9,6 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <custom:PhotoTakerView Grid.Row="0" Camera="Front" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+        <custom:PhotoTakerView Grid.Row="0" Camera="Rear" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
     </Grid>
 </ContentPage>

@@ -26,6 +26,12 @@ namespace PhotoTaker.iOS.Controls
             controlsOverlayView.TakeButtonTouched += ControlsOverlayView_TakeButtonTouched;
             controlsOverlayView.FlashButtonTouched += ControlsOverlayView_FlashButtonTouched;
             controlsOverlayView.CloseButtonTouched += ControlsOverlayView_CloseButtonTouched;
+            controlsOverlayView.CameraButtonTouched += ControlsOverlayView_CameraButtonTouched;
+        }
+
+        void ControlsOverlayView_CameraButtonTouched(object sender, EventArgs e)
+        {
+            cameraPreview.CameraButtonTapped();
         }
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
@@ -35,12 +41,12 @@ namespace PhotoTaker.iOS.Controls
 
         void ControlsOverlayView_FlashButtonTouched(object sender, EventArgs e)
         {
-
+            cameraPreview.FlashButtonTapped();
         }
 
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
         {
-
+            cameraPreview.TakeButtonTapped();
         }
 
         public override void Draw(CGRect rect)
