@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using CoreGraphics;
+using Foundation;
 using UIKit;
 
 namespace PhotoTaker.iOS.Controls
 {
     public class UIImageViewCell : UICollectionViewCell
     {
+        public static NSString CellId = new NSString("UIImageViewCell");
+
         public UIImageViewCell(IntPtr handle) : base(handle)
         {
             ImageView = new UIImageView(new RectangleF(0, 0, 90, 120));

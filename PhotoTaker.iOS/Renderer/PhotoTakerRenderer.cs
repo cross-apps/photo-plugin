@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using PhotoTaker.Custom;
 using PhotoTaker.iOS.Controls;
 using PhotoTaker.iOS.Renderer;
@@ -18,13 +19,23 @@ namespace PhotoTaker.iOS.Renderer
 
             if (Control == null)
             {
+                var formsView = e.NewElement;
                 photoTakerView = new UIPhotoTakerView(e.NewElement.Camera);
+                formsView.SaveFilesCommand = new Command(async () => 
+                { 
+                    var files = photoTakerView.SaveFiles();
+                    formsView.FileNames.AddRange(files);
+                    formsView.FilesSaved?.Invoke(this, new EventArgs());
+                });
+
                 SetNativeControl(photoTakerView);
             }
+
             if (e.OldElement != null)
             {
                 // photoTakerView.RemoveTouchEvents();
             }
+
             if (e.NewElement != null)
             {
                 // photoTakerView.AddTouchEvents();

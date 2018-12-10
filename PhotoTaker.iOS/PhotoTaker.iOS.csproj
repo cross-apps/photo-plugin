@@ -107,6 +107,9 @@
     <Compile Include="Controls\UIImageViewCell.cs" />
     <Compile Include="Controls\UIHorizontalScrollLayout.cs" />
     <Compile Include="Controls\SvgButton.cs" />
+    <Compile Include="Controls\UICurrentTakenPhotosOverlayView.cs" />
+    <Compile Include="Controls\UIPhotoEditorView.cs" />
+    <Compile Include="Controls\UIPhotoEditorControlsOverlayView.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -201,5 +204,7 @@
     <Content Include="close_button.svg" />
     <Content Include="flash_button_touched.svg" />
     <Content Include="close_button_touched.svg" />
+    <Content Include="trash_button.svg" />
+    <Content Include="trash_button_touched.svg" />
   </ItemGroup>
 </Project>

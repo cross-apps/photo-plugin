@@ -21,6 +21,18 @@ namespace PhotoTaker.iOS.Controls
         public EventHandler CloseButtonTouched { get; set; }
         public EventHandler CameraButtonTouched { get; set; }
 
+        public UIControlsOverlayView(CGRect frame)
+        {
+            PaintSurface += Handle_PaintSurface;
+            BackgroundColor = UIColor.Clear;
+
+            Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
+            {
+                SetNeedsLayout();
+                return true;
+            });
+        }
+
         public void Handle_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
             if (e.Surface != null)
@@ -28,9 +40,12 @@ namespace PhotoTaker.iOS.Controls
                 var surface = e.Surface;
                 var surfaceWidth = e.Info.Width;
                 var surfaceHeight = e.Info.Height;
-
                 var canvas = surface.Canvas;
-                canvas.Clear(SkiaSharp.SKColors.Transparent);
+
+                canvas.Clear(SKColors.Transparent);
+
+                SKPaint paint = new SKPaint();
+                paint.IsAntialias = true;
 
                 var svgButtonTouched = new SkiaSharp.Extended.Svg.SKSvg(190f);
                 svgButtonTouched.Load("take_button_touched.svg");
@@ -64,16 +79,13 @@ namespace PhotoTaker.iOS.Controls
 
                 surface.Canvas.Translate(x, y);
 
-                SKPaint paint = new SKPaint();
-                paint.IsAntialias = true;
-
                 takeButton.Draw(surface.Canvas, x, y, paint);
 
                 x = 0 + 30f + xOffset;
 
                 float galleryPositionX = x;
                 float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
-                galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
+                // galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
 
                 float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
                 float cameraPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
@@ -99,7 +111,6 @@ namespace PhotoTaker.iOS.Controls
 
             var cgPoint = touch.LocationInView(this);
             var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
-
             var rect = new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f);
 
             cameraButton.CheckIntersection(rect);
@@ -164,18 +175,6 @@ namespace PhotoTaker.iOS.Controls
             flashButton.Touched = false;
             galleryButton.Touched = false;
             closeButton.Touched = false;
-        }
-
-        public UIControlsOverlayView(CGRect frame)
-        {
-            this.PaintSurface += Handle_PaintSurface;
-            this.BackgroundColor = UIColor.Clear;
-
-            Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
-            {
-                this.SetNeedsLayout();
-                return true;
-            });
         }
 
         public override void Draw(CGRect rect)

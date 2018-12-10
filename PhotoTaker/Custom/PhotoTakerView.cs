@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace PhotoTaker.Custom
@@ -17,5 +18,11 @@ namespace PhotoTaker.Custom
             get { return (CameraOptions)GetValue(CameraProperty); }
             set { SetValue(CameraProperty, value); }
         }
+
+        public List<string> FileNames { get; set; } = new List<string>();
+
+        public EventHandler FilesSaved { get; set; }
+
+        public Command SaveFilesCommand { get; set; }
     }
 }

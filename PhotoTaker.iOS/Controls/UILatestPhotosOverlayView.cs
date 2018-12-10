@@ -14,15 +14,15 @@ namespace PhotoTaker.iOS.Controls
 
         public UILatestPhotosOverlayView(CGRect frame) : base(frame, new UIHorizontalScrollLayout())
         {
-            this.DataSource = this;
-            this.RegisterClassForCell(typeof(UIImageViewCell), imageViewCellId);
-            this.fetchResults = PHAsset.FetchAssets(PHAssetMediaType.Image, null);
-            this.manager = new PHImageManager();
+            DataSource = this;
+            RegisterClassForCell(typeof(UIImageViewCell), imageViewCellId);
+            fetchResults = PHAsset.FetchAssets(PHAssetMediaType.Image, null);
+            manager = new PHImageManager();
 
             var tapRecognizer = new UITapGestureRecognizer(() => Console.Write("test"));
-            this.AddGestureRecognizer(tapRecognizer);
-            this.TranslatesAutoresizingMaskIntoConstraints = false;
-            this.BackgroundColor = UIColor.Clear;
+            AddGestureRecognizer(tapRecognizer);
+            TranslatesAutoresizingMaskIntoConstraints = false;
+            BackgroundColor = UIColor.Clear;
         }
 
         public override void Draw(CGRect rect)

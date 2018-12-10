@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AVFoundation;
 using CoreGraphics;
 using Foundation;
@@ -14,7 +16,6 @@ namespace PhotoTaker.iOS.Controls
         CameraOptions cameraOptions;
 
         public AVCaptureSession CaptureSession { get; private set; }
-        public AVCapturePhotoOutput PhotoOutput { get; private set; }
         AVCaptureDeviceInput captureDeviceInput = null;
         AVCaptureStillImageOutput captureStillImageOutput = null;
 
@@ -52,8 +53,7 @@ namespace PhotoTaker.iOS.Controls
                 return;
             }
 
-            NSError error;
-            captureDeviceInput = new AVCaptureDeviceInput(device, out error);
+            captureDeviceInput = new AVCaptureDeviceInput(device, out NSError error);
             CaptureSession.AddInput(captureDeviceInput);
             this.Layer.AddSublayer(previewLayer);
 
@@ -63,19 +63,19 @@ namespace PhotoTaker.iOS.Controls
             };
 
             CaptureSession.AddOutput(captureStillImageOutput);
-
             CaptureSession.StartRunning();
             IsPreviewing = true;
-            // CaptureSession.AddOutput(PhotoOutput);
         }
 
-        public async void TakeButtonTapped() 
+        public async Task<UIImage> TakeButtonTapped() 
         {
             var videoConnection = captureStillImageOutput.ConnectionFromMediaType(AVMediaType.Video);
             var sampleBuffer = await captureStillImageOutput.CaptureStillImageTaskAsync(videoConnection);
 
             var jpegImageAsNsData = AVCaptureStillImageOutput.JpegStillToNSData(sampleBuffer);
             var jpegAsByteArray = jpegImageAsNsData.ToArray();
+
+            return new UIImage(jpegImageAsNsData);
         }
 
         public void FlashButtonTapped()
