@@ -20,6 +20,8 @@ namespace PhotoTaker.iOS.Controls
         {
             controlsOverlayView = new UIPhotoEditorControlsOverlayView();
             currentImage = new UIImageView(frame);
+            currentImage.Layer.BorderWidth = 2f;
+            currentImage.Layer.BorderColor = UIColor.Red.CGColor;
 
             AddSubview(currentImage);
             AddSubview(controlsOverlayView);
@@ -41,6 +43,7 @@ namespace PhotoTaker.iOS.Controls
         public void SetImage(UIImage image) 
         {
             currentImage.Frame = Frame;
+            currentImage.ContentMode = UIViewContentMode.ScaleAspectFill;
             SetNeedsDisplay();
             currentImage.Image = image;
         }

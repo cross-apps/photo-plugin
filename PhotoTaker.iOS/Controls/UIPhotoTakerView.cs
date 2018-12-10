@@ -14,11 +14,11 @@ namespace PhotoTaker.iOS.Controls
     /// </summary>
     public class UIPhotoTakerView : UIView
     {
-        UICameraPreview cameraPreview = null;
-        UIControlsOverlayView controlsOverlayView = null;
+        UICameraPreview cameraPreview;
+        UIControlsOverlayView controlsOverlayView;
 
         // UILatestPhotosOverlayView latestPhotosOverlayView = null;
-        UICurrentTakenPhotosOverlayView takenPhotosOverlayView = null;
+        UICurrentTakenPhotosOverlayView takenPhotosOverlayView;
         UIPhotoEditorView photoEditorView = null;
 
         public UIPhotoTakerView(CameraOptions options)
@@ -103,6 +103,8 @@ namespace PhotoTaker.iOS.Controls
 
             takenPhotosOverlayView.Photos.Add(image);
             takenPhotosOverlayView.ReloadData();
+
+            SetNeedsDisplay();
         }
 
         public List<string> SaveFiles() 

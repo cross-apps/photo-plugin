@@ -72,7 +72,7 @@ namespace PhotoTaker.iOS.Controls
 
             var cgPoint = touch.LocationInView(this);
             var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
-            var rect = new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f);
+            var rect = new SKRect(point.X - 25f, point.Y - 25f, point.X + 50f, point.Y + 50f);
 
             trashButton.CheckIntersection(rect);
             closeButton.CheckIntersection(rect);
@@ -91,7 +91,7 @@ namespace PhotoTaker.iOS.Controls
 
             var cgPoint = touch.LocationInView(this);
             var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
-            var rect = new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f);
+            var rect = new SKRect(point.X - 25f, point.Y - 25f, point.X + 50f, point.Y + 50f);
 
             // if touch ended within current viewbox!
             if (trashButton.TouchUpInside(rect))

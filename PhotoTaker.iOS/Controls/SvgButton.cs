@@ -1,5 +1,6 @@
 ﻿using System;
 using SkiaSharp;
+using UIKit;
 
 namespace PhotoTaker.iOS.Controls
 {
@@ -22,7 +23,15 @@ namespace PhotoTaker.iOS.Controls
             SvgDefault = new SkiaSharp.Extended.Svg.SKSvg(190f);
             SvgDefault.Load(DefaultFile);
 
-            scale = Scale;
+            if (UIScreen.MainScreen.Scale > 2) 
+            {
+                scale = SKMatrix.MakeScale(Scale.ScaleX * 1.5f,
+                                           Scale.ScaleY * 1.5f);
+            }
+            else
+            {
+                scale = Scale;
+            }
         }
 
         public void Draw(SKCanvas canvas, float x, float y, SKPaint paint)
@@ -30,7 +39,7 @@ namespace PhotoTaker.iOS.Controls
             canvas.ResetMatrix();
             canvas.Translate(x, y);
 
-            ViewBox = new SKRect(x, y, x + 100f, y + 100f);
+            ViewBox = new SKRect(x, y, x + 150f, y + 150f);
 
             if (Touched)
             {

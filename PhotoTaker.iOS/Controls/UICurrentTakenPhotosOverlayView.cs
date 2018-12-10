@@ -52,7 +52,6 @@ namespace PhotoTaker.iOS.Controls
         {
             base.Draw(rect);
             Frame = rect;
-            Frame = rect;
         }
 
         public UICollectionViewCell GetCell(UICollectionView collectionView, NSIndexPath indexPath)

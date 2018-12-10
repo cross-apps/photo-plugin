@@ -67,6 +67,11 @@ namespace PhotoTaker.iOS.Controls
                 // 667 iphone 8, // 813 iphone x // 736 iphone 8 plus
                 var max = (float)UIScreen.MainScreen.Bounds.Height;
 
+                if (UIScreen.MainScreen.Scale > 2) 
+                {
+                    scale *= 1.5f;
+                }
+
                 var x = e.Info.Width / 2 - (svgTakeButton.Picture.CullRect.Width * scale) / 2;
                 var y = e.Info.Height - 2 * svgTakeButton.Picture.CullRect.Height;
 
@@ -111,7 +116,7 @@ namespace PhotoTaker.iOS.Controls
 
             var cgPoint = touch.LocationInView(this);
             var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
-            var rect = new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f);
+            var rect = new SKRect(point.X - 25f, point.Y - 25f, point.X + 50f, point.Y + 50f);
 
             cameraButton.CheckIntersection(rect);
             flashButton.CheckIntersection(rect);
@@ -131,7 +136,7 @@ namespace PhotoTaker.iOS.Controls
 
             var cgPoint = touch.LocationInView(this);
             var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
-            var rect = new SKRect(point.X, point.Y, point.X + 2f, point.Y + 2f);
+            var rect = new SKRect(point.X - 25f, point.Y - 25f, point.X + 50f, point.Y + 50f);
 
             // if touch ended within current viewbox!
             if (takeButton.TouchUpInside(rect)) 
