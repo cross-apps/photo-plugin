@@ -33,6 +33,7 @@ namespace PhotoTaker.iOS.Controls
             takenPhotosOverlayView = new UICurrentTakenPhotosOverlayView(Frame);
             photoEditorView = new UIPhotoEditorView(Frame);
             photoEditorView.Hidden = true;
+            takenPhotosOverlayView.Hidden = true;
 
             takenPhotosOverlayView.ImageTapped += TakenPhotosOverlayView_ImageTapped;
 
@@ -114,6 +115,7 @@ namespace PhotoTaker.iOS.Controls
         {
             var image = await cameraPreview.TakeButtonTapped();
 
+            takenPhotosOverlayView.Hidden = false;
             takenPhotosOverlayView.Photos.Add(image);
             takenPhotosOverlayView.ReloadData();
 
@@ -133,7 +135,7 @@ namespace PhotoTaker.iOS.Controls
             foreach (var image in takenPhotosOverlayView.Photos)
             {
                 var fileName = Path.Combine(tmp, Guid.NewGuid().ToString() + ".jpg");
-                image.AsJPEG().Save( fileName, true);
+                image.AsJPEG().Save(fileName, true);
                 fileNames.Add(fileName);
             }
 

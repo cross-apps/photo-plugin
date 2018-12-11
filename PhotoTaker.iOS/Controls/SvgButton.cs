@@ -64,7 +64,7 @@ namespace PhotoTaker.iOS.Controls
 
         public bool TouchUpInside(SKRect rect) 
         {
-            bool touchUpInsideButton = Touched && this.ViewBox.IntersectsWithInclusive(rect);
+            bool touchUpInsideButton = Touched && this.ViewBox.IntersectsWithInclusive(rect) && IsVisible;
 
             if (IsToggleButton && touchUpInsideButton) 
             {
