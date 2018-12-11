@@ -21,6 +21,10 @@ namespace PhotoTaker.iOS.Controls
         UICurrentTakenPhotosOverlayView takenPhotosOverlayView;
         UIPhotoEditorView photoEditorView = null;
 
+        public int MaxImageCount { get; set; } = 6;
+
+        public EventHandler SendButtonTapped { get; set; }
+
         public UIPhotoTakerView(CameraOptions options)
         {
             cameraPreview = new UICameraPreview(options);
@@ -43,9 +47,15 @@ namespace PhotoTaker.iOS.Controls
             controlsOverlayView.FlashButtonTouched += ControlsOverlayView_FlashButtonTouched;
             controlsOverlayView.CloseButtonTouched += ControlsOverlayView_CloseButtonTouched;
             controlsOverlayView.CameraButtonTouched += ControlsOverlayView_CameraButtonTouched;
+            controlsOverlayView.SendButtonTouched += ControlsOverlayView_SendButtonTouched;
 
             photoEditorView.CloseButtonTapped += PhotoEditorView_CloseButtonTapped;
             photoEditorView.TrashButtonTapped += PhotoEditorView_TrashButtonTapped;
+        }
+
+        void ControlsOverlayView_SendButtonTouched(object sender, EventArgs e)
+        {
+            SendButtonTapped?.Invoke(this, new EventArgs());
         }
 
         void PhotoEditorView_TrashButtonTapped(object sender, EventArgs e)

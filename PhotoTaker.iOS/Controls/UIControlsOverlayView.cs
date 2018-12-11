@@ -15,12 +15,15 @@ namespace PhotoTaker.iOS.Controls
         private SvgButton cameraButton = new SvgButton("camera_button.svg", "camera_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
         private SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
         private SvgButton takeButton = new SvgButton("take_button.svg", "take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
-        private SvgButton sendButton = new SvgButton("camera_button.svg", "camera_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        private SvgButton sendButton = new SvgButton("send_button.svg", "send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
 
         public EventHandler TakeButtonTouched { get; set; }
         public EventHandler FlashButtonTouched { get; set; }
         public EventHandler CloseButtonTouched { get; set; }
         public EventHandler CameraButtonTouched { get; set; }
+        public EventHandler SendButtonTouched { get; set; }
+
+        private bool timerActive = true;
 
         public UIControlsOverlayView(CGRect frame)
         {
@@ -31,7 +34,7 @@ namespace PhotoTaker.iOS.Controls
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
             {
                 SetNeedsLayout();
-                return true;
+                return timerActive;
             });
         }
 
@@ -55,11 +58,8 @@ namespace PhotoTaker.iOS.Controls
                 var svgTakeButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
                 svgTakeButton.Load("take_button.svg");
 
-                // get the size of the canvas
-                float canvasMin = Math.Min(e.Info.Width, e.Info.Height);
-
-                // get the size of the picture
-                float svgMax = Math.Max(svgTakeButton.Picture.CullRect.Width, svgTakeButton.Picture.CullRect.Height);
+                // float canvasMin = Math.Min(e.Info.Width, e.Info.Height);
+                // float svgMax = Math.Max(svgTakeButton.Picture.CullRect.Width, svgTakeButton.Picture.CullRect.Height);
 
                 // get the scale to fill the screen
                 float scale = 1.5f;//  canvasMin / svgMax;
@@ -90,21 +90,25 @@ namespace PhotoTaker.iOS.Controls
 
                 x = 0 + 30f + xOffset;
 
-                float galleryPositionX = x;
-                float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
+                // float galleryPositionX = x;
+                // float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
                 // galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
 
-                float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
-                float cameraPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
-                cameraButton.Draw(surface.Canvas, cameraPositionX, cameraPoisitonY, paint);
+                // float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
+                // float cameraPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
+                // cameraButton.Draw(surface.Canvas, cameraPositionX, cameraPoisitonY, paint);
+
+                float sendPositionX = e.Info.Width - xOffset - 65f - sendButton.SvgTouched.Picture.CullRect.Width * scale;
+                float sendPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
+                sendButton.Draw(surface.Canvas, sendPositionX, sendPoisitonY, paint);
 
                 float flashPositionX = e.Info.Width - xOffset - flashButton.SvgTouched.Picture.CullRect.Width;
                 float flashPositionY = xOffset + flashButton.SvgTouched.Picture.CullRect.Height;
                 flashButton.Draw(surface.Canvas, flashPositionX, flashPositionY, paint);
 
-                float closePositionX = x;
-                float closePositionY = xOffset + closeButton.SvgTouched.Picture.CullRect.Height;
-                closeButton.Draw(surface.Canvas, closePositionX, closePositionY, paint);
+                //float closePositionX = x;
+                //float closePositionY = xOffset + closeButton.SvgTouched.Picture.CullRect.Height;
+                //closeButton.Draw(surface.Canvas, closePositionX, closePositionY, paint);
 
                 // draw on the canvas
                 canvas.Flush();
@@ -124,6 +128,7 @@ namespace PhotoTaker.iOS.Controls
             flashButton.CheckIntersection(rect);
             takeButton.CheckIntersection(rect);
             closeButton.CheckIntersection(rect);
+            sendButton.CheckIntersection(rect);
         }
 
         public override void TouchesMoved(NSSet touches, UIEvent evt)
@@ -152,7 +157,6 @@ namespace PhotoTaker.iOS.Controls
             if (flashButton.TouchUpInside(rect)) 
             {
                 FlashButtonTouched?.Invoke(this, new EventArgs());
-
                 System.Diagnostics.Debug.WriteLine("Flash button touched!");
             }
 
@@ -166,11 +170,17 @@ namespace PhotoTaker.iOS.Controls
                 System.Diagnostics.Debug.WriteLine("Close button touched!");
             }
 
+            if (sendButton.TouchUpInside(rect)) 
+            {
+                SendButtonTouched?.Invoke(this, new EventArgs());
+            }
+
             takeButton.Touched = false;
             cameraButton.Touched = false;
             flashButton.Touched = false;
             galleryButton.Touched = false;
             closeButton.Touched = false;
+            sendButton.Touched = false;
         }
 
         public override void TouchesCancelled(NSSet touches, UIEvent evt)
@@ -182,12 +192,20 @@ namespace PhotoTaker.iOS.Controls
             flashButton.Touched = false;
             galleryButton.Touched = false;
             closeButton.Touched = false;
+            sendButton.Touched = false;
         }
 
         public override void Draw(CGRect rect)
         {
             this.Frame = rect;
             base.Draw(rect);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            timerActive = false;
         }
     }
 }

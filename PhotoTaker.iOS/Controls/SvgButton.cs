@@ -18,6 +18,8 @@ namespace PhotoTaker.iOS.Controls
         public bool IsToggleButton { get; set; } = false;
         public bool IsToggled { get; set; } = false;
 
+        public bool IsVisible { get; set; } = true;
+
         public SvgButton(string DefaultFile, string TouchedFile, SKMatrix Scale)
         {
             SvgTouched = new SkiaSharp.Extended.Svg.SKSvg(190f);
@@ -39,17 +41,20 @@ namespace PhotoTaker.iOS.Controls
 
         public void Draw(SKCanvas canvas, float x, float y, SKPaint paint)
         {
-            canvas.ResetMatrix();
-            canvas.Translate(x, y);
-
-            ViewBox = new SKRect(x, y, x + 150f, y + 150f);
-
-            if (Touched || IsToggled)
+            if (IsVisible)
             {
-                canvas.DrawPicture(SvgTouched.Picture, ref scale, paint);
-            }
+                canvas.ResetMatrix();
+                canvas.Translate(x, y);
 
-            canvas.DrawPicture(SvgDefault.Picture, ref scale, paint);
+                ViewBox = new SKRect(x, y, x + 150f, y + 150f);
+
+                if (Touched || IsToggled)
+                {
+                    canvas.DrawPicture(SvgTouched.Picture, ref scale, paint);
+                }
+
+                canvas.DrawPicture(SvgDefault.Picture, ref scale, paint);
+            }
         }
 
         public void CheckIntersection(SKRect rect) 

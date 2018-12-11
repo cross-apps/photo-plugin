@@ -12,6 +12,7 @@ namespace PhotoTaker.iOS.Renderer
     public class PhotoTakerRenderer : ViewRenderer<PhotoTakerView, UIPhotoTakerView>
     {
         UIPhotoTakerView photoTakerView;
+        PhotoTakerView formsView;
 
         protected override void OnElementChanged(ElementChangedEventArgs<PhotoTakerView> e)
         {
@@ -19,14 +20,18 @@ namespace PhotoTaker.iOS.Renderer
 
             if (Control == null)
             {
-                var formsView = e.NewElement;
+                formsView = e.NewElement;
                 photoTakerView = new UIPhotoTakerView(e.NewElement.Camera);
-                formsView.SaveFilesCommand = new Command(async () => 
+                photoTakerView.MaxImageCount = e.NewElement.MaxImageCount;
+
+                formsView.SaveFilesCommand = new Command(() => 
                 { 
                     var files = photoTakerView.SaveFiles();
                     formsView.FileNames.AddRange(files);
                     formsView.FilesSaved?.Invoke(this, new EventArgs());
                 });
+
+                photoTakerView.SendButtonTapped += PhotoTakerView_SendButtonTapped;
 
                 SetNativeControl(photoTakerView);
             }
@@ -40,6 +45,11 @@ namespace PhotoTaker.iOS.Renderer
             {
                 // photoTakerView.AddTouchEvents();
             }
+        }
+
+        void PhotoTakerView_SendButtonTapped(object sender, EventArgs e)
+        {
+            formsView?.SaveFilesCommand.Execute(null);
         }
 
         protected override void Dispose(bool disposing)

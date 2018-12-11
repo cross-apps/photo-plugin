@@ -16,6 +16,8 @@ namespace PhotoTaker.iOS.Controls
         public EventHandler CloseButtonTouched { get; set; }
         public EventHandler TrashButtonTouched { get; set; }
 
+        private bool timerActive = true;
+
         public UIPhotoEditorControlsOverlayView()
         {
             PaintSurface += Handle_PaintSurface;
@@ -24,7 +26,7 @@ namespace PhotoTaker.iOS.Controls
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
             {
                 SetNeedsLayout();
-                return true;
+                return timerActive;
             });
         }
 
@@ -126,6 +128,12 @@ namespace PhotoTaker.iOS.Controls
         {
             this.Frame = rect;
             base.Draw(rect);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            timerActive = false;
         }
     }
 }
