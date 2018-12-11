@@ -15,6 +15,7 @@ namespace PhotoTaker.iOS.Controls
         private SvgButton cameraButton = new SvgButton("camera_button.svg", "camera_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
         private SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
         private SvgButton takeButton = new SvgButton("take_button.svg", "take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
+        private SvgButton sendButton = new SvgButton("camera_button.svg", "camera_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
 
         public EventHandler TakeButtonTouched { get; set; }
         public EventHandler FlashButtonTouched { get; set; }
@@ -25,6 +26,7 @@ namespace PhotoTaker.iOS.Controls
         {
             PaintSurface += Handle_PaintSurface;
             BackgroundColor = UIColor.Clear;
+            flashButton.IsToggleButton = true;
 
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
             {

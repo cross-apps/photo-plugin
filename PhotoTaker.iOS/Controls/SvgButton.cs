@@ -15,6 +15,9 @@ namespace PhotoTaker.iOS.Controls
 
         public SKRect ViewBox { get; set; } = SKRect.Empty;
 
+        public bool IsToggleButton { get; set; } = false;
+        public bool IsToggled { get; set; } = false;
+
         public SvgButton(string DefaultFile, string TouchedFile, SKMatrix Scale)
         {
             SvgTouched = new SkiaSharp.Extended.Svg.SKSvg(190f);
@@ -41,7 +44,7 @@ namespace PhotoTaker.iOS.Controls
 
             ViewBox = new SKRect(x, y, x + 150f, y + 150f);
 
-            if (Touched)
+            if (Touched || IsToggled)
             {
                 canvas.DrawPicture(SvgTouched.Picture, ref scale, paint);
             }
@@ -56,7 +59,14 @@ namespace PhotoTaker.iOS.Controls
 
         public bool TouchUpInside(SKRect rect) 
         {
-            return Touched && this.ViewBox.IntersectsWithInclusive(rect);
+            bool touchUpInsideButton = Touched && this.ViewBox.IntersectsWithInclusive(rect);
+
+            if (IsToggleButton && touchUpInsideButton) 
+            {
+                IsToggled = !IsToggled;
+            }
+
+            return touchUpInsideButton;
         }
     }
 }
