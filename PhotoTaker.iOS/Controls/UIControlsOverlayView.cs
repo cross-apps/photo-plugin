@@ -30,6 +30,7 @@ namespace PhotoTaker.iOS.Controls
             PaintSurface += Handle_PaintSurface;
             BackgroundColor = UIColor.Clear;
             flashButton.IsToggleButton = true;
+            sendButton.IsVisible = false;
 
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
             {
@@ -58,14 +59,8 @@ namespace PhotoTaker.iOS.Controls
                 var svgTakeButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
                 svgTakeButton.Load("take_button.svg");
 
-                // float canvasMin = Math.Min(e.Info.Width, e.Info.Height);
-                // float svgMax = Math.Max(svgTakeButton.Picture.CullRect.Width, svgTakeButton.Picture.CullRect.Height);
+                float scale = 1.5f;
 
-                // get the scale to fill the screen
-                float scale = 1.5f;//  canvasMin / svgMax;
-
-                // create a scale matrix
-                var matrix = SKMatrix.MakeScale(scale, scale);
                 // 667 iphone 8, // 813 iphone x // 736 iphone 8 plus
                 var max = (float)UIScreen.MainScreen.Bounds.Height;
 
@@ -199,6 +194,16 @@ namespace PhotoTaker.iOS.Controls
         {
             this.Frame = rect;
             base.Draw(rect);
+        }
+
+        public void SetSendVisibility(bool isVisible) 
+        {
+            sendButton.IsVisible = isVisible;
+        }
+
+        public void SetTakeVisibility(bool isVisible) 
+        {
+            takeButton.IsVisible = isVisible;
         }
 
         protected override void Dispose(bool disposing)

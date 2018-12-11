@@ -64,6 +64,9 @@ namespace PhotoTaker.iOS.Controls
             photoEditorView.Hidden = true;
             SetNeedsDisplay();
 
+            controlsOverlayView.SetSendVisibility(takenPhotosOverlayView.Photos.Count > 0);
+            controlsOverlayView.SetTakeVisibility(takenPhotosOverlayView.Photos.Count < MaxImageCount);
+
             cameraPreview.CaptureSession.StartRunning();
             cameraPreview.IsPreviewing = true;
         }
@@ -115,6 +118,9 @@ namespace PhotoTaker.iOS.Controls
             takenPhotosOverlayView.ReloadData();
 
             SetNeedsDisplay();
+
+            controlsOverlayView.SetSendVisibility(takenPhotosOverlayView.Photos.Count > 0);
+            controlsOverlayView.SetTakeVisibility(takenPhotosOverlayView.Photos.Count < MaxImageCount);
         }
 
         public List<string> SaveFiles() 
