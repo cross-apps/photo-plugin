@@ -13,5 +13,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Custom\" />
+    <Folder Include="Effects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="OrientationAttribute.cs" />
   </ItemGroup>
 </Project>

@@ -34,6 +34,15 @@ namespace PhotoTaker.iOS.Controls
             base.Draw(rect);
         }
 
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+            var bounds = Bounds;
+            var frame = Frame;
+            // previewLayer.Frame = Bounds;
+            System.Diagnostics.Debug.WriteLine("layout subviews, orientation changed");
+        }
+
         void SetupLiveStream()
         {
             CaptureSession = new AVCaptureSession();
@@ -43,6 +52,9 @@ namespace PhotoTaker.iOS.Controls
                 Frame = Bounds,
                 VideoGravity = AVLayerVideoGravity.ResizeAspectFill
             };
+
+            previewLayer.BorderWidth = 2f;
+            previewLayer.BorderColor = UIColor.Red.CGColor;
 
             var videoDevices = AVCaptureDevice.DevicesWithMediaType(AVMediaType.Video);
             var cameraPosition = (cameraOptions == CameraOptions.Front) ? AVCaptureDevicePosition.Front : AVCaptureDevicePosition.Back;

@@ -111,6 +111,7 @@
     <Compile Include="Controls\UICurrentTakenPhotosOverlayView.cs" />
     <Compile Include="Controls\UIPhotoEditorView.cs" />
     <Compile Include="Controls\UIPhotoEditorControlsOverlayView.cs" />
+    <Compile Include="Effects\OrientationEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -192,6 +193,7 @@
     <Folder Include="Renderer\" />
     <Folder Include="Controls\" />
     <Folder Include="Assets.xcassets\test.imageset\" />
+    <Folder Include="Effects\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="image.svg" />

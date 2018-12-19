@@ -89,9 +89,9 @@ namespace PhotoTaker.iOS.Controls
                 // float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
                 // galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
 
-                // float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
-                // float cameraPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
-                // cameraButton.Draw(surface.Canvas, cameraPositionX, cameraPoisitonY, paint);
+                float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
+                float cameraPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
+                cameraButton.Draw(surface.Canvas, cameraPositionX, cameraPoisitonY, paint);
 
                 float sendPositionX = e.Info.Width - xOffset - 65f - sendButton.SvgTouched.Picture.CullRect.Width * scale;
                 float sendPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
