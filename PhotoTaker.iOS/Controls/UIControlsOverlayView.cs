@@ -16,6 +16,7 @@ namespace PhotoTaker.iOS.Controls
         private SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
         private SvgButton takeButton = new SvgButton("take_button.svg", "take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
         private SvgButton sendButton = new SvgButton("send_button.svg", "send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        private SvgButton counterButton = new SvgButton("counter_button.svg", "counter_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
 
         public EventHandler TakeButtonTouched { get; set; }
         public EventHandler FlashButtonTouched { get; set; }
@@ -31,6 +32,7 @@ namespace PhotoTaker.iOS.Controls
             BackgroundColor = UIColor.Clear;
             flashButton.IsToggleButton = true;
             sendButton.IsVisible = false;
+            counterButton.IsVisible = false;
 
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
             {
@@ -85,9 +87,9 @@ namespace PhotoTaker.iOS.Controls
 
                 x = 0 + 30f + xOffset;
 
-                // float galleryPositionX = x;
-                // float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
-                // galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
+                float galleryPositionX = x;
+                float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
+                galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
 
                 float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
                 float cameraPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
@@ -100,6 +102,9 @@ namespace PhotoTaker.iOS.Controls
                 float flashPositionX = e.Info.Width - xOffset - flashButton.SvgTouched.Picture.CullRect.Width;
                 float flashPositionY = xOffset + flashButton.SvgTouched.Picture.CullRect.Height;
                 flashButton.Draw(surface.Canvas, flashPositionX, flashPositionY, paint);
+
+
+                // counterButton.Draw(surface.Canvas, flashPositionX, flashPositionY, paint);
 
                 //float closePositionX = x;
                 //float closePositionY = xOffset + closeButton.SvgTouched.Picture.CullRect.Height;

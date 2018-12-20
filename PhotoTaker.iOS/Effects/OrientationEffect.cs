@@ -15,17 +15,16 @@ namespace PhotoTaker.iOS.Effects
 
         protected override void OnAttached()
         {
-            var control = this.Control;
-            container = this.Container;
+            var control = Control;
+            this.container = Container;
 
             try
             {
-
                 var window = container.Window;
                 var controller = window.RootViewController;
 
                 container.NextResponder.InputViewController
-                 .ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation.PortraitUpsideDown);
+                         .ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation.PortraitUpsideDown);
             }
             catch (Exception ex)
             {

@@ -13,11 +13,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
-        <custom:PhotoTakerView x:Name="photoTakerView" Grid.Row="0" Camera="Rear" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-        
-        <Button Grid.Row="1" Text="Save" x:Name="saveButton" />
+        <custom:PhotoTakerView x:Name="photoTakerView" Grid.Row="0" Camera="Rear" 
+                               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
     </Grid>
 </ContentPage>

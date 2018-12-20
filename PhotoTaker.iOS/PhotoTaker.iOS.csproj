@@ -112,6 +112,7 @@
     <Compile Include="Controls\UIPhotoEditorView.cs" />
     <Compile Include="Controls\UIPhotoEditorControlsOverlayView.cs" />
     <Compile Include="Effects\OrientationEffect.cs" />
+    <Compile Include="Renderer\MainPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -211,5 +212,6 @@
     <Content Include="trash_button_touched.svg" />
     <Content Include="send_button.svg" />
     <Content Include="send_button_touched.svg" />
+    <Content Include="counter_button.svg" />
   </ItemGroup>
 </Project>

@@ -53,8 +53,8 @@ namespace PhotoTaker.iOS.Controls
                 VideoGravity = AVLayerVideoGravity.ResizeAspectFill
             };
 
-            previewLayer.BorderWidth = 2f;
-            previewLayer.BorderColor = UIColor.Red.CGColor;
+            // previewLayer.BorderWidth = 2f;
+            // previewLayer.BorderColor = UIColor.Red.CGColor;
 
             var videoDevices = AVCaptureDevice.DevicesWithMediaType(AVMediaType.Video);
             var cameraPosition = (cameraOptions == CameraOptions.Front) ? AVCaptureDevicePosition.Front : AVCaptureDevicePosition.Back;

@@ -15,7 +15,7 @@ namespace PhotoTaker
             InitializeComponent();
 
             photoTakerView.FilesSaved += PhotoTakerView_FilesSaved;
-            saveButton.Clicked += SaveButton_Clicked;
+            // saveButton.Clicked += SaveButton_Clicked;
         }
 
         void SaveButton_Clicked(object sender, EventArgs e)
