@@ -24,6 +24,8 @@ namespace PhotoTaker.iOS.Controls
         public EventHandler CameraButtonTouched { get; set; }
         public EventHandler SendButtonTouched { get; set; }
 
+        public int Counter { get; set; } = 0;
+
         private bool timerActive = true;
 
         public UIControlsOverlayView(CGRect frame)
@@ -92,36 +94,35 @@ namespace PhotoTaker.iOS.Controls
                 float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
                 galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
 
+
+                var paint2 = new SKPaint
+                {
+                    Color = SKColors.White,
+                    IsAntialias = true,
+                    StrokeWidth = 2f,
+                    Style = SKPaintStyle.Fill,
+                    TextAlign = SKTextAlign.Center,
+                    TextSize = 48
+                };
+
+                var textBounds = new SKRect();
+                paint2.MeasureText(Counter.ToString(), ref textBounds);
+
+                surface.Canvas.ResetMatrix();
+                // var coord = new SKPoint(galleryPositionX + galleryButton.SvgDefault.Picture.CullRect.Width * scale, galleryPositionY + textBounds.Height);
+                var halfButton = (galleryButton.SvgDefault.Picture.CullRect.Width * 2.5f) / 2;
+                var halfHeightButton = (galleryButton.SvgDefault.Picture.CullRect.Height * 2.5f) / 2;
+
+                var coord = new SKPoint(galleryPositionX + textBounds.Left + halfButton,
+                                        galleryPositionY + halfHeightButton + textBounds.Top * -1 - textBounds.Height / 2);
+
+                // var coord = new SKPoint(galleryPositionX, galleryPositionY);
+
+                canvas.DrawText(Counter.ToString(), coord, paint2);
+
                 // float galleryPositionX = x;
                 // float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
                 counterButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
-
-                string text = "OUTLINE";
-
-                // Create an SKPaint object to display the text
-                SKPaint textPaint = new SKPaint
-                {
-                    Style = SKPaintStyle.Stroke,
-                    StrokeWidth = 10,
-                    FakeBoldText = true,
-                    Color = SKColors.White
-                };
-
-                // Adjust TextSize property so text is 95% of screen width
-                float textWidth = textPaint.MeasureText(text);
-                textPaint.TextSize = 0.95f * e.Info.Width * textPaint.TextSize / textWidth;
-
-                // Find the text bounds
-                SKRect textBounds = new SKRect();
-                textPaint.MeasureText(text, ref textBounds);
-
-                // Calculate offsets to center the text on the screen
-                float xText = e.Info.Width / 2 - textBounds.MidX;
-                float yText = e.Info.Height / 2 - textBounds.MidY;
-
-                // And draw the text
-                canvas.DrawText(text, galleryPositionX, galleryPositionY, textPaint);
-
 
 
                 float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
@@ -142,8 +143,17 @@ namespace PhotoTaker.iOS.Controls
                 //float closePositionY = xOffset + closeButton.SvgTouched.Picture.CullRect.Height;
                 //closeButton.Draw(surface.Canvas, closePositionX, closePositionY, paint);
 
+
+                // handle the device screen density
+                // canvas.Scale(scale);
+
+                // make sure the canvas is blank
+                // canvas.Clear(SKColors.White);
+
+                // draw some text
+
                 // draw on the canvas
-                canvas.Flush();
+                // canvas.Flush();
             }
         }
 
@@ -182,6 +192,8 @@ namespace PhotoTaker.iOS.Controls
             {
                 // fire Event
                 TakeButtonTouched?.Invoke(this, new EventArgs());
+
+                Counter++;
 
                 System.Diagnostics.Debug.WriteLine("touched Take button!");
             }

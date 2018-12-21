@@ -16,6 +16,6 @@
         </Grid.RowDefinitions>
 
         <custom:PhotoTakerView x:Name="photoTakerView" Grid.Row="0" Camera="Rear" 
-                               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                               HorizontalOptions="FillAndExpand" MaxImageCount="60" VerticalOptions="FillAndExpand"/>
     </Grid>
 </ContentPage>

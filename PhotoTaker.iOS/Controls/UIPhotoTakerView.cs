@@ -21,7 +21,7 @@ namespace PhotoTaker.iOS.Controls
         UICurrentTakenPhotosOverlayView takenPhotosOverlayView;
         UIPhotoEditorView photoEditorView = null;
 
-        public int MaxImageCount { get; set; } = 6;
+        public int MaxImageCount { get; set; } = 60;
 
         public EventHandler SendButtonTapped { get; set; }
 
