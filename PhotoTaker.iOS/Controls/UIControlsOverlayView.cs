@@ -10,13 +10,13 @@ namespace PhotoTaker.iOS.Controls
 {
     public class UIControlsOverlayView : SKCanvasView 
     {
-        private SvgButton flashButton = new SvgButton("flash_button.svg", "flash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        private SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        private SvgButton cameraButton = new SvgButton("camera_button.svg", "camera_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
-        private SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
-        private SvgButton takeButton = new SvgButton("take_button.svg", "take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
-        private SvgButton sendButton = new SvgButton("send_button.svg", "send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
-        private SvgButton counterButton = new SvgButton("counter_button.svg", "counter_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton flashButton = new SvgButton("flash_button.svg", "flash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton cameraButton = new SvgButton("camera_button.svg", "camera_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton takeButton = new SvgButton("take_button.svg", "take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
+        SvgButton sendButton = new SvgButton("send_button.svg", "send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton counterButton = new SvgButton("counter_button.svg", "counter_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
 
         public EventHandler TakeButtonTouched { get; set; }
         public EventHandler FlashButtonTouched { get; set; }
@@ -32,7 +32,8 @@ namespace PhotoTaker.iOS.Controls
             BackgroundColor = UIColor.Clear;
             flashButton.IsToggleButton = true;
             sendButton.IsVisible = false;
-            counterButton.IsVisible = false;
+            counterButton.IsVisible = true;
+            galleryButton.IsVisible = false;
 
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
             {
@@ -91,6 +92,38 @@ namespace PhotoTaker.iOS.Controls
                 float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
                 galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
 
+                // float galleryPositionX = x;
+                // float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
+                counterButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
+
+                string text = "OUTLINE";
+
+                // Create an SKPaint object to display the text
+                SKPaint textPaint = new SKPaint
+                {
+                    Style = SKPaintStyle.Stroke,
+                    StrokeWidth = 10,
+                    FakeBoldText = true,
+                    Color = SKColors.White
+                };
+
+                // Adjust TextSize property so text is 95% of screen width
+                float textWidth = textPaint.MeasureText(text);
+                textPaint.TextSize = 0.95f * e.Info.Width * textPaint.TextSize / textWidth;
+
+                // Find the text bounds
+                SKRect textBounds = new SKRect();
+                textPaint.MeasureText(text, ref textBounds);
+
+                // Calculate offsets to center the text on the screen
+                float xText = e.Info.Width / 2 - textBounds.MidX;
+                float yText = e.Info.Height / 2 - textBounds.MidY;
+
+                // And draw the text
+                canvas.DrawText(text, galleryPositionX, galleryPositionY, textPaint);
+
+
+
                 float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
                 float cameraPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
                 cameraButton.Draw(surface.Canvas, cameraPositionX, cameraPoisitonY, paint);
@@ -102,7 +135,6 @@ namespace PhotoTaker.iOS.Controls
                 float flashPositionX = e.Info.Width - xOffset - flashButton.SvgTouched.Picture.CullRect.Width;
                 float flashPositionY = xOffset + flashButton.SvgTouched.Picture.CullRect.Height;
                 flashButton.Draw(surface.Canvas, flashPositionX, flashPositionY, paint);
-
 
                 // counterButton.Draw(surface.Canvas, flashPositionX, flashPositionY, paint);
 
@@ -203,7 +235,8 @@ namespace PhotoTaker.iOS.Controls
 
         public void SetSendVisibility(bool isVisible) 
         {
-            sendButton.IsVisible = isVisible;
+
+            // sendButton.IsVisible = isVisible;
         }
 
         public void SetTakeVisibility(bool isVisible) 
