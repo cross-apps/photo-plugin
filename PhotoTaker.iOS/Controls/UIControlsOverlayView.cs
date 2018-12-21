@@ -10,13 +10,13 @@ namespace PhotoTaker.iOS.Controls
 {
     public class UIControlsOverlayView : SKCanvasView 
     {
-        SvgButton flashButton = new SvgButton("flash_button.svg", "flash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
         SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        SvgButton cameraButton = new SvgButton("camera_button.svg", "camera_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
         SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
         SvgButton takeButton = new SvgButton("take_button.svg", "take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
         SvgButton sendButton = new SvgButton("send_button.svg", "send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
         SvgButton counterButton = new SvgButton("counter_button.svg", "counter_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton flashButton = new SvgButton("flash_button.svg", "flash_button_touched.svg", "flash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton cameraButton = new SvgButton("camera_button.svg", "camera_button_front.svg", "camera_button_front.svg", SKMatrix.MakeScale(2.5f, 2.5f));
 
         public EventHandler TakeButtonTouched { get; set; }
         public EventHandler FlashButtonTouched { get; set; }
@@ -33,6 +33,7 @@ namespace PhotoTaker.iOS.Controls
             PaintSurface += Handle_PaintSurface;
             BackgroundColor = UIColor.Clear;
             flashButton.IsToggleButton = true;
+            cameraButton.IsToggleButton = true;
             sendButton.IsVisible = false;
             counterButton.IsVisible = true;
             galleryButton.IsVisible = false;
@@ -94,8 +95,7 @@ namespace PhotoTaker.iOS.Controls
                 float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
                 galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
 
-
-                var paint2 = new SKPaint
+                var paintText = new SKPaint
                 {
                     Color = SKColors.White,
                     IsAntialias = true,
@@ -106,24 +106,17 @@ namespace PhotoTaker.iOS.Controls
                 };
 
                 var textBounds = new SKRect();
-                paint2.MeasureText(Counter.ToString(), ref textBounds);
+                paintText.MeasureText(Counter.ToString(), ref textBounds);
 
                 surface.Canvas.ResetMatrix();
-                // var coord = new SKPoint(galleryPositionX + galleryButton.SvgDefault.Picture.CullRect.Width * scale, galleryPositionY + textBounds.Height);
                 var halfButton = (galleryButton.SvgDefault.Picture.CullRect.Width * 2.5f) / 2;
                 var halfHeightButton = (galleryButton.SvgDefault.Picture.CullRect.Height * 2.5f) / 2;
 
                 var coord = new SKPoint(galleryPositionX + textBounds.Left + halfButton,
                                         galleryPositionY + halfHeightButton + textBounds.Top * -1 - textBounds.Height / 2);
-
-                // var coord = new SKPoint(galleryPositionX, galleryPositionY);
-
-                canvas.DrawText(Counter.ToString(), coord, paint2);
-
-                // float galleryPositionX = x;
-                // float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
+                                        
+                canvas.DrawText(Counter.ToString(), coord, paintText);
                 counterButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
-
 
                 float cameraPositionX = e.Info.Width - xOffset - 65f - cameraButton.SvgTouched.Picture.CullRect.Width * scale;
                 float cameraPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
@@ -142,7 +135,6 @@ namespace PhotoTaker.iOS.Controls
                 //float closePositionX = x;
                 //float closePositionY = xOffset + closeButton.SvgTouched.Picture.CullRect.Height;
                 //closeButton.Draw(surface.Canvas, closePositionX, closePositionY, paint);
-
 
                 // handle the device screen density
                 // canvas.Scale(scale);
@@ -190,11 +182,8 @@ namespace PhotoTaker.iOS.Controls
             // if touch ended within current viewbox!
             if (takeButton.TouchUpInside(rect)) 
             {
-                // fire Event
                 TakeButtonTouched?.Invoke(this, new EventArgs());
-
                 Counter++;
-
                 System.Diagnostics.Debug.WriteLine("touched Take button!");
             }
 

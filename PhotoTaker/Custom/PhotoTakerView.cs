@@ -22,6 +22,10 @@ namespace PhotoTaker.Custom
             nameof(CameraSwitchVisible), typeof(bool), typeof(PhotoTakerView), true
         );
 
+        public static BindableProperty TakenImagesThunbmailVisibleProperty = BindableProperty.Create(
+            nameof(TakenImagesThumbnailVisible), typeof(bool), typeof(PhotoTakerView), false
+        );
+
         public bool CameraSwitchVisible 
         {
             get { return (bool)GetValue(CameraSwithVisibleProperty); }
@@ -38,6 +42,12 @@ namespace PhotoTaker.Custom
         {
             get { return (bool)GetValue(GalleryVisibleProperty); }
             set { SetValue(GalleryVisibleProperty, value); }
+        }
+
+        public bool TakenImagesThumbnailVisible 
+        {
+            get { return (bool)GetValue(TakenImagesThunbmailVisibleProperty); }
+            set { SetValue(TakenImagesThunbmailVisibleProperty, value); }
         }
 
         public CameraOptions Camera

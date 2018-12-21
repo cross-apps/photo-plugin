@@ -6,12 +6,14 @@ namespace PhotoTaker.iOS.Controls
 {
     public class SvgButton
     {
-        private SKMatrix scale = SKMatrix.MakeScale(0.8f, 0.8f);
+        SKMatrix scale = SKMatrix.MakeScale(0.8f, 0.8f);
 
         public bool Touched { get; set; } = false;
 
         public SkiaSharp.Extended.Svg.SKSvg SvgTouched { get; set; }
         public SkiaSharp.Extended.Svg.SKSvg SvgDefault { get; set; }
+
+        public SkiaSharp.Extended.Svg.SKSvg SvgToggled { get; set; }
 
         public SKRect ViewBox { get; set; } = SKRect.Empty;
 
@@ -19,6 +21,13 @@ namespace PhotoTaker.iOS.Controls
         public bool IsToggled { get; set; } = false;
 
         public bool IsVisible { get; set; } = true;
+
+        public SvgButton(string DefaultFile, string ToggledFile, string TouchedFile, SKMatrix Scale) 
+            : this(DefaultFile, TouchedFile, Scale)
+        {
+            SvgToggled = new SkiaSharp.Extended.Svg.SKSvg(190f);
+            SvgToggled.Load(ToggledFile);
+        }
 
         public SvgButton(string DefaultFile, string TouchedFile, SKMatrix Scale)
         {
@@ -48,12 +57,21 @@ namespace PhotoTaker.iOS.Controls
 
                 ViewBox = new SKRect(x, y, x + 150f, y + 150f);
 
-                if (Touched || IsToggled)
+                if (Touched)
                 {
                     canvas.DrawPicture(SvgTouched.Picture, ref scale, paint);
                 }
 
-                canvas.DrawPicture(SvgDefault.Picture, ref scale, paint);
+                if (IsToggled) 
+                {
+                    canvas.DrawPicture(SvgToggled.Picture, ref scale, paint);
+                }
+                else
+                {
+                    canvas.DrawPicture(SvgDefault.Picture, ref scale, paint);
+                }
+
+                // canvas.DrawPicture(SvgDefault.Picture, ref scale, paint);
             }
         }
 
@@ -64,7 +82,7 @@ namespace PhotoTaker.iOS.Controls
 
         public bool TouchUpInside(SKRect rect) 
         {
-            bool touchUpInsideButton = Touched && this.ViewBox.IntersectsWithInclusive(rect) && IsVisible;
+            bool touchUpInsideButton = Touched && ViewBox.IntersectsWithInclusive(rect) && IsVisible;
 
             if (IsToggleButton && touchUpInsideButton) 
             {

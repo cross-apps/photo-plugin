@@ -23,6 +23,8 @@ namespace PhotoTaker.iOS.Controls
 
         public int MaxImageCount { get; set; } = 60;
 
+        public bool TakenImagesThumbnailVisible { get; set; } = false;
+
         public EventHandler SendButtonTapped { get; set; }
 
         public UIPhotoTakerView(CameraOptions options)
@@ -115,7 +117,7 @@ namespace PhotoTaker.iOS.Controls
         {
             var image = await cameraPreview.TakeButtonTapped();
 
-            takenPhotosOverlayView.Hidden = false;
+            takenPhotosOverlayView.Hidden = !TakenImagesThumbnailVisible;
             takenPhotosOverlayView.Photos.Add(image);
             takenPhotosOverlayView.ReloadData();
 

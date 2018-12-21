@@ -23,6 +23,7 @@ namespace PhotoTaker.iOS.Renderer
                 formsView = e.NewElement;
                 photoTakerView = new UIPhotoTakerView(e.NewElement.Camera);
                 photoTakerView.MaxImageCount = e.NewElement.MaxImageCount;
+                photoTakerView.TakenImagesThumbnailVisible = e.NewElement.TakenImagesThumbnailVisible;
 
                 formsView.SaveFilesCommand = new Command(() => 
                 { 
