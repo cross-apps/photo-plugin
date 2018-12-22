@@ -11,6 +11,7 @@ namespace PhotoTaker.iOS.Controls
         public bool Touched { get; set; } = false;
 
         public SkiaSharp.Extended.Svg.SKSvg SvgTouched { get; set; }
+
         public SkiaSharp.Extended.Svg.SKSvg SvgDefault { get; set; }
 
         public SkiaSharp.Extended.Svg.SKSvg SvgToggled { get; set; }
@@ -18,6 +19,7 @@ namespace PhotoTaker.iOS.Controls
         public SKRect ViewBox { get; set; } = SKRect.Empty;
 
         public bool IsToggleButton { get; set; } = false;
+
         public bool IsToggled { get; set; } = false;
 
         public bool IsVisible { get; set; } = true;
@@ -39,8 +41,7 @@ namespace PhotoTaker.iOS.Controls
 
             if (UIScreen.MainScreen.Scale > 2) 
             {
-                scale = SKMatrix.MakeScale(Scale.ScaleX * 1.5f,
-                                           Scale.ScaleY * 1.5f);
+                scale = SKMatrix.MakeScale(Scale.ScaleX * 1.5f, Scale.ScaleY * 1.5f);
             }
             else
             {
@@ -57,27 +58,25 @@ namespace PhotoTaker.iOS.Controls
 
                 ViewBox = new SKRect(x, y, x + 150f, y + 150f);
 
-                if (Touched)
-                {
-                    canvas.DrawPicture(SvgTouched.Picture, ref scale, paint);
-                }
-
                 if (IsToggled) 
                 {
                     canvas.DrawPicture(SvgToggled.Picture, ref scale, paint);
+                }
+                else if (Touched)
+                {
+                    canvas.DrawPicture(SvgTouched.Picture, ref scale, paint);
+                    canvas.DrawPicture(SvgDefault.Picture, ref scale, paint);
                 }
                 else
                 {
                     canvas.DrawPicture(SvgDefault.Picture, ref scale, paint);
                 }
-
-                // canvas.DrawPicture(SvgDefault.Picture, ref scale, paint);
             }
         }
 
         public void CheckIntersection(SKRect rect) 
         {
-            Touched = this.ViewBox.IntersectsWithInclusive(rect);
+            Touched = ViewBox.IntersectsWithInclusive(rect);
         }
 
         public bool TouchUpInside(SKRect rect) 

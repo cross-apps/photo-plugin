@@ -10,8 +10,8 @@ namespace PhotoTaker.iOS.Controls
 {
     public class UIPhotoEditorControlsOverlayView : SKCanvasView
     {
-        private SvgButton trashButton = new SvgButton("trash_button.svg", "trash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        private SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton trashButton = new SvgButton("trash_button.svg", "trash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
 
         public EventHandler CloseButtonTouched { get; set; }
         public EventHandler TrashButtonTouched { get; set; }
@@ -58,9 +58,9 @@ namespace PhotoTaker.iOS.Controls
                 float closePositionY = xOffset + closeButton.SvgTouched.Picture.CullRect.Height;
                 closeButton.Draw(surface.Canvas, closePositionX, closePositionY, paint);
 
-                float flashPositionX = e.Info.Width - xOffset - trashButton.SvgTouched.Picture.CullRect.Width;
-                float flashPositionY = xOffset + trashButton.SvgTouched.Picture.CullRect.Height;
-                trashButton.Draw(surface.Canvas, flashPositionX, flashPositionY, paint);
+                float trashPositionX = e.Info.Width - xOffset - trashButton.SvgTouched.Picture.CullRect.Width;
+                float trashPositionY = xOffset + trashButton.SvgTouched.Picture.CullRect.Height;
+                trashButton.Draw(surface.Canvas, trashPositionX, trashPositionY, paint);
 
                 canvas.Flush();
             }

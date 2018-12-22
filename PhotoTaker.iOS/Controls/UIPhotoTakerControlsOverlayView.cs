@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
 using SkiaSharp;
@@ -8,7 +9,7 @@ using Xamarin.Forms;
 
 namespace PhotoTaker.iOS.Controls
 {
-    public class UIControlsOverlayView : SKCanvasView 
+    public class UIPhotoTakerControlsOverlayView : SKCanvasView 
     {
         SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
         SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
@@ -23,12 +24,15 @@ namespace PhotoTaker.iOS.Controls
         public EventHandler CloseButtonTouched { get; set; }
         public EventHandler CameraButtonTouched { get; set; }
         public EventHandler SendButtonTouched { get; set; }
+        public EventHandler CounterButtonTouched { get; set; }
 
         public int Counter { get; set; } = 0;
 
         private bool timerActive = true;
 
-        public UIControlsOverlayView(CGRect frame)
+        List<SvgButton> buttons = new List<SvgButton>();
+
+        public UIPhotoTakerControlsOverlayView(CGRect frame)
         {
             PaintSurface += Handle_PaintSurface;
             BackgroundColor = UIColor.Clear;
@@ -37,6 +41,11 @@ namespace PhotoTaker.iOS.Controls
             sendButton.IsVisible = false;
             counterButton.IsVisible = true;
             galleryButton.IsVisible = false;
+
+
+            buttons.AddRange(new [] { 
+                closeButton, galleryButton, takeButton, sendButton, 
+                counterButton,flashButton,cameraButton });
 
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
             {
@@ -145,7 +154,7 @@ namespace PhotoTaker.iOS.Controls
                 // draw some text
 
                 // draw on the canvas
-                // canvas.Flush();
+                canvas.Flush();
             }
         }
 
@@ -158,11 +167,7 @@ namespace PhotoTaker.iOS.Controls
             var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
             var rect = new SKRect(point.X - 25f, point.Y - 25f, point.X + 50f, point.Y + 50f);
 
-            cameraButton.CheckIntersection(rect);
-            flashButton.CheckIntersection(rect);
-            takeButton.CheckIntersection(rect);
-            closeButton.CheckIntersection(rect);
-            sendButton.CheckIntersection(rect);
+            buttons.ForEach((btn) => btn.CheckIntersection(rect));
         }
 
         public override void TouchesMoved(NSSet touches, UIEvent evt)
@@ -184,13 +189,11 @@ namespace PhotoTaker.iOS.Controls
             {
                 TakeButtonTouched?.Invoke(this, new EventArgs());
                 Counter++;
-                System.Diagnostics.Debug.WriteLine("touched Take button!");
             }
 
             if (flashButton.TouchUpInside(rect)) 
             {
                 FlashButtonTouched?.Invoke(this, new EventArgs());
-                System.Diagnostics.Debug.WriteLine("Flash button touched!");
             }
 
             if (cameraButton.TouchUpInside(rect))
@@ -200,7 +203,7 @@ namespace PhotoTaker.iOS.Controls
 
             if (closeButton.TouchUpInside(rect)) 
             {
-                System.Diagnostics.Debug.WriteLine("Close button touched!");
+                CloseButtonTouched?.Invoke(this, new EventArgs());
             }
 
             if (sendButton.TouchUpInside(rect)) 
@@ -208,24 +211,19 @@ namespace PhotoTaker.iOS.Controls
                 SendButtonTouched?.Invoke(this, new EventArgs());
             }
 
-            takeButton.Touched = false;
-            cameraButton.Touched = false;
-            flashButton.Touched = false;
-            galleryButton.Touched = false;
-            closeButton.Touched = false;
-            sendButton.Touched = false;
+            if (counterButton.TouchUpInside(rect)) 
+            {
+                CounterButtonTouched?.Invoke(this, new EventArgs());
+            }
+
+            buttons.ForEach((btn) => btn.Touched = false);
         }
 
         public override void TouchesCancelled(NSSet touches, UIEvent evt)
         {
             base.TouchesCancelled(touches, evt);
 
-            takeButton.Touched = false;
-            cameraButton.Touched = false;
-            flashButton.Touched = false;
-            galleryButton.Touched = false;
-            closeButton.Touched = false;
-            sendButton.Touched = false;
+            buttons.ForEach((btn) => btn.Touched = false);
         }
 
         public override void Draw(CGRect rect)
