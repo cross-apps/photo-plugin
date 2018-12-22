@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -10,11 +11,13 @@ namespace PhotoTaker.iOS.Controls
     {
         NSIndexPath lastTappedIndex = null;
 
-        public List<UIImage> Photos { get; set; } = new List<UIImage>();
+        public ObservableCollection<UIImage> Photos { get; set; }
+
         public EventHandler<UIImage> ImageTapped { get; set; }
 
-        public UICurrentTakenPhotosOverlayView(CGRect frame) : base(frame, new UIHorizontalScrollLayout())
+        public UICurrentTakenPhotosOverlayView(CGRect frame, ObservableCollection<UIImage> photos) : base(frame, new UIHorizontalScrollLayout())
         {
+            Photos = photos;
             DataSource = this;
             RegisterClassForCell(typeof(UIImageViewCell), UIImageViewCell.CellId);
 
@@ -63,6 +66,11 @@ namespace PhotoTaker.iOS.Controls
         public nint GetItemsCount(UICollectionView collectionView, nint section)
         {
             return Photos.Count;
+        }
+
+        public void SetLastTappedIndex(NSIndexPath indexPath) 
+        {
+            lastTappedIndex = indexPath;
         }
     }
 }

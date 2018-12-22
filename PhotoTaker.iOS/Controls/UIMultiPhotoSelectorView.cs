@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using CoreGraphics;
+using Foundation;
 using UIKit;
 
 namespace PhotoTaker.iOS.Controls
@@ -12,14 +14,16 @@ namespace PhotoTaker.iOS.Controls
         UIImageView currentImage = null;
         UICurrentTakenPhotosOverlayView takenPhotosOverlayView;
         UIMultiPhotoSelectorControlsOverlayView controlsOverlayView = null;
+        ObservableCollection<UIImage> Photos;
 
         public EventHandler CloseButtonTapped { get; set; }
 
-        public UIMultiPhotoSelectorView(CGRect frame): base(frame)
+        public UIMultiPhotoSelectorView(CGRect frame, ObservableCollection<UIImage> photos): base(frame)
         {
+            Photos = photos;
             controlsOverlayView = new UIMultiPhotoSelectorControlsOverlayView();
             currentImage = new UIImageView(frame);
-            takenPhotosOverlayView = new UICurrentTakenPhotosOverlayView(frame);
+            takenPhotosOverlayView = new UICurrentTakenPhotosOverlayView(frame, Photos);
             takenPhotosOverlayView.Hidden = false;
             takenPhotosOverlayView.ImageTapped += TakenPhotosOverlayView_ImageTapped;
 
@@ -34,6 +38,15 @@ namespace PhotoTaker.iOS.Controls
         void ControlsOverlayView_TrashButtonTouched(object sender, EventArgs e)
         {
             takenPhotosOverlayView.RemoveLastTappedCell();
+
+            if (Photos.Count == 0) 
+            {
+                CloseButtonTapped?.Invoke(this, new EventArgs());
+            }
+            else
+            {
+                SelectLastItem();
+            }
         }
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
@@ -55,12 +68,17 @@ namespace PhotoTaker.iOS.Controls
             currentImage.ClipsToBounds = true;
         }
 
-        public void AddPhoto(UIImage image) 
+        public void ReloadData() 
         {
-            takenPhotosOverlayView.Photos.Add(image);
             takenPhotosOverlayView.ReloadData();
+        }
 
-            setImage(image);
+        public void SelectLastItem() 
+        {
+            setImage(Photos[Photos.Count - 1]);
+            var index = NSIndexPath.FromRowSection(Photos.Count - 1, 0);
+            takenPhotosOverlayView.SetLastTappedIndex(index);
+            takenPhotosOverlayView.SelectItem(index, true, UICollectionViewScrollPosition.Right);
         }
 
         public override void Draw(CGRect rect)

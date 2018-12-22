@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using CoreGraphics;
 using PhotoTaker.Custom;
@@ -15,6 +16,7 @@ namespace PhotoTaker.iOS.Controls
     public class UIPhotoTakerView : UIView
     {
         UICameraPreview cameraPreview;
+        UIPhotoEditorView photoEditorView;
         UIPhotoTakerControlsOverlayView controlsOverlayView;
 
         // UILatestPhotosOverlayView latestPhotosOverlayView = null;
@@ -23,7 +25,6 @@ namespace PhotoTaker.iOS.Controls
         /// Is displayed on top of take button as thumbnails.
         /// </summary>
         UICurrentTakenPhotosOverlayView takenPhotosOverlayView;
-        UIPhotoEditorView photoEditorView = null;
 
         /// <summary>
         /// Gets displayed after touching on current count button.
@@ -36,20 +37,29 @@ namespace PhotoTaker.iOS.Controls
 
         public EventHandler SendButtonTapped { get; set; }
 
+        /// <summary>
+        /// Temp for current taken images.
+        /// </summary>
+        /// <value>The images.</value>
+        public ObservableCollection<UIImage> Photos { get; set; }
+
         public UIPhotoTakerView(CameraOptions options)
         {
+            Photos = new ObservableCollection<UIImage>();
+            Photos.CollectionChanged += Images_CollectionChanged;
+
             cameraPreview = new UICameraPreview(options);
             controlsOverlayView = new UIPhotoTakerControlsOverlayView(Frame);
             // latestPhotosOverlayView = new UILatestPhotosOverlayView(this.Frame);
 
-            takenPhotosOverlayView = new UICurrentTakenPhotosOverlayView(Frame);
+            takenPhotosOverlayView = new UICurrentTakenPhotosOverlayView(Frame, Photos);
             takenPhotosOverlayView.Hidden = true;
             takenPhotosOverlayView.ImageTapped += TakenPhotosOverlayView_ImageTapped;
 
             photoEditorView = new UIPhotoEditorView(Frame);
             photoEditorView.Hidden = true;
 
-            multiPhotoSelectorView = new UIMultiPhotoSelectorView(Frame);
+            multiPhotoSelectorView = new UIMultiPhotoSelectorView(Frame, Photos);
             multiPhotoSelectorView.Hidden = true;
 
             AddSubview(cameraPreview);
@@ -72,6 +82,11 @@ namespace PhotoTaker.iOS.Controls
             photoEditorView.TrashButtonTapped += PhotoEditorView_TrashButtonTapped;
 
             multiPhotoSelectorView.CloseButtonTapped += MultiPhotoSelectorView_CloseButtonTapped;
+        }
+
+        void Images_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            controlsOverlayView.Counter = Photos.Count;
         }
 
         void MultiPhotoSelectorView_CloseButtonTapped(object sender, EventArgs e)
@@ -115,6 +130,7 @@ namespace PhotoTaker.iOS.Controls
             multiPhotoSelectorView.Frame = Frame;
             multiPhotoSelectorView.Hidden = false;
             multiPhotoSelectorView.SetNeedsDisplay();
+            multiPhotoSelectorView.SelectLastItem();
 
             cameraPreview.CaptureSession.StopRunning();
             cameraPreview.IsPreviewing = false;
@@ -156,11 +172,11 @@ namespace PhotoTaker.iOS.Controls
         {
             var image = await cameraPreview.TakeButtonTapped();
 
-            takenPhotosOverlayView.Hidden = !TakenImagesThumbnailVisible;
-            takenPhotosOverlayView.Photos.Add(image);
-            takenPhotosOverlayView.ReloadData();
+            Photos.Add(image);
 
-            multiPhotoSelectorView.AddPhoto(image);
+            takenPhotosOverlayView.Hidden = !TakenImagesThumbnailVisible;
+            takenPhotosOverlayView.ReloadData();
+            multiPhotoSelectorView.ReloadData();
 
             SetNeedsDisplay();
 
