@@ -42,7 +42,6 @@ namespace PhotoTaker.iOS.Controls
             counterButton.IsVisible = true;
             galleryButton.IsVisible = false;
 
-
             buttons.AddRange(new [] { 
                 closeButton, galleryButton, takeButton, sendButton, 
                 counterButton,flashButton,cameraButton });

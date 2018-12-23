@@ -5,6 +5,7 @@ using Foundation;
 using SkiaSharp;
 using SkiaSharp.Views.iOS;
 using UIKit;
+using Xamarin.Forms;
 
 namespace PhotoTaker.iOS.Controls
 {
@@ -17,11 +18,15 @@ namespace PhotoTaker.iOS.Controls
 
         SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
         SvgButton trashButton = new SvgButton("trash_button.svg", "trash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton sendButton = new SvgButton("send_button.svg", "send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
 
         List<SvgButton> buttons = new List<SvgButton>();
 
+        private bool timerActive = true;
+
         public EventHandler CloseButtonTouched { get; set; }
         public EventHandler TrashButtonTouched { get; set; }
+        public EventHandler SendButtonTouched { get; set; }
 
         public UIMultiPhotoSelectorControlsOverlayView()
         {
@@ -30,7 +35,13 @@ namespace PhotoTaker.iOS.Controls
 
             paint.IsAntialias = true;
 
-            buttons.AddRange(new[] { closeButton, trashButton });
+            buttons.AddRange(new[] { closeButton, trashButton, sendButton });
+
+            Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
+            {
+                SetNeedsLayout();
+                return timerActive;
+            });
         }
 
         void Handle_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
@@ -73,6 +84,10 @@ namespace PhotoTaker.iOS.Controls
                 float trashPositionY = xOffset + trashButton.SvgTouched.Picture.CullRect.Height;
                 trashButton.Draw(surface.Canvas, trashPositionX, trashPositionY, paint);
 
+                float sendPositionX = e.Info.Width - xOffset - 65f - sendButton.SvgTouched.Picture.CullRect.Width * scale;
+                float sendPoisitonY = e.Info.Height - 300 - (sendButton.SvgTouched.Picture.CullRect.Height * scale);
+                sendButton.Draw(surface.Canvas, sendPositionX, sendPoisitonY, paint);
+
                 canvas.Flush();
             }
         }
@@ -83,10 +98,12 @@ namespace PhotoTaker.iOS.Controls
             UITouch touch = touches.AnyObject as UITouch;
 
             var cgPoint = touch.LocationInView(this);
-            var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
+            var point = new SKPoint((float)ContentScaleFactor * (float)cgPoint.X, (float)ContentScaleFactor * (float)cgPoint.Y);
             var rect = new SKRect(point.X - 25f, point.Y - 25f, point.X + 50f, point.Y + 50f);
 
             buttons.ForEach((btn) => btn.CheckIntersection(rect));
+
+            sendButton.CheckIntersection(rect);
         }
 
         public override void TouchesMoved(NSSet touches, UIEvent evt)
@@ -100,7 +117,7 @@ namespace PhotoTaker.iOS.Controls
             UITouch touch = touches.AnyObject as UITouch;
 
             var cgPoint = touch.LocationInView(this);
-            var point = new SKPoint((float)this.ContentScaleFactor * (float)cgPoint.X, (float)this.ContentScaleFactor * (float)cgPoint.Y);
+            var point = new SKPoint((float)ContentScaleFactor * (float)cgPoint.X, (float)ContentScaleFactor * (float)cgPoint.Y);
             var rect = new SKRect(point.X - 25f, point.Y - 25f, point.X + 50f, point.Y + 50f);
 
             if (closeButton.TouchUpInside(rect))
@@ -112,6 +129,8 @@ namespace PhotoTaker.iOS.Controls
             {
                 TrashButtonTouched?.Invoke(this, new EventArgs());
             }
+
+            buttons.ForEach((btn) => btn.Touched = false);
         }
 
         public override void TouchesCancelled(NSSet touches, UIEvent evt)
@@ -125,6 +144,13 @@ namespace PhotoTaker.iOS.Controls
         {
             this.Frame = rect;
             base.Draw(rect);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            timerActive = false;
         }
     }
 }
