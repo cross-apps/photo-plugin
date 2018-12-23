@@ -37,10 +37,6 @@ namespace PhotoTaker.iOS.Controls
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
-            var bounds = Bounds;
-            var frame = Frame;
-            // previewLayer.Frame = Bounds;
-            System.Diagnostics.Debug.WriteLine("layout subviews, orientation changed");
         }
 
         void SetupLiveStream()
