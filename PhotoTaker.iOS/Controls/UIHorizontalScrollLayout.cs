@@ -8,7 +8,7 @@ namespace PhotoTaker.iOS.Controls
         public UIHorizontalScrollLayout()
         {
             this.ScrollDirection = UICollectionViewScrollDirection.Horizontal;
-            this.ItemSize = new CoreGraphics.CGSize(90, 140);
+            this.ItemSize = new CoreGraphics.CGSize(80, 142);
         }
     }
 }

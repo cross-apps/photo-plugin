@@ -75,10 +75,13 @@ namespace PhotoTaker.iOS.Controls
 
         public void SelectLastItem() 
         {
-            setImage(Photos[Photos.Count - 1]);
-            var index = NSIndexPath.FromRowSection(Photos.Count - 1, 0);
-            takenPhotosOverlayView.SetLastTappedIndex(index);
-            takenPhotosOverlayView.SelectItem(index, true, UICollectionViewScrollPosition.Right);
+            if (Photos.Count > 0) 
+            {
+                setImage(Photos[Photos.Count - 1]);
+                var index = NSIndexPath.FromRowSection(Photos.Count - 1, 0);
+                takenPhotosOverlayView.SetLastTappedIndex(index);
+                takenPhotosOverlayView.SelectItem(index, true, UICollectionViewScrollPosition.Right);
+            }
         }
 
         public override void Draw(CGRect rect)

@@ -12,7 +12,7 @@ namespace PhotoTaker.iOS.Controls
 
         public UIImageViewCell(IntPtr handle) : base(handle)
         {
-            ImageView = new UIImageView(new RectangleF(0, 0, 90, 120));
+            ImageView = new UIImageView(new RectangleF(0, 0, 80, 142));
             ImageView.ContentMode = UIViewContentMode.ScaleToFill;
             this.ContentView.AddSubview(ImageView);
             this.ContentView.LayoutMargins = new UIEdgeInsets(10, 10, 10, 10);
