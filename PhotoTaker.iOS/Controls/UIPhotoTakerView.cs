@@ -65,7 +65,7 @@ namespace PhotoTaker.iOS.Controls
             AddSubview(cameraPreview);
             AddSubview(controlsOverlayView);
 
-            // AddSubview(latestPhotosOverlayView);
+            // - AddSubview(latestPhotosOverlayView);
             AddSubview(takenPhotosOverlayView);
             AddSubview(multiPhotoSelectorView);
             AddSubview(photoEditorView);
@@ -82,6 +82,24 @@ namespace PhotoTaker.iOS.Controls
             photoEditorView.TrashButtonTapped += PhotoEditorView_TrashButtonTapped;
 
             multiPhotoSelectorView.CloseButtonTapped += MultiPhotoSelectorView_CloseButtonTapped;
+
+            var panGestureRecognizer = new UIPinchGestureRecognizer((gesture) =>
+            {
+                if (gesture.State == UIGestureRecognizerState.Began || gesture.State == UIGestureRecognizerState.Changed)
+                {
+                    cameraPreview.SetZoom((float)gesture.Scale);
+                }
+
+                System.Diagnostics.Debug.WriteLine(gesture.Scale);
+
+                gesture.Scale = 1.0f;
+            });
+
+
+            UserInteractionEnabled = true;
+
+            AddGestureRecognizer(panGestureRecognizer);
+            // AddGestureRecognizer(tapGestureRecognizer);
         }
 
         void Images_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

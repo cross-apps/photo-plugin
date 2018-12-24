@@ -39,6 +39,24 @@ namespace PhotoTaker.iOS.Controls
             base.LayoutSubviews();
         }
 
+        public void SetZoom(float zoom) 
+        {
+            if (captureDeviceInput.Device.LockForConfiguration(out NSError error)) 
+            {
+                var result = captureDeviceInput.Device.VideoZoomFactor * zoom;
+                if (result >= captureDeviceInput.Device.MaxAvailableVideoZoomFactor) 
+                {
+                    result = captureDeviceInput.Device.MaxAvailableVideoZoomFactor;
+                }
+                else if (result <= captureDeviceInput.Device.MinAvailableVideoZoomFactor) 
+                {
+                    result = captureDeviceInput.Device.MinAvailableVideoZoomFactor;
+                }
+
+                captureDeviceInput.Device.VideoZoomFactor = result;
+            }
+        }
+
         void SetupLiveStream()
         {
             CaptureSession = new AVCaptureSession();
@@ -56,14 +74,17 @@ namespace PhotoTaker.iOS.Controls
             var cameraPosition = (cameraOptions == CameraOptions.Front) ? AVCaptureDevicePosition.Front : AVCaptureDevicePosition.Back;
             var device = videoDevices.FirstOrDefault(d => d.Position == cameraPosition);
 
+
+
             if (device == null)
             {
                 return;
             }
 
             captureDeviceInput = new AVCaptureDeviceInput(device, out NSError error);
+
             CaptureSession.AddInput(captureDeviceInput);
-            this.Layer.AddSublayer(previewLayer);
+            Layer.AddSublayer(previewLayer);
 
             captureStillImageOutput = new AVCaptureStillImageOutput()
             {
@@ -106,6 +127,11 @@ namespace PhotoTaker.iOS.Controls
                     device.UnlockForConfiguration();
                 }
             }
+        }
+
+        internal void SetZoom(object scale)
+        {
+            throw new NotImplementedException();
         }
 
         public void CameraButtonTapped()
