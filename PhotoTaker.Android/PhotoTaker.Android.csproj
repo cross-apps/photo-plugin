@@ -76,8 +76,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer\PhotoTakerRenderer.cs" />
     <Compile Include="Controls\PhotoTakerWidget.cs" />
-    <Compile Include="Controls\CameraPreviewWidget.cs" />
-    <Compile Include="Controls\CameraPictureCallback.cs" />
     <Compile Include="Controls\PhotoTakerControlsOverlayView.cs" />
     <Compile Include="Controls\Camera2BasicFragment.cs" />
     <Compile Include="Listeners\Camera2BasicSurfaceTextureListener.cs" />
@@ -86,6 +84,10 @@
     <Compile Include="Listeners\CameraCaptureStillPictureSessionCallback.cs" />
     <Compile Include="Listeners\CameraStateListener.cs" />
     <Compile Include="Listeners\ImageAvailableListener.cs" />
+    <Compile Include="Controls\AutoFitTextureView.cs" />
+    <Compile Include="Controls\CompareSizesByArea.cs" />
+    <Compile Include="Controls\ConfirmationDialog.cs" />
+    <Compile Include="Controls\ErrorDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -109,6 +111,7 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
+    <AndroidResource Include="Resources\layout\fragment_camera2_basic.axml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

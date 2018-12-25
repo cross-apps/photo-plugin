@@ -9,8 +9,7 @@ namespace PhotoTaker.Droid.Controls
 {
     public class PhotoTakerWidget : ViewGroup
     {
-        Camera camera = null;
-        CameraPreviewWidget cameraPreview;
+        Camera2BasicFragment camera2BasicFragment;
         PhotoTakerControlsOverlayView controlsOverlayView;
 
         public int MaxImageCount { get; set; }
@@ -21,27 +20,12 @@ namespace PhotoTaker.Droid.Controls
 
         public PhotoTakerWidget(Context context) : base(context)
         {
-            initializeCamera();
-            cameraPreview = new CameraPreviewWidget(context, camera);
             controlsOverlayView = new PhotoTakerControlsOverlayView(context);
+            camera2BasicFragment = Camera2BasicFragment.NewInstance();
 
-            AddView(cameraPreview);
             AddView(controlsOverlayView);
+            AddView(camera2BasicFragment);
         }
-
-        public void initializeCamera() 
-        {
-            try
-            {
-
-            
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
-        }
-
 
         public List<string> SaveFiles()
         {

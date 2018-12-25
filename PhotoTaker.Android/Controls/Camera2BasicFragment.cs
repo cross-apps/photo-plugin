@@ -210,8 +210,8 @@ namespace PhotoTaker.Droid.Controls
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             mTextureView = (AutoFitTextureView)view.FindViewById(Resource.Id.texture);
-            view.FindViewById(Resource.Id.picture).SetOnClickListener(this);
-            view.FindViewById(Resource.Id.info).SetOnClickListener(this);
+            // view.FindViewById(Resource.Id.picture).SetOnClickListener(this);
+            // view.FindViewById(Resource.Id.info).SetOnClickListener(this);
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
@@ -268,11 +268,13 @@ namespace PhotoTaker.Droid.Controls
 
             if (grantResults.Length != 1 || grantResults[0] != (int)Permission.Granted)
             {
-                ErrorDialog.NewInstance(GetString(Resource.String.request_permission))
-                        .Show(ChildFragmentManager, FRAGMENT_DIALOG);
+                ErrorDialog.NewInstance("Camera permission required!")
+                           .Show(ChildFragmentManager, FRAGMENT_DIALOG);
+                /*
+                ErrorDialog.NewInstance(GetString("Camera permission required!"))
+                        .Show(ChildFragmentManager, FRAGMENT_DIALOG);*/
             }
         }
-
 
         // Sets up member variables related to camera.
         private void SetUpCameraOutputs(int width, int height)
@@ -300,8 +302,10 @@ namespace PhotoTaker.Droid.Controls
                     }
 
                     // For still image captures, we use the largest available size.
-                    Size largest = (Size)Collections.Max(Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
+                    Size largest = (Size)Collections.Max(
+                        Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
                         new CompareSizesByArea());
+
                     mImageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, /*maxImages*/2);
                     mImageReader.SetOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
 
@@ -398,7 +402,9 @@ namespace PhotoTaker.Droid.Controls
             {
                 // Currently an NPE is thrown when the Camera2API is used but not supported on the
                 // device this code runs.
-                ErrorDialog.NewInstance(GetString(Resource.String.camera_error)).Show(ChildFragmentManager, FRAGMENT_DIALOG);
+
+                // ErrorDialog.NewInstance(GetString(Resource.String.camera_error)).Show(ChildFragmentManager, FRAGMENT_DIALOG);
+                ErrorDialog.NewInstance("Error occured!").Show(ChildFragmentManager, FRAGMENT_DIALOG);
             }
         }
 
@@ -674,6 +680,7 @@ namespace PhotoTaker.Droid.Controls
 
         public void OnClick(View v)
         {
+            /*
             if (v.Id == Resource.Id.picture)
             {
                 TakePicture();
@@ -691,6 +698,7 @@ namespace PhotoTaker.Droid.Controls
                         .Show();
                 }
             }
+            */
         }
 
         public void SetAutoFlash(CaptureRequest.Builder requestBuilder)
