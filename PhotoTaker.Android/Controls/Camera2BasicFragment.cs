@@ -416,8 +416,10 @@ namespace PhotoTaker.Droid.Controls
                 RequestCameraPermission();
                 return;
             }
+
             SetUpCameraOutputs(width, height);
             ConfigureTransform(width, height);
+
             var activity = Activity;
             var manager = (CameraManager)activity.GetSystemService(Context.CameraService);
             try
@@ -444,16 +446,19 @@ namespace PhotoTaker.Droid.Controls
             try
             {
                 mCameraOpenCloseLock.Acquire();
+
                 if (null != mCaptureSession)
                 {
                     mCaptureSession.Close();
                     mCaptureSession = null;
                 }
+
                 if (null != mCameraDevice)
                 {
                     mCameraDevice.Close();
                     mCameraDevice = null;
                 }
+
                 if (null != mImageReader)
                 {
                     mImageReader.Close();
@@ -542,16 +547,19 @@ namespace PhotoTaker.Droid.Controls
         public void ConfigureTransform(int viewWidth, int viewHeight)
         {
             Activity activity = Activity;
+
             if (null == mTextureView || null == mPreviewSize || null == activity)
             {
                 return;
             }
+
             var rotation = (int)activity.WindowManager.DefaultDisplay.Rotation;
             Matrix matrix = new Matrix();
             RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
             RectF bufferRect = new RectF(0, 0, mPreviewSize.Height, mPreviewSize.Width);
             float centerX = viewRect.CenterX();
             float centerY = viewRect.CenterY();
+
             if ((int)SurfaceOrientation.Rotation90 == rotation || (int)SurfaceOrientation.Rotation270 == rotation)
             {
                 bufferRect.Offset(centerX - bufferRect.CenterX(), centerY - bufferRect.CenterY());
@@ -564,6 +572,7 @@ namespace PhotoTaker.Droid.Controls
             {
                 matrix.PostRotate(180, centerX, centerY);
             }
+
             mTextureView.SetTransform(matrix);
         }
 
@@ -583,8 +592,9 @@ namespace PhotoTaker.Droid.Controls
                 mPreviewRequestBuilder.Set(CaptureRequest.ControlAfTrigger, (int)ControlAFTrigger.Start);
                 // Tell #mCaptureCallback to wait for the lock.
                 mState = STATE_WAITING_LOCK;
-                mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
-                        mBackgroundHandler);
+                mCaptureSession.Capture(mPreviewRequestBuilder.Build(), 
+                                        mCaptureCallback,
+                                        mBackgroundHandler);
             }
             catch (CameraAccessException e)
             {
@@ -624,9 +634,10 @@ namespace PhotoTaker.Droid.Controls
                     return;
                 }
                 // This is the CaptureRequest.Builder that we use to take a picture.
-                if (stillCaptureBuilder == null)
+                if (stillCaptureBuilder == null) {
                     stillCaptureBuilder = mCameraDevice.CreateCaptureRequest(CameraTemplate.StillCapture);
-
+                }
+                
                 stillCaptureBuilder.AddTarget(mImageReader.Surface);
 
                 // Use the same AE and AF modes as the preview.

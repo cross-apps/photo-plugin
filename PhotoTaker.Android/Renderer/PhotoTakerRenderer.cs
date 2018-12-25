@@ -25,7 +25,7 @@ namespace PhotoTaker.Droid.Renderer
             if (Control == null)
             {
                 formsView = e.NewElement;
-                photoTakerWidget = new PhotoTakerWidget(this.Context);
+                photoTakerWidget = new PhotoTakerWidget(Context);
                 photoTakerWidget.MaxImageCount = e.NewElement.MaxImageCount;
                 photoTakerWidget.TakenImagesThumbnailVisible = e.NewElement.TakenImagesThumbnailVisible;
 

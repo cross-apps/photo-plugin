@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Android.App;
 using Android.Content;
 using Android.Hardware;
 using Android.Views;
@@ -24,7 +25,7 @@ namespace PhotoTaker.Droid.Controls
             camera2BasicFragment = Camera2BasicFragment.NewInstance();
 
             AddView(controlsOverlayView);
-            AddView(camera2BasicFragment);
+            AddView(camera2BasicFragment.View);
         }
 
         public List<string> SaveFiles()
