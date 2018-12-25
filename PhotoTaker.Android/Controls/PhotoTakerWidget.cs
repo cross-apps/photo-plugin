@@ -5,10 +5,11 @@ using Android.App;
 using Android.Content;
 using Android.Hardware;
 using Android.Views;
+using Android.Widget;
 
 namespace PhotoTaker.Droid.Controls
 {
-    public class PhotoTakerWidget : ViewGroup
+    public class PhotoTakerWidget : FrameLayout
     {
         Camera2BasicFragment camera2BasicFragment;
         PhotoTakerControlsOverlayView controlsOverlayView;
@@ -21,11 +22,32 @@ namespace PhotoTaker.Droid.Controls
 
         public PhotoTakerWidget(Context context) : base(context)
         {
-            controlsOverlayView = new PhotoTakerControlsOverlayView(context);
-            camera2BasicFragment = Camera2BasicFragment.NewInstance();
+            // SetBackgroundColor(Android.Graphics.Color.Gold);
 
-            AddView(controlsOverlayView);
-            AddView(camera2BasicFragment.View);
+            controlsOverlayView = new PhotoTakerControlsOverlayView(context);
+            // camera2BasicFragment = Camera2BasicFragment.NewInstance();
+
+            // AddView(controlsOverlayView);
+            // AddView(camera2BasicFragment);
+
+            var textView = new TextView(context);
+            textView.Text = "asdasd";
+            textView.TextSize = 20;
+            textView.SetTextColor(Android.Graphics.Color.Red);
+            textView.LayoutParameters = new FrameLayout.LayoutParams(200, 200);
+            // textView.Gravity = GravityFlags.Top;
+
+            this.AddView(textView);
+            this.AddView(controlsOverlayView);
+
+            // this.AddView(controlsOverlayView, 200, 200);
+            // controlsOverlayView.Visibility = ViewStates.Visible;
+            // this.Invalidate();
+
+            if (textView.IsShown)
+            {
+
+            }
         }
 
         public List<string> SaveFiles()
@@ -45,12 +67,6 @@ namespace PhotoTaker.Droid.Controls
             */
 
             return fileNames;
-        }
-
-        protected override void OnLayout(bool changed, int l, int t, int r, int b)
-        {
-
-            // throw new NotImplementedException();
         }
     }
 }

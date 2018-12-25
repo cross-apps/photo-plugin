@@ -113,6 +113,16 @@ namespace PhotoTaker.Droid.Controls
         // A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
         public CameraCaptureListener mCaptureCallback;
 
+        public Camera2BasicFragment()
+        {
+
+        }
+
+        public Camera2BasicFragment(Context context) : base()
+        {
+
+        }
+
         // Shows a {@link Toast} on the UI thread.
         public void ShowToast(string text)
         {
