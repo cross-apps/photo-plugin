@@ -124,34 +124,13 @@ namespace PhotoTaker.Droid.Controls
             mStateCallback = new CameraStateListener(this);
             StartBackgroundThread();
 
-            // mTextureView.SurfaceTexture = new SurfaceTexture(true);
-
-
-            // OpenCamera(200, 200);
-
-
-            this.ForceLayout();
+            mTextureView.SetBackgroundColor(Color.Red);
+            SetBackgroundColor(Color.Green);
         }
 
-        private class ShowToastRunnable : Java.Lang.Object, IRunnable
-        {
-            string text;
-            Context context;
-
-            public ShowToastRunnable(Context context, string text)
-            {
-                this.context = context;
-                this.text = text;
-            }
-
-            public void Run()
-            {
-                Toast.MakeText(context, text, ToastLength.Short).Show();
-            }
-        }
-
-        private static Size ChooseOptimalSize(Size[] choices, int textureViewWidth,
-            int textureViewHeight, int maxWidth, int maxHeight, Size aspectRatio)
+        static Size ChooseOptimalSize(Size[] choices, int textureViewWidth, 
+                                      int textureViewHeight, int maxWidth, 
+                                      int maxHeight, Size aspectRatio)
         {
             // Collect the supported resolutions that are at least as big as the preview Surface
             var bigEnough = new List<Size>();

@@ -31,16 +31,8 @@ namespace PhotoTaker.Droid.Controls
             // AddView(controlsOverlayView);
             // AddView(camera2BasicFragment);
 
-            var textView = new TextView(context);
-            textView.Text = "asdasd";
-            textView.TextSize = 20;
-            textView.SetTextColor(Android.Graphics.Color.Red);
-            textView.LayoutParameters = new FrameLayout.LayoutParams(200, 200);
-            // textView.Gravity = GravityFlags.Top;
-
             AddView(cameraWidget.mTextureView);
-            AddView(textView);
-            AddView(controlsOverlayView);
+            // AddView(controlsOverlayView);
         }
 
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)

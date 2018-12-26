@@ -38,7 +38,6 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
-
         public event EventHandler TakeButtonTouched 
         { 
             add 

@@ -48,7 +48,7 @@ namespace PhotoTaker.Droid.Controls
             {
                 if (width < (float)height * mRatioWidth / (float)mRatioHeight)
                 {
-                    SetMeasuredDimension(width, width * mRatioHeight / mRatioWidth);
+                    SetMeasuredDimension(width, width * mRatioHeight  / mRatioWidth);
                 }
                 else
                 {
