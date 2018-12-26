@@ -77,7 +77,7 @@
     <Compile Include="Renderer\PhotoTakerRenderer.cs" />
     <Compile Include="Controls\PhotoTakerWidget.cs" />
     <Compile Include="Controls\PhotoTakerControlsOverlayView.cs" />
-    <Compile Include="Controls\Camera2BasicFragment.cs" />
+    <Compile Include="Controls\CameraWidget.cs" />
     <Compile Include="Listeners\Camera2BasicSurfaceTextureListener.cs" />
     <Compile Include="Listeners\CameraCaptureListener.cs" />
     <Compile Include="Listeners\CameraCaptureSessionCallback.cs" />
@@ -138,6 +138,20 @@
     <AndroidAsset Include="Resources\close_button_touched.svg" />
     <AndroidAsset Include="Assets\close_button.svg" />
     <AndroidAsset Include="Assets\close_button_touched.svg" />
+    <AndroidAsset Include="Assets\camera_button_front.svg" />
+    <AndroidAsset Include="Assets\camera_button.svg" />
+    <AndroidAsset Include="Assets\counter_button.svg" />
+    <AndroidAsset Include="Assets\flash_button_touched.svg" />
+    <AndroidAsset Include="Assets\flash_button.svg" />
+    <AndroidAsset Include="Assets\gallery_button.svg" />
+    <AndroidAsset Include="Assets\gray_circle.svg" />
+    <AndroidAsset Include="Assets\image.svg" />
+    <AndroidAsset Include="Assets\send_button_touched.svg" />
+    <AndroidAsset Include="Assets\send_button.svg" />
+    <AndroidAsset Include="Assets\take_button_touched.svg" />
+    <AndroidAsset Include="Assets\take_button.svg" />
+    <AndroidAsset Include="Assets\trash_button_touched.svg" />
+    <AndroidAsset Include="Assets\trash_button.svg" />
   </ItemGroup>
  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

@@ -25,11 +25,17 @@ namespace PhotoTaker.Droid.Controls
 
         public bool IsVisible { get; set; } = true;
 
-        public SvgButton(string DefaultFile, string ToggledFile, string TouchedFile, SKMatrix Scale)
-            : this(DefaultFile, TouchedFile, Scale, null)
+        public EventHandler Handler { get; set; }
+
+        public SvgButton(string DefaultFile, string ToggledFile, string TouchedFile, SKMatrix Scale, Context Context)
+            : this(DefaultFile, TouchedFile, Scale, Context)
         {
+            var assets = Context.Assets;
             SvgToggled = new SkiaSharp.Extended.Svg.SKSvg(190f);
-            SvgToggled.Load(ToggledFile);
+            using (var stream = new StreamReader(assets.Open(ToggledFile)))
+            {
+                SvgToggled.Load(stream.BaseStream);
+            }
         }
 
         public SvgButton(string DefaultFile, string TouchedFile, SKMatrix Scale, Context context)
@@ -42,8 +48,6 @@ namespace PhotoTaker.Droid.Controls
             }
 
             // SvgTouched.Load(TouchedFile);
-            
-
             SvgDefault = new SkiaSharp.Extended.Svg.SKSvg(190f);
 
             using (var stream = new StreamReader(assets.Open(DefaultFile)))
@@ -104,6 +108,11 @@ namespace PhotoTaker.Droid.Controls
             if (IsToggleButton && touchUpInsideButton)
             {
                 IsToggled = !IsToggled;
+            }
+
+            if (touchUpInsideButton) 
+            {
+                Handler?.Invoke(this, new EventArgs());
             }
 
             return touchUpInsideButton;

@@ -6,9 +6,9 @@ namespace PhotoTaker.Droid.Listeners
 {
     public class CameraCaptureSessionCallback : CameraCaptureSession.StateCallback
     {
-        private readonly Camera2BasicFragment owner;
+        private readonly CameraWidget owner;
 
-        public CameraCaptureSessionCallback(Camera2BasicFragment owner)
+        public CameraCaptureSessionCallback(CameraWidget owner)
         {
             if (owner == null)
                 throw new System.ArgumentNullException("owner");
@@ -17,7 +17,7 @@ namespace PhotoTaker.Droid.Listeners
 
         public override void OnConfigureFailed(CameraCaptureSession session)
         {
-            owner.ShowToast("Failed");
+            // owner.ShowToast("Failed");
         }
 
         public override void OnConfigured(CameraCaptureSession session)

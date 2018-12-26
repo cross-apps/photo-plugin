@@ -14,7 +14,7 @@ namespace PhotoTaker.Droid.Controls
             public void OnClick(IDialogInterface dialog, int which)
             {
                 FragmentCompat.RequestPermissions(mParent,
-                                new string[] { Manifest.Permission.Camera }, Camera2BasicFragment.REQUEST_CAMERA_PERMISSION);
+                                new string[] { Manifest.Permission.Camera }, CameraWidget.REQUEST_CAMERA_PERMISSION);
             }
         }
 

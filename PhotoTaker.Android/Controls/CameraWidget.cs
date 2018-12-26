@@ -25,7 +25,7 @@ using Orientation = Android.Content.Res.Orientation;
 
 namespace PhotoTaker.Droid.Controls
 {
-    public class Camera2BasicFragment : View, View.IOnClickListener
+    public class CameraWidget : View, View.IOnClickListener
     {
         static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
         static readonly string FRAGMENT_DIALOG = "dialog";
@@ -61,7 +61,7 @@ namespace PhotoTaker.Droid.Controls
         string mCameraId;
 
         // An AutoFitTextureView for camera preview
-        AutoFitTextureView mTextureView;
+        public AutoFitTextureView mTextureView;
 
         // A {@link CameraCaptureSession } for camera preview.
         public CameraCaptureSession mCaptureSession;
@@ -114,9 +114,23 @@ namespace PhotoTaker.Droid.Controls
 
         Context context;
 
-        public Camera2BasicFragment(Context Context) : base(Context)
+        public CameraWidget(Context Context) : base(Context)
         {
             context = Context;
+            mTextureView = new AutoFitTextureView(Context);
+            mSurfaceTextureListener = new Camera2BasicSurfaceTextureListener(this);
+            mTextureView.SurfaceTextureListener = mSurfaceTextureListener;
+
+            mStateCallback = new CameraStateListener(this);
+            StartBackgroundThread();
+
+            // mTextureView.SurfaceTexture = new SurfaceTexture(true);
+
+
+            // OpenCamera(200, 200);
+
+
+            this.ForceLayout();
         }
 
         private class ShowToastRunnable : Java.Lang.Object, IRunnable
@@ -214,6 +228,7 @@ namespace PhotoTaker.Droid.Controls
 
                     // Find out if we need to swap dimension to get the preview 
                     // size relative to sensor coordinate.
+                    var activity = (Activity)context;
                     var displayRotation = activity.WindowManager.DefaultDisplay.Rotation;
                     //noinspection ConstantConditions
                     mSensorOrientation = (int)characteristics.Get(CameraCharacteristics.SensorOrientation);
@@ -310,18 +325,32 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
+        private void RequestCameraPermission()
+        {
+            var activity = (Activity)context;
+
+            if (activity.ShouldShowRequestPermissionRationale(Manifest.Permission.Camera))
+            {
+                new ConfirmationDialog().Show(activity.FragmentManager, FRAGMENT_DIALOG);
+            }
+            else
+            {
+                activity.RequestPermissions(new string[] { Manifest.Permission.Camera },
+                        REQUEST_CAMERA_PERMISSION);
+            }
+        }
+
         // Opens the camera specified by {@link Camera2BasicFragment#mCameraId}.
         public void OpenCamera(int width, int height)
         {
             // check permissions...
 
-            /*
-            if (ContextCompat.CheckSelfPermission(Activity, Manifest.Permission.Camera) != Permission.Granted)
+            var activity = (Activity)context;
+            if (ContextCompat.CheckSelfPermission(activity, Manifest.Permission.Camera) != Permission.Granted)
             {
                 RequestCameraPermission();
                 return;
             }
-            */
 
             SetUpCameraOutputs(width, height);
             ConfigureTransform(width, height);
@@ -343,6 +372,10 @@ namespace PhotoTaker.Droid.Controls
             catch (InterruptedException e)
             {
                 throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
+            }
+            catch (Java.Lang.Exception e) 
+            {
+
             }
         }
 
@@ -410,6 +443,11 @@ namespace PhotoTaker.Droid.Controls
         {
             try
             {
+                if (mTextureView.IsAttachedToWindow) 
+                {
+
+                }
+
                 SurfaceTexture texture = mTextureView.SurfaceTexture;
                 if (texture == null)
                 {
@@ -457,6 +495,7 @@ namespace PhotoTaker.Droid.Controls
                 return;
             }
 
+            var activity = (Activity)context;
             var rotation = (int)activity.WindowManager.DefaultDisplay.Rotation;
             Matrix matrix = new Matrix();
             RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
@@ -532,8 +571,7 @@ namespace PhotoTaker.Droid.Controls
         {
             try
             {
-                var activity = Activity;
-                if (null == activity || null == mCameraDevice)
+                if (mCameraDevice == null)
                 {
                     return;
                 }
@@ -549,6 +587,7 @@ namespace PhotoTaker.Droid.Controls
                 SetAutoFlash(stillCaptureBuilder);
 
                 // Orientation
+                var activity = (Activity)context;
                 int rotation = (int)activity.WindowManager.DefaultDisplay.Rotation;
                 stillCaptureBuilder.Set(CaptureRequest.JpegOrientation, GetOrientation(rotation));
 

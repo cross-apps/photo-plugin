@@ -11,7 +11,7 @@ namespace PhotoTaker.Droid.Controls
 {
     public class PhotoTakerWidget : FrameLayout
     {
-        Camera2BasicFragment camera2BasicFragment;
+        CameraWidget cameraWidget;
         PhotoTakerControlsOverlayView controlsOverlayView;
 
         public int MaxImageCount { get; set; }
@@ -25,8 +25,9 @@ namespace PhotoTaker.Droid.Controls
             // SetBackgroundColor(Android.Graphics.Color.Gold);
 
             controlsOverlayView = new PhotoTakerControlsOverlayView(context);
-            // camera2BasicFragment = Camera2BasicFragment.NewInstance();
-
+            controlsOverlayView.TakeButtonTouched += ControlsOverlayView_TakeButtonTouched;
+            cameraWidget = new CameraWidget(context);
+            // cameraWidget.OpenCamera(200, 200);
             // AddView(controlsOverlayView);
             // AddView(camera2BasicFragment);
 
@@ -37,17 +38,14 @@ namespace PhotoTaker.Droid.Controls
             textView.LayoutParameters = new FrameLayout.LayoutParams(200, 200);
             // textView.Gravity = GravityFlags.Top;
 
-            this.AddView(textView);
-            this.AddView(controlsOverlayView);
+            AddView(cameraWidget.mTextureView);
+            AddView(textView);
+            AddView(controlsOverlayView);
+        }
 
-            // this.AddView(controlsOverlayView, 200, 200);
-            // controlsOverlayView.Visibility = ViewStates.Visible;
-            // this.Invalidate();
-
-            if (textView.IsShown)
-            {
-
-            }
+        void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Take button touched");
         }
 
         public List<string> SaveFiles()
