@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="34px" height="26px" viewBox="0 0 34 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Artboard</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Path-2" fill="#FFFFFF" points="3 25 12.2563037 15 20.6691223 23.0269053 22 23.7809459 21.7657363 24.1258822 21.3326134 24.7386121"></polygon>
+        <polygon id="Path-2" fill="#FFFFFF" points="13 25 23.5439858 12 32 22.8363662 31.8194129 23.7882804 31.5873758 24.1311413 31.1583695 24.7401847"></polygon>
+        <g id="if_JD-34_2315858" transform="translate(1.000000, 1.000000)" stroke-linecap="round" stroke-linejoin="round">
+            <polyline id="Shape" stroke="#BCBCBC" points="11.5381 23.875 22.4583 10.5625 31.3222 21.6968"></polyline>
+            <circle id="Oval" stroke="#BCBCBC" fill="#FFFFFF" cx="9.1667" cy="6.2083" r="2.1251"></circle>
+            <polyline id="Shape" stroke="#BCBCBC" points="15.0069 17.2187 11.5381 13.5937 2.2569 23.5937"></polyline>
+            <path d="M29.144,23.875 L24.4756,18.5937" id="Shape" stroke="#BCBCBC"></path>
+            <path d="M23.3057,17.2857 L22.4894,16.2952" id="Shape" stroke="#BCBCBC"></path>
+            <path d="M29.144,23.875 L2.856,23.875 C1.653,23.875 0.6778,22.8998 0.6778,21.6968 L0.6778,2.3032 C0.6778,1.1002 1.653,0.125 2.856,0.125 L29.144,0.125 C30.347,0.125 31.3222,1.1002 31.3222,2.3032 L31.3222,21.6968 C31.3222,22.8998 30.347,23.875 29.144,23.875 Z" id="Shape" stroke="#FFFFFF" stroke-width="2"></path>
+        </g>
+    </g>
+</svg>
