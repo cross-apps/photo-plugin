@@ -7,13 +7,11 @@ namespace PhotoTaker.Droid.Listeners
 {
     public class CameraStateListener : CameraDevice.StateCallback
     {
-        private readonly Camera2BasicFragment owner;
+        readonly CameraWidget owner;
 
-        public CameraStateListener(Camera2BasicFragment owner)
+        public CameraStateListener(CameraWidget owner)
         {
-            if (owner == null)
-                throw new System.ArgumentNullException("owner");
-            this.owner = owner;
+            this.owner = owner ?? throw new ArgumentNullException("owner");
         }
 
         public override void OnOpened(CameraDevice cameraDevice)
@@ -36,13 +34,18 @@ namespace PhotoTaker.Droid.Listeners
             owner.mCameraOpenCloseLock.Release();
             cameraDevice.Close();
             owner.mCameraDevice = null;
-            if (owner == null)
+            if (owner == null) 
+            {
                 return;
+            }
+
+            /*
             Activity activity = owner.Activity;
             if (activity != null)
             {
                 activity.Finish();
             }
+            */
         }
     }
 }

@@ -9,19 +9,14 @@ namespace PhotoTaker.Droid.Listeners
 {
     public class ImageAvailableListener : Java.Lang.Object, ImageReader.IOnImageAvailableListener
     {
-        public ImageAvailableListener(Camera2BasicFragment fragment, File file)
+        public ImageAvailableListener(CameraWidget fragment, File file)
         {
-            if (fragment == null)
-                throw new System.ArgumentNullException("fragment");
-            if (file == null)
-                throw new System.ArgumentNullException("file");
-
-            owner = fragment;
-            this.file = file;
+            owner = fragment ?? throw new ArgumentNullException("fragment");
+            this.file = file ?? throw new ArgumentNullException("file");
         }
 
-        private readonly File file;
-        private readonly Camera2BasicFragment owner;
+        readonly File file;
+        readonly CameraWidget owner;
 
         //public File File { get; private set; }
         //public Camera2BasicFragment Owner { get; private set; }
@@ -42,13 +37,8 @@ namespace PhotoTaker.Droid.Listeners
 
             public ImageSaver(Image image, File file)
             {
-                if (image == null)
-                    throw new System.ArgumentNullException("image");
-                if (file == null)
-                    throw new System.ArgumentNullException("file");
-
-                mImage = image;
-                mFile = file;
+                mImage = image ?? throw new ArgumentNullException("image");
+                mFile = file ?? throw new ArgumentNullException("file");
             }
 
             public void Run()

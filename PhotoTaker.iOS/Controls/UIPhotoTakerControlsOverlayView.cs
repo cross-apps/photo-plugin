@@ -67,12 +67,6 @@ namespace PhotoTaker.iOS.Controls
                 SKPaint paint = new SKPaint();
                 paint.IsAntialias = true;
 
-                var svgButtonTouched = new SkiaSharp.Extended.Svg.SKSvg(190f);
-                svgButtonTouched.Load("take_button_touched.svg");
-
-                var svgTakeButton = new SkiaSharp.Extended.Svg.SKSvg(190f);
-                svgTakeButton.Load("take_button.svg");
-
                 float scale = 1.5f;
 
                 // 667 iphone 8, // 813 iphone x // 736 iphone 8 plus
@@ -83,8 +77,8 @@ namespace PhotoTaker.iOS.Controls
                     scale *= 1.5f;
                 }
 
-                var x = e.Info.Width / 2 - (svgTakeButton.Picture.CullRect.Width * scale) / 2;
-                var y = e.Info.Height - 2 * svgTakeButton.Picture.CullRect.Height;
+                var x = e.Info.Width / 2 - (takeButton.SvgDefault.Picture.CullRect.Width * scale) / 2;
+                var y = e.Info.Height - 2 * takeButton.SvgDefault.Picture.CullRect.Height;
 
                 float xOffset = 0f;
                 if (max > 800) 
@@ -147,12 +141,6 @@ namespace PhotoTaker.iOS.Controls
                 // handle the device screen density
                 // canvas.Scale(scale);
 
-                // make sure the canvas is blank
-                // canvas.Clear(SKColors.White);
-
-                // draw some text
-
-                // draw on the canvas
                 canvas.Flush();
             }
         }

@@ -25,14 +25,13 @@ using Orientation = Android.Content.Res.Orientation;
 
 namespace PhotoTaker.Droid.Controls
 {
-    public class Camera2BasicFragment : Fragment, View.IOnClickListener, FragmentCompat.IOnRequestPermissionsResultCallback
+    public class CameraWidget : View, View.IOnClickListener
     {
-        private static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
+        static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
+        static readonly string FRAGMENT_DIALOG = "dialog";
         public static readonly int REQUEST_CAMERA_PERMISSION = 1;
-        private static readonly string FRAGMENT_DIALOG = "dialog";
 
         // Tag for the {@link Log}.
-        private static readonly string TAG = "Camera2BasicFragment";
 
         // Camera state: Showing camera preview.
         public const int STATE_PREVIEW = 0;
@@ -50,19 +49,19 @@ namespace PhotoTaker.Droid.Controls
         public const int STATE_PICTURE_TAKEN = 4;
 
         // Max preview width that is guaranteed by Camera2 API
-        private static readonly int MAX_PREVIEW_WIDTH = 1920;
+        static readonly int MAX_PREVIEW_WIDTH = 1920;
 
         // Max preview height that is guaranteed by Camera2 API
-        private static readonly int MAX_PREVIEW_HEIGHT = 1080;
+        static readonly int MAX_PREVIEW_HEIGHT = 1080;
 
         // TextureView.ISurfaceTextureListener handles several lifecycle events on a TextureView
-        private Camera2BasicSurfaceTextureListener mSurfaceTextureListener;
+        Camera2BasicSurfaceTextureListener mSurfaceTextureListener;
 
         // ID of the current {@link CameraDevice}.
-        private string mCameraId;
+        string mCameraId;
 
         // An AutoFitTextureView for camera preview
-        private AutoFitTextureView mTextureView;
+        public AutoFitTextureView mTextureView;
 
         // A {@link CameraCaptureSession } for camera preview.
         public CameraCaptureSession mCaptureSession;
@@ -71,26 +70,26 @@ namespace PhotoTaker.Droid.Controls
         public CameraDevice mCameraDevice;
 
         // The size of the camera preview
-        private Size mPreviewSize;
+        Size mPreviewSize;
 
         // CameraDevice.StateListener is called when a CameraDevice changes its state
-        private CameraStateListener mStateCallback;
+        CameraStateListener mStateCallback;
 
         // An additional thread for running tasks that shouldn't block the UI.
-        private HandlerThread mBackgroundThread;
+        HandlerThread mBackgroundThread;
 
         // A {@link Handler} for running tasks in the background.
         public Handler mBackgroundHandler;
 
         // An {@link ImageReader} that handles still image capture.
-        private ImageReader mImageReader;
+        ImageReader mImageReader;
 
         // This is the output file for our picture.
         public File mFile;
 
         // This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
         // still image is ready to be saved.
-        private ImageAvailableListener mOnImageAvailableListener;
+        ImageAvailableListener mOnImageAvailableListener;
 
         //{@link CaptureRequest.Builder} for the camera preview
         public CaptureRequest.Builder mPreviewRequestBuilder;
@@ -105,27 +104,39 @@ namespace PhotoTaker.Droid.Controls
         public Semaphore mCameraOpenCloseLock = new Semaphore(1);
 
         // Whether the current camera device supports Flash or not.
-        private bool mFlashSupported;
+        bool mFlashSupported;
 
         // Orientation of the camera sensor
-        private int mSensorOrientation;
+        int mSensorOrientation;
 
         // A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
         public CameraCaptureListener mCaptureCallback;
 
-        // Shows a {@link Toast} on the UI thread.
-        public void ShowToast(string text)
+        Context context;
+
+        public CameraWidget(Context Context) : base(Context)
         {
-            if (Activity != null)
-            {
-                Activity.RunOnUiThread(new ShowToastRunnable(Activity.ApplicationContext, text));
-            }
+            context = Context;
+            mTextureView = new AutoFitTextureView(Context);
+            mSurfaceTextureListener = new Camera2BasicSurfaceTextureListener(this);
+            mTextureView.SurfaceTextureListener = mSurfaceTextureListener;
+
+            mStateCallback = new CameraStateListener(this);
+            StartBackgroundThread();
+
+            // mTextureView.SurfaceTexture = new SurfaceTexture(true);
+
+
+            // OpenCamera(200, 200);
+
+
+            this.ForceLayout();
         }
 
         private class ShowToastRunnable : Java.Lang.Object, IRunnable
         {
-            private string text;
-            private Context context;
+            string text;
+            Context context;
 
             public ShowToastRunnable(Context context, string text)
             {
@@ -152,8 +163,7 @@ namespace PhotoTaker.Droid.Controls
             for (var i = 0; i < choices.Length; i++)
             {
                 Size option = choices[i];
-                if ((option.Width <= maxWidth) && (option.Height <= maxHeight) &&
-                       option.Height == option.Width * h / w)
+                if ((option.Width <= maxWidth) && (option.Height <= maxHeight) && option.Height == option.Width * h / w)
                 {
                     if (option.Width >= textureViewWidth &&
                         option.Height >= textureViewHeight)
@@ -179,108 +189,15 @@ namespace PhotoTaker.Droid.Controls
             }
             else
             {
-                Log.Error(TAG, "Couldn't find any suitable preview size");
+                Log.Error("camera view", "Couldn't find any suitable preview size");
                 return choices[0];
             }
         }
 
-        public static Camera2BasicFragment NewInstance()
-        {
-            return new Camera2BasicFragment();
-        }
-
-        public override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-            mStateCallback = new CameraStateListener(this);
-            mSurfaceTextureListener = new Camera2BasicSurfaceTextureListener(this);
-
-            // fill ORIENTATIONS list
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation0, 90);
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation90, 0);
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation180, 270);
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation270, 180);
-        }
-
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            return inflater.Inflate(Resource.Layout.fragment_camera2_basic, container, false);
-        }
-
-        public override void OnViewCreated(View view, Bundle savedInstanceState)
-        {
-            mTextureView = (AutoFitTextureView)view.FindViewById(Resource.Id.texture);
-            // view.FindViewById(Resource.Id.picture).SetOnClickListener(this);
-            // view.FindViewById(Resource.Id.info).SetOnClickListener(this);
-        }
-
-        public override void OnActivityCreated(Bundle savedInstanceState)
-        {
-            base.OnActivityCreated(savedInstanceState);
-            mFile = new File(Activity.GetExternalFilesDir(null), "pic.jpg");
-            mCaptureCallback = new CameraCaptureListener(this);
-            mOnImageAvailableListener = new ImageAvailableListener(this, mFile);
-        }
-
-        public override void OnResume()
-        {
-            base.OnResume();
-            StartBackgroundThread();
-
-            // When the screen is turned off and turned back on, the SurfaceTexture is already
-            // available, and "onSurfaceTextureAvailable" will not be called. In that case, we can open
-            // a camera and start preview from here (otherwise, we wait until the surface is ready in
-            // the SurfaceTextureListener).
-            if (mTextureView.IsAvailable)
-            {
-                OpenCamera(mTextureView.Width, mTextureView.Height);
-            }
-            else
-            {
-                mTextureView.SurfaceTextureListener = mSurfaceTextureListener;
-            }
-        }
-
-        public override void OnPause()
-        {
-            CloseCamera();
-            StopBackgroundThread();
-            base.OnPause();
-        }
-
-        private void RequestCameraPermission()
-        {
-            if (FragmentCompat.ShouldShowRequestPermissionRationale(this, Manifest.Permission.Camera))
-            {
-                new ConfirmationDialog().Show(ChildFragmentManager, FRAGMENT_DIALOG);
-            }
-            else
-            {
-                FragmentCompat.RequestPermissions(this, new string[] { Manifest.Permission.Camera },
-                        REQUEST_CAMERA_PERMISSION);
-            }
-        }
-
-        public void OnRequestPermissionsResult(int requestCode, string[] permissions, int[] grantResults)
-        {
-            if (requestCode != REQUEST_CAMERA_PERMISSION)
-                return;
-
-            if (grantResults.Length != 1 || grantResults[0] != (int)Permission.Granted)
-            {
-                ErrorDialog.NewInstance("Camera permission required!")
-                           .Show(ChildFragmentManager, FRAGMENT_DIALOG);
-                /*
-                ErrorDialog.NewInstance(GetString("Camera permission required!"))
-                        .Show(ChildFragmentManager, FRAGMENT_DIALOG);*/
-            }
-        }
-
         // Sets up member variables related to camera.
-        private void SetUpCameraOutputs(int width, int height)
+        void SetUpCameraOutputs(int width, int height)
         {
-            var activity = Activity;
-            var manager = (CameraManager)activity.GetSystemService(Context.CameraService);
+            var manager = (CameraManager)context.GetSystemService(Context.CameraService);
             try
             {
                 for (var i = 0; i < manager.GetCameraIdList().Length; i++)
@@ -309,8 +226,9 @@ namespace PhotoTaker.Droid.Controls
                     mImageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, /*maxImages*/2);
                     mImageReader.SetOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
 
-                    // Find out if we need to swap dimension to get the preview size relative to sensor
-                    // coordinate.
+                    // Find out if we need to swap dimension to get the preview 
+                    // size relative to sensor coordinate.
+                    var activity = (Activity)context;
                     var displayRotation = activity.WindowManager.DefaultDisplay.Rotation;
                     //noinspection ConstantConditions
                     mSensorOrientation = (int)characteristics.Get(CameraCharacteristics.SensorOrientation);
@@ -332,7 +250,7 @@ namespace PhotoTaker.Droid.Controls
                             }
                             break;
                         default:
-                            Log.Error(TAG, "Display rotation is invalid: " + displayRotation);
+                            Log.Error("camera view", "Display rotation is invalid: " + displayRotation);
                             break;
                     }
 
@@ -364,9 +282,10 @@ namespace PhotoTaker.Droid.Controls
                     // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
                     // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
                     // garbage capture data.
-                    mPreviewSize = ChooseOptimalSize(map.GetOutputSizes(Class.FromType(typeof(SurfaceTexture))),
-                        rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
-                        maxPreviewHeight, largest);
+                    mPreviewSize = ChooseOptimalSize(map.GetOutputSizes(
+                        Class.FromType(typeof(SurfaceTexture))),
+                        rotatedPreviewWidth, rotatedPreviewHeight, 
+                        maxPreviewWidth, maxPreviewHeight, largest);
 
                     // We fit the aspect ratio of TextureView to the size of preview we picked.
                     var orientation = Resources.Configuration.Orientation;
@@ -398,20 +317,36 @@ namespace PhotoTaker.Droid.Controls
             {
                 e.PrintStackTrace();
             }
-            catch (NullPointerException e)
+            catch (NullPointerException)
             {
                 // Currently an NPE is thrown when the Camera2API is used but not supported on the
                 // device this code runs.
+                // ErrorDialog.NewInstance("Error occured!").Show(ChildFragmentManager, FRAGMENT_DIALOG);
+            }
+        }
 
-                // ErrorDialog.NewInstance(GetString(Resource.String.camera_error)).Show(ChildFragmentManager, FRAGMENT_DIALOG);
-                ErrorDialog.NewInstance("Error occured!").Show(ChildFragmentManager, FRAGMENT_DIALOG);
+        private void RequestCameraPermission()
+        {
+            var activity = (Activity)context;
+
+            if (activity.ShouldShowRequestPermissionRationale(Manifest.Permission.Camera))
+            {
+                new ConfirmationDialog().Show(activity.FragmentManager, FRAGMENT_DIALOG);
+            }
+            else
+            {
+                activity.RequestPermissions(new string[] { Manifest.Permission.Camera },
+                        REQUEST_CAMERA_PERMISSION);
             }
         }
 
         // Opens the camera specified by {@link Camera2BasicFragment#mCameraId}.
         public void OpenCamera(int width, int height)
         {
-            if (ContextCompat.CheckSelfPermission(Activity, Manifest.Permission.Camera) != Permission.Granted)
+            // check permissions...
+
+            var activity = (Activity)context;
+            if (ContextCompat.CheckSelfPermission(activity, Manifest.Permission.Camera) != Permission.Granted)
             {
                 RequestCameraPermission();
                 return;
@@ -420,14 +355,14 @@ namespace PhotoTaker.Droid.Controls
             SetUpCameraOutputs(width, height);
             ConfigureTransform(width, height);
 
-            var activity = Activity;
-            var manager = (CameraManager)activity.GetSystemService(Context.CameraService);
+            var manager = (CameraManager)context.GetSystemService(Context.CameraService);
             try
             {
                 if (!mCameraOpenCloseLock.TryAcquire(2500, TimeUnit.Milliseconds))
                 {
                     throw new RuntimeException("Time out waiting to lock camera opening.");
                 }
+
                 manager.OpenCamera(mCameraId, mStateCallback, mBackgroundHandler);
             }
             catch (CameraAccessException e)
@@ -437,6 +372,10 @@ namespace PhotoTaker.Droid.Controls
             catch (InterruptedException e)
             {
                 throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
+            }
+            catch (Java.Lang.Exception e) 
+            {
+
             }
         }
 
@@ -504,6 +443,11 @@ namespace PhotoTaker.Droid.Controls
         {
             try
             {
+                if (mTextureView.IsAttachedToWindow) 
+                {
+
+                }
+
                 SurfaceTexture texture = mTextureView.SurfaceTexture;
                 if (texture == null)
                 {
@@ -546,13 +490,12 @@ namespace PhotoTaker.Droid.Controls
 
         public void ConfigureTransform(int viewWidth, int viewHeight)
         {
-            Activity activity = Activity;
-
-            if (null == mTextureView || null == mPreviewSize || null == activity)
+            if (mTextureView == null || mPreviewSize == null)
             {
                 return;
             }
 
+            var activity = (Activity)context;
             var rotation = (int)activity.WindowManager.DefaultDisplay.Rotation;
             Matrix matrix = new Matrix();
             RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
@@ -628,8 +571,7 @@ namespace PhotoTaker.Droid.Controls
         {
             try
             {
-                var activity = Activity;
-                if (null == activity || null == mCameraDevice)
+                if (mCameraDevice == null)
                 {
                     return;
                 }
@@ -645,6 +587,7 @@ namespace PhotoTaker.Droid.Controls
                 SetAutoFlash(stillCaptureBuilder);
 
                 // Orientation
+                var activity = (Activity)context;
                 int rotation = (int)activity.WindowManager.DefaultDisplay.Rotation;
                 stillCaptureBuilder.Set(CaptureRequest.JpegOrientation, GetOrientation(rotation));
 
@@ -676,12 +619,10 @@ namespace PhotoTaker.Droid.Controls
                 // Reset the auto-focus trigger
                 mPreviewRequestBuilder.Set(CaptureRequest.ControlAfTrigger, (int)ControlAFTrigger.Cancel);
                 SetAutoFlash(mPreviewRequestBuilder);
-                mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
-                        mBackgroundHandler);
+                mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback, mBackgroundHandler);
                 // After this, the camera will go back to the normal state of preview.
                 mState = STATE_PREVIEW;
-                mCaptureSession.SetRepeatingRequest(mPreviewRequest, mCaptureCallback,
-                        mBackgroundHandler);
+                mCaptureSession.SetRepeatingRequest(mPreviewRequest, mCaptureCallback, mBackgroundHandler);
             }
             catch (CameraAccessException e)
             {

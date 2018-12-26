@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Content.PM;
 using PhotoTaker.Custom;
 using PhotoTaker.Droid.Controls;
 using PhotoTaker.Droid.Renderer;
@@ -24,6 +25,8 @@ namespace PhotoTaker.Droid.Renderer
 
             if (Control == null)
             {
+                var name = Context.PackageName;
+
                 formsView = e.NewElement;
                 photoTakerWidget = new PhotoTakerWidget(Context);
                 photoTakerWidget.MaxImageCount = e.NewElement.MaxImageCount;

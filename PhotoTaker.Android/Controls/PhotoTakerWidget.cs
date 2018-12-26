@@ -5,12 +5,13 @@ using Android.App;
 using Android.Content;
 using Android.Hardware;
 using Android.Views;
+using Android.Widget;
 
 namespace PhotoTaker.Droid.Controls
 {
-    public class PhotoTakerWidget : ViewGroup
+    public class PhotoTakerWidget : FrameLayout
     {
-        Camera2BasicFragment camera2BasicFragment;
+        CameraWidget cameraWidget;
         PhotoTakerControlsOverlayView controlsOverlayView;
 
         public int MaxImageCount { get; set; }
@@ -21,11 +22,30 @@ namespace PhotoTaker.Droid.Controls
 
         public PhotoTakerWidget(Context context) : base(context)
         {
-            controlsOverlayView = new PhotoTakerControlsOverlayView(context);
-            camera2BasicFragment = Camera2BasicFragment.NewInstance();
+            // SetBackgroundColor(Android.Graphics.Color.Gold);
 
+            controlsOverlayView = new PhotoTakerControlsOverlayView(context);
+            controlsOverlayView.TakeButtonTouched += ControlsOverlayView_TakeButtonTouched;
+            cameraWidget = new CameraWidget(context);
+            // cameraWidget.OpenCamera(200, 200);
+            // AddView(controlsOverlayView);
+            // AddView(camera2BasicFragment);
+
+            var textView = new TextView(context);
+            textView.Text = "asdasd";
+            textView.TextSize = 20;
+            textView.SetTextColor(Android.Graphics.Color.Red);
+            textView.LayoutParameters = new FrameLayout.LayoutParams(200, 200);
+            // textView.Gravity = GravityFlags.Top;
+
+            AddView(cameraWidget.mTextureView);
+            AddView(textView);
             AddView(controlsOverlayView);
-            AddView(camera2BasicFragment.View);
+        }
+
+        void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Take button touched");
         }
 
         public List<string> SaveFiles()
@@ -45,12 +65,6 @@ namespace PhotoTaker.Droid.Controls
             */
 
             return fileNames;
-        }
-
-        protected override void OnLayout(bool changed, int l, int t, int r, int b)
-        {
-
-            // throw new NotImplementedException();
         }
     }
 }
