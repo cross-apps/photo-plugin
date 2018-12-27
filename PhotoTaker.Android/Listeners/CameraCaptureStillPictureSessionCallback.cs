@@ -23,6 +23,7 @@ namespace PhotoTaker.Droid.Listeners
 
             // owner.ShowToast("Saved: " + owner.mFile);
             Log.Debug(TAG, owner.mFile.ToString());
+
             owner.UnlockFocus();
         }
     }

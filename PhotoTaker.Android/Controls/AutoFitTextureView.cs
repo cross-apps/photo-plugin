@@ -28,8 +28,11 @@ namespace PhotoTaker.Droid.Controls
 
         public void SetAspectRatio(int width, int height)
         {
-            if (width == 0 || height == 0)
+            if (width == 0 || height == 0) 
+            {
                 throw new ArgumentException("Size cannot be negative.");
+            }
+                
             mRatioWidth = width;
             mRatioHeight = height;
             RequestLayout();
@@ -46,9 +49,6 @@ namespace PhotoTaker.Droid.Controls
             }
             else
             {
-                // SetMeasuredDimension(width, height);
-                // #TODO camera stream height
-                // # huawei bug
                 if (width < (float)height * mRatioWidth / (float)mRatioHeight)
                 {
                     SetMeasuredDimension(height * mRatioWidth / mRatioHeight, height);

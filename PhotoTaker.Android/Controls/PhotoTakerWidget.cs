@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using Android.App;
 using Android.Content;
@@ -11,7 +12,21 @@ namespace PhotoTaker.Droid.Controls
 {
     public class PhotoTakerWidget : FrameLayout
     {
+        /// <summary>
+        /// Getting camera preview and capture images.
+        /// </summary>
         CameraWidget cameraWidget;
+
+        /// <summary>
+        /// preview of all captured images in one view,
+        /// with delete option.
+        /// </summary>
+        MultiPhotoSelectorView multiPhotoSelectorView;
+
+        /// <summary>
+        /// Controls for default camera, take, switch camera,
+        /// focus 
+        /// </summary>
         PhotoTakerControlsOverlayView controlsOverlayView;
 
         public int MaxImageCount { get; set; }
@@ -20,22 +35,48 @@ namespace PhotoTaker.Droid.Controls
 
         public EventHandler SendButtonTapped { get; set; }
 
+        public ObservableCollection<string> Photos { get; set; }
+
         public PhotoTakerWidget(Context context) : base(context)
         {
             // SetBackgroundColor(Android.Graphics.Color.Gold);
+
+            Photos = new ObservableCollection<string>();
+            Photos.CollectionChanged += Photos_CollectionChanged;
 
             controlsOverlayView = new PhotoTakerControlsOverlayView(context);
             controlsOverlayView.TakeButtonTouched += ControlsOverlayView_TakeButtonTouched;
             controlsOverlayView.FlashButtonTouched += ControlsOverlayView_FlashButtonTouched;
             controlsOverlayView.CameraButtonTouched += ControlsOverlayView_CameraButtonTouched;
+            controlsOverlayView.CounterButtonTouched += ControlsOverlayView_CounterButtonTouched;
 
             cameraWidget = new CameraWidget(context);
             // cameraWidget.OpenCamera(200, 200);
             // AddView(controlsOverlayView);
             // AddView(camera2BasicFragment);
 
+            multiPhotoSelectorView = new MultiPhotoSelectorView(context);
+            multiPhotoSelectorView.Visibility = ViewStates.Invisible;
+            multiPhotoSelectorView.CloseButtonTouched += MultiPhotoSelectorView_CloseButtonTouched;
+
             AddView(cameraWidget.mTextureView);
             AddView(controlsOverlayView);
+            AddView(multiPhotoSelectorView);
+        }
+
+        void MultiPhotoSelectorView_CloseButtonTouched(object sender, EventArgs e)
+        {
+
+        }
+
+        void ControlsOverlayView_CounterButtonTouched(object sender, EventArgs e)
+        {
+            // display editorview overlay...
+        }
+
+        void Photos_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            controlsOverlayView.Counter = Photos.Count;
         }
 
         void ControlsOverlayView_CameraButtonTouched(object sender, EventArgs e)
@@ -51,6 +92,8 @@ namespace PhotoTaker.Droid.Controls
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
         {
             cameraWidget.TakePicture();
+            //#TODO save image file
+            Photos.Add("asd");
             System.Diagnostics.Debug.WriteLine("Take button touched");
         }
 

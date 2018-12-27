@@ -311,7 +311,7 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
-        private void RequestCameraPermission()
+        void RequestCameraPermission()
         {
             var activity = (Activity)context;
 
@@ -356,8 +356,6 @@ namespace PhotoTaker.Droid.Controls
 
             }
         }
-
-
 
         // Opens the camera specified by {@link Camera2BasicFragment#mCameraId}.
         public void OpenCamera(int width, int height)

@@ -89,6 +89,9 @@
     <Compile Include="Controls\ConfirmationDialog.cs" />
     <Compile Include="Controls\ErrorDialog.cs" />
     <Compile Include="Controls\SvgButton.cs" />
+    <Compile Include="Controls\MultiPhotoSelectorView.cs" />
+    <Compile Include="Controls\MultiPhotoSelectioControlsOverlayView.cs" />
+    <Compile Include="Controls\CurrentTakenPhotosOverlayView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

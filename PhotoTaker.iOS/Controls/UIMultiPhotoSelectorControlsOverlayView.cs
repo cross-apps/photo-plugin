@@ -22,7 +22,7 @@ namespace PhotoTaker.iOS.Controls
 
         List<SvgButton> buttons = new List<SvgButton>();
 
-        private bool timerActive = true;
+        bool timerActive = true;
 
         public EventHandler CloseButtonTouched { get; set; }
         public EventHandler TrashButtonTouched { get; set; }
