@@ -51,11 +51,8 @@ namespace PhotoTaker.Droid.Controls
             controlsOverlayView.CounterButtonTouched += ControlsOverlayView_CounterButtonTouched;
 
             cameraWidget = new CameraWidget(context);
-            // cameraWidget.OpenCamera(200, 200);
-            // AddView(controlsOverlayView);
-            // AddView(camera2BasicFragment);
 
-            multiPhotoSelectorView = new MultiPhotoSelectorView(context);
+            multiPhotoSelectorView = new MultiPhotoSelectorView(context, Photos);
             multiPhotoSelectorView.Visibility = ViewStates.Invisible;
             multiPhotoSelectorView.CloseButtonTouched += MultiPhotoSelectorView_CloseButtonTouched;
 
@@ -66,12 +63,12 @@ namespace PhotoTaker.Droid.Controls
 
         void MultiPhotoSelectorView_CloseButtonTouched(object sender, EventArgs e)
         {
-
+            multiPhotoSelectorView.Visibility = ViewStates.Invisible;
         }
 
         void ControlsOverlayView_CounterButtonTouched(object sender, EventArgs e)
         {
-            // display editorview overlay...
+            multiPhotoSelectorView.Visibility = ViewStates.Visible;
         }
 
         void Photos_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

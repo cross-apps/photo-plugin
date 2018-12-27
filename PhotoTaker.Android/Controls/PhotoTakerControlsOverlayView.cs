@@ -86,7 +86,17 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
-        public EventHandler CounterButtonTouched { get; set; }
+        public event EventHandler CounterButtonTouched
+        {
+            add
+            {
+                counterButton.Handler += value;
+            }
+            remove
+            {
+                counterButton.Handler -= value;
+            }
+        }
 
         #endregion
 

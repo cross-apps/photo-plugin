@@ -16,6 +16,7 @@ namespace PhotoTaker.Droid.Controls
 
         public MultiPhotoSelectorView(Context context, ObservableCollection<string> photos) : base(context)
         {
+            SetBackgroundColor(Android.Graphics.Color.Black);
             Photos = photos;
             controlsOverlayView = new MultiPhotoSelectioControlsOverlayView(context);
             currentImage = new ImageView(context);
@@ -32,7 +33,7 @@ namespace PhotoTaker.Droid.Controls
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
         {
-
+            CloseButtonTouched?.Invoke(this, new EventArgs());
         }
     }
 }
