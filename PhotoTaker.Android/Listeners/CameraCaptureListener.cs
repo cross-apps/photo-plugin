@@ -12,9 +12,7 @@ namespace PhotoTaker.Droid.Listeners
 
         public CameraCaptureListener(CameraWidget owner)
         {
-            if (owner == null)
-                throw new System.ArgumentNullException("owner");
-            this.owner = owner;
+            this.owner = owner ?? throw new ArgumentNullException("owner");
         }
 
         public override void OnCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result)

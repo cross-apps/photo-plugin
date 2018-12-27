@@ -39,8 +39,6 @@ namespace PhotoTaker.Droid.Controls
 
         public PhotoTakerWidget(Context context) : base(context)
         {
-            // SetBackgroundColor(Android.Graphics.Color.Gold);
-
             Photos = new ObservableCollection<string>();
             Photos.CollectionChanged += Photos_CollectionChanged;
 
@@ -83,12 +81,15 @@ namespace PhotoTaker.Droid.Controls
 
         void ControlsOverlayView_FlashButtonTouched(object sender, EventArgs e)
         {
-
+            // 
         }
 
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
         {
             cameraWidget.TakePicture();
+
+
+
             //#TODO save image file
             Photos.Add("asd");
             System.Diagnostics.Debug.WriteLine("Take button touched");

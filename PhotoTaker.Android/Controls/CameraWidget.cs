@@ -124,8 +124,6 @@ namespace PhotoTaker.Droid.Controls
             mSurfaceTextureListener = new Camera2BasicSurfaceTextureListener(this);
             mTextureView.SurfaceTextureListener = mSurfaceTextureListener;
 
-            mFile = new File(((Activity)context).GetExternalFilesDir(null), "pic.jpg");
-
             mStateCallback = new CameraStateListener(this);
             StartBackgroundThread();
 
@@ -295,9 +293,6 @@ namespace PhotoTaker.Droid.Controls
                 {
                     mFlashSupported = (bool)available;
                 }
-
-                // mCameraId = cameraId;
-                
             }
             catch (CameraAccessException e)
             {
@@ -321,8 +316,7 @@ namespace PhotoTaker.Droid.Controls
             }
             else
             {
-                activity.RequestPermissions(new string[] { Manifest.Permission.Camera },
-                        REQUEST_CAMERA_PERMISSION);
+                activity.RequestPermissions(new string[] { Manifest.Permission.Camera }, REQUEST_CAMERA_PERMISSION);
             }
         }
 
@@ -481,7 +475,6 @@ namespace PhotoTaker.Droid.Controls
                 surfaces.Add(surface);
                 surfaces.Add(mImageReader.Surface);
                 mCameraDevice.CreateCaptureSession(surfaces, new CameraCaptureSessionCallback(this), null);
-
             }
             catch (CameraAccessException e)
             {

@@ -22,7 +22,8 @@ namespace PhotoTaker.Droid.Controls
             currentImage = new ImageView(context);
 
             takenPhotosOverlayView = new CurrentTakenPhotosOverlayView(context, photos);
-            takenPhotosOverlayView.ImageTapped += TakenPhotosOverlayView_ImageTapped;;
+            takenPhotosOverlayView.ImageTapped += TakenPhotosOverlayView_ImageTapped;
+            takenPhotosOverlayView.SetBackgroundColor(Android.Graphics.Color.Green);
 
             AddView(currentImage);
             AddView(controlsOverlayView);
@@ -48,7 +49,8 @@ namespace PhotoTaker.Droid.Controls
 
         void TakenPhotosOverlayView_ImageTapped(object sender, EventArgs e)
         {
-        
+            // 
+
         }
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
