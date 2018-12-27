@@ -92,6 +92,7 @@
     <Compile Include="Controls\MultiPhotoSelectorView.cs" />
     <Compile Include="Controls\MultiPhotoSelectioControlsOverlayView.cs" />
     <Compile Include="Controls\CurrentTakenPhotosOverlayView.cs" />
+    <Compile Include="Adapters\ImageAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -126,6 +127,7 @@
     <Folder Include="Renderer\" />
     <Folder Include="Controls\" />
     <Folder Include="Listeners\" />
+    <Folder Include="Adapters\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PhotoTaker\PhotoTaker.csproj">

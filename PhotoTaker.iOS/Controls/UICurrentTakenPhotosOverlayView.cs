@@ -11,9 +11,8 @@ namespace PhotoTaker.iOS.Controls
     {
         NSIndexPath lastTappedIndex = null;
 
-        public ObservableCollection<UIImage> Photos { get; set; }
-
         public EventHandler<UIImage> ImageTapped { get; set; }
+        public ObservableCollection<UIImage> Photos { get; set; }
 
         public UICurrentTakenPhotosOverlayView(CGRect frame, ObservableCollection<UIImage> photos) : base(frame, new UIHorizontalScrollLayout())
         {
