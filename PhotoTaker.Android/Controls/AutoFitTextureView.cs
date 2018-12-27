@@ -40,19 +40,22 @@ namespace PhotoTaker.Droid.Controls
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
             int width = MeasureSpec.GetSize(widthMeasureSpec);
             int height = MeasureSpec.GetSize(heightMeasureSpec);
-            if (0 == mRatioWidth || 0 == mRatioHeight)
+            if (mRatioWidth == 0 || mRatioHeight == 0)
             {
                 SetMeasuredDimension(width, height);
             }
             else
             {
+                // SetMeasuredDimension(width, height);
+                // #TODO camera stream height
+                // # huawei bug
                 if (width < (float)height * mRatioWidth / (float)mRatioHeight)
                 {
-                    SetMeasuredDimension(width, width * mRatioHeight  / mRatioWidth);
+                    SetMeasuredDimension(height * mRatioWidth / mRatioHeight, height);
                 }
                 else
                 {
-                    SetMeasuredDimension(height * mRatioWidth / mRatioHeight, height);
+                    SetMeasuredDimension(width, width * mRatioHeight / mRatioWidth);
                 }
             }
         }

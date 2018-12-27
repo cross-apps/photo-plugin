@@ -26,17 +26,31 @@ namespace PhotoTaker.Droid.Controls
 
             controlsOverlayView = new PhotoTakerControlsOverlayView(context);
             controlsOverlayView.TakeButtonTouched += ControlsOverlayView_TakeButtonTouched;
+            controlsOverlayView.FlashButtonTouched += ControlsOverlayView_FlashButtonTouched;
+            controlsOverlayView.CameraButtonTouched += ControlsOverlayView_CameraButtonTouched;
+
             cameraWidget = new CameraWidget(context);
             // cameraWidget.OpenCamera(200, 200);
             // AddView(controlsOverlayView);
             // AddView(camera2BasicFragment);
 
             AddView(cameraWidget.mTextureView);
-            // AddView(controlsOverlayView);
+            AddView(controlsOverlayView);
+        }
+
+        void ControlsOverlayView_CameraButtonTouched(object sender, EventArgs e)
+        {
+            cameraWidget.SwitchCamera();
+        }
+
+        void ControlsOverlayView_FlashButtonTouched(object sender, EventArgs e)
+        {
+
         }
 
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
         {
+            cameraWidget.TakePicture();
             System.Diagnostics.Debug.WriteLine("Take button touched");
         }
 

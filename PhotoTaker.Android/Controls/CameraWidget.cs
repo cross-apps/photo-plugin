@@ -22,10 +22,11 @@ using Java.Util.Concurrent;
 using Boolean = Java.Lang.Boolean;
 using Math = Java.Lang.Math;
 using Orientation = Android.Content.Res.Orientation;
+using System.Linq;
 
 namespace PhotoTaker.Droid.Controls
 {
-    public class CameraWidget : View, View.IOnClickListener
+    public class CameraWidget : View
     {
         static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
         static readonly string FRAGMENT_DIALOG = "dialog";
@@ -58,7 +59,7 @@ namespace PhotoTaker.Droid.Controls
         Camera2BasicSurfaceTextureListener mSurfaceTextureListener;
 
         // ID of the current {@link CameraDevice}.
-        string mCameraId;
+        string mCameraId = "0";
 
         // An AutoFitTextureView for camera preview
         public AutoFitTextureView mTextureView;
@@ -114,6 +115,8 @@ namespace PhotoTaker.Droid.Controls
 
         Context context;
 
+        CaptureRequest.Builder stillCaptureBuilder;
+
         public CameraWidget(Context Context) : base(Context)
         {
             context = Context;
@@ -121,11 +124,16 @@ namespace PhotoTaker.Droid.Controls
             mSurfaceTextureListener = new Camera2BasicSurfaceTextureListener(this);
             mTextureView.SurfaceTextureListener = mSurfaceTextureListener;
 
+            mFile = new File(((Activity)context).GetExternalFilesDir(null), "pic.jpg");
+
             mStateCallback = new CameraStateListener(this);
             StartBackgroundThread();
 
-            mTextureView.SetBackgroundColor(Color.Red);
-            SetBackgroundColor(Color.Green);
+            mTextureView.SetBackgroundColor(Color.Black);
+            // SetBackgroundColor(Color.Green);
+            SetBackgroundColor(Color.Black);
+
+            mCaptureCallback = new CameraCaptureListener(this);
         }
 
         static Size ChooseOptimalSize(Size[] choices, int textureViewWidth, 
@@ -179,118 +187,117 @@ namespace PhotoTaker.Droid.Controls
             var manager = (CameraManager)context.GetSystemService(Context.CameraService);
             try
             {
-                for (var i = 0; i < manager.GetCameraIdList().Length; i++)
+                var firstId = manager.GetCameraIdList().FirstOrDefault(id => id == mCameraId);
+                CameraCharacteristics characteristics = manager.GetCameraCharacteristics(mCameraId);
+
+                // We don't use a front facing camera in this sample.
+                /*
+                var facing = (Integer)characteristics.Get(CameraCharacteristics.LensFacing);
+                if (facing != null && facing == (Integer.ValueOf((int)LensFacing.Front)))
                 {
-                    var cameraId = manager.GetCameraIdList()[i];
-                    CameraCharacteristics characteristics = manager.GetCameraCharacteristics(cameraId);
+                    continue;
+                }
+                */
 
-                    // We don't use a front facing camera in this sample.
-                    var facing = (Integer)characteristics.Get(CameraCharacteristics.LensFacing);
-                    if (facing != null && facing == (Integer.ValueOf((int)LensFacing.Front)))
-                    {
-                        continue;
-                    }
-
-                    var map = (StreamConfigurationMap)characteristics.Get(CameraCharacteristics.ScalerStreamConfigurationMap);
-                    if (map == null)
-                    {
-                        continue;
-                    }
-
-                    // For still image captures, we use the largest available size.
-                    Size largest = (Size)Collections.Max(
-                        Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
-                        new CompareSizesByArea());
-
-                    mImageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, /*maxImages*/2);
-                    mImageReader.SetOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
-
-                    // Find out if we need to swap dimension to get the preview 
-                    // size relative to sensor coordinate.
-                    var activity = (Activity)context;
-                    var displayRotation = activity.WindowManager.DefaultDisplay.Rotation;
-                    //noinspection ConstantConditions
-                    mSensorOrientation = (int)characteristics.Get(CameraCharacteristics.SensorOrientation);
-                    bool swappedDimensions = false;
-                    switch (displayRotation)
-                    {
-                        case SurfaceOrientation.Rotation0:
-                        case SurfaceOrientation.Rotation180:
-                            if (mSensorOrientation == 90 || mSensorOrientation == 270)
-                            {
-                                swappedDimensions = true;
-                            }
-                            break;
-                        case SurfaceOrientation.Rotation90:
-                        case SurfaceOrientation.Rotation270:
-                            if (mSensorOrientation == 0 || mSensorOrientation == 180)
-                            {
-                                swappedDimensions = true;
-                            }
-                            break;
-                        default:
-                            Log.Error("camera view", "Display rotation is invalid: " + displayRotation);
-                            break;
-                    }
-
-                    Point displaySize = new Point();
-                    activity.WindowManager.DefaultDisplay.GetSize(displaySize);
-                    var rotatedPreviewWidth = width;
-                    var rotatedPreviewHeight = height;
-                    var maxPreviewWidth = displaySize.X;
-                    var maxPreviewHeight = displaySize.Y;
-
-                    if (swappedDimensions)
-                    {
-                        rotatedPreviewWidth = height;
-                        rotatedPreviewHeight = width;
-                        maxPreviewWidth = displaySize.Y;
-                        maxPreviewHeight = displaySize.X;
-                    }
-
-                    if (maxPreviewWidth > MAX_PREVIEW_WIDTH)
-                    {
-                        maxPreviewWidth = MAX_PREVIEW_WIDTH;
-                    }
-
-                    if (maxPreviewHeight > MAX_PREVIEW_HEIGHT)
-                    {
-                        maxPreviewHeight = MAX_PREVIEW_HEIGHT;
-                    }
-
-                    // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
-                    // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
-                    // garbage capture data.
-                    mPreviewSize = ChooseOptimalSize(map.GetOutputSizes(
-                        Class.FromType(typeof(SurfaceTexture))),
-                        rotatedPreviewWidth, rotatedPreviewHeight, 
-                        maxPreviewWidth, maxPreviewHeight, largest);
-
-                    // We fit the aspect ratio of TextureView to the size of preview we picked.
-                    var orientation = Resources.Configuration.Orientation;
-                    if (orientation == Orientation.Landscape)
-                    {
-                        mTextureView.SetAspectRatio(mPreviewSize.Width, mPreviewSize.Height);
-                    }
-                    else
-                    {
-                        mTextureView.SetAspectRatio(mPreviewSize.Height, mPreviewSize.Width);
-                    }
-
-                    // Check if the flash is supported.
-                    var available = (Boolean)characteristics.Get(CameraCharacteristics.FlashInfoAvailable);
-                    if (available == null)
-                    {
-                        mFlashSupported = false;
-                    }
-                    else
-                    {
-                        mFlashSupported = (bool)available;
-                    }
-
-                    mCameraId = cameraId;
+                var map = (StreamConfigurationMap)characteristics.Get(CameraCharacteristics.ScalerStreamConfigurationMap);
+                if (map == null)
+                {
                     return;
                 }
+
+                // For still image captures, we use the largest available size.
+                Size largest = (Size)Collections.Max(
+                    Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
+                    new CompareSizesByArea());
+
+                mImageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, /*maxImages*/2);
+                mImageReader.SetOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
+
+                // Find out if we need to swap dimension to get the preview 
+                // size relative to sensor coordinate.
+                var activity = (Activity)context;
+                var displayRotation = activity.WindowManager.DefaultDisplay.Rotation;
+                //noinspection ConstantConditions
+                mSensorOrientation = (int)characteristics.Get(CameraCharacteristics.SensorOrientation);
+                bool swappedDimensions = false;
+                switch (displayRotation)
+                {
+                    case SurfaceOrientation.Rotation0:
+                    case SurfaceOrientation.Rotation180:
+                        if (mSensorOrientation == 90 || mSensorOrientation == 270)
+                        {
+                            swappedDimensions = true;
+                        }
+                        break;
+                    case SurfaceOrientation.Rotation90:
+                    case SurfaceOrientation.Rotation270:
+                        if (mSensorOrientation == 0 || mSensorOrientation == 180)
+                        {
+                            swappedDimensions = true;
+                        }
+                        break;
+                    default:
+                        Log.Error("camera view", "Display rotation is invalid: " + displayRotation);
+                        break;
+                }
+
+                Point displaySize = new Point();
+                activity.WindowManager.DefaultDisplay.GetSize(displaySize);
+                var rotatedPreviewWidth = width;
+                var rotatedPreviewHeight = height;
+                var maxPreviewWidth = displaySize.X;
+                var maxPreviewHeight = displaySize.Y;
+
+                if (swappedDimensions)
+                {
+                    rotatedPreviewWidth = height;
+                    rotatedPreviewHeight = width;
+                    maxPreviewWidth = displaySize.Y;
+                    maxPreviewHeight = displaySize.X;
+                }
+
+                if (maxPreviewWidth > MAX_PREVIEW_WIDTH)
+                {
+                    maxPreviewWidth = MAX_PREVIEW_WIDTH;
+                }
+
+                if (maxPreviewHeight > MAX_PREVIEW_HEIGHT)
+                {
+                    maxPreviewHeight = MAX_PREVIEW_HEIGHT;
+                }
+
+                // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
+                // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
+                // garbage capture data.
+                mPreviewSize = ChooseOptimalSize(map.GetOutputSizes(
+                    Class.FromType(typeof(SurfaceTexture))),
+                    rotatedPreviewWidth, rotatedPreviewHeight, 
+                    maxPreviewWidth, maxPreviewHeight, largest);
+
+                // We fit the aspect ratio of TextureView to the size of preview we picked.
+                var orientation = Resources.Configuration.Orientation;
+                if (orientation == Orientation.Landscape)
+                {
+                    mTextureView.SetAspectRatio(mPreviewSize.Width, mPreviewSize.Height);
+                }
+                else
+                {
+                    mTextureView.SetAspectRatio(mPreviewSize.Height, mPreviewSize.Width);
+                }
+
+                // Check if the flash is supported.
+                var available = (Boolean)characteristics.Get(CameraCharacteristics.FlashInfoAvailable);
+                if (available == null)
+                {
+                    mFlashSupported = false;
+                }
+                else
+                {
+                    mFlashSupported = (bool)available;
+                }
+
+                // mCameraId = cameraId;
+                
             }
             catch (CameraAccessException e)
             {
@@ -318,6 +325,39 @@ namespace PhotoTaker.Droid.Controls
                         REQUEST_CAMERA_PERMISSION);
             }
         }
+
+        public void SwitchCamera() 
+        {
+            int cameraInteger = int.Parse(mCameraId);
+            if (cameraInteger == (int)Android.Hardware.CameraFacing.Back) 
+            {
+                mCameraId = ((int)Android.Hardware.CameraFacing.Front).ToString();
+            }
+            else
+            {
+                mCameraId = ((int)Android.Hardware.CameraFacing.Back).ToString();
+            }
+
+            CloseCamera();
+            ReopenCamera();
+
+            // var manager = (CameraManager)context.GetSystemService(Context.CameraService);
+            // CameraInfo.CameraFacingBack
+        }
+
+        private void ReopenCamera() 
+        {
+            if (mTextureView.IsAvailable) 
+            {
+                OpenCamera(mTextureView.Width, mTextureView.Height);
+            }
+            else
+            {
+
+            }
+        }
+
+
 
         // Opens the camera specified by {@link Camera2BasicFragment#mCameraId}.
         public void OpenCamera(int width, int height)
@@ -354,7 +394,7 @@ namespace PhotoTaker.Droid.Controls
             }
             catch (Java.Lang.Exception e) 
             {
-
+                e.PrintStackTrace();
             }
         }
 
@@ -422,11 +462,6 @@ namespace PhotoTaker.Droid.Controls
         {
             try
             {
-                if (mTextureView.IsAttachedToWindow) 
-                {
-
-                }
-
                 SurfaceTexture texture = mTextureView.SurfaceTexture;
                 if (texture == null)
                 {
@@ -499,7 +534,7 @@ namespace PhotoTaker.Droid.Controls
         }
 
         // Initiate a still image capture.
-        private void TakePicture()
+        public void TakePicture()
         {
             LockFocus();
         }
@@ -542,8 +577,6 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
-        private CaptureRequest.Builder stillCaptureBuilder;
-
         // Capture a still picture. This method should be called when we get a response in
         // {@link #mCaptureCallback} from both {@link #lockFocus()}.
         public void CaptureStillPicture()
@@ -555,7 +588,8 @@ namespace PhotoTaker.Droid.Controls
                     return;
                 }
                 // This is the CaptureRequest.Builder that we use to take a picture.
-                if (stillCaptureBuilder == null) {
+                if (stillCaptureBuilder == null) 
+                {
                     stillCaptureBuilder = mCameraDevice.CreateCaptureRequest(CameraTemplate.StillCapture);
                 }
                 
@@ -607,29 +641,6 @@ namespace PhotoTaker.Droid.Controls
             {
                 e.PrintStackTrace();
             }
-        }
-
-        public void OnClick(View v)
-        {
-            /*
-            if (v.Id == Resource.Id.picture)
-            {
-                TakePicture();
-            }
-            else if (v.Id == Resource.Id.info)
-            {
-
-                EventHandler<DialogClickEventArgs> nullHandler = null;
-                Activity activity = Activity;
-                if (activity != null)
-                {
-                    new AlertDialog.Builder(activity)
-                        .SetMessage("This sample demonstrates the basic use of the Camera2 API. ...")
-                        .SetPositiveButton(Android.Resource.String.Ok, nullHandler)
-                        .Show();
-                }
-            }
-            */
         }
 
         public void SetAutoFlash(CaptureRequest.Builder requestBuilder)

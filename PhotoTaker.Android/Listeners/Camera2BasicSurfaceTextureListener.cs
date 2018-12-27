@@ -10,9 +10,7 @@ namespace PhotoTaker.Droid.Listeners
 
         public Camera2BasicSurfaceTextureListener(CameraWidget owner)
         {
-            if (owner == null)
-                throw new System.ArgumentNullException("owner");
-            this.owner = owner;
+            this.owner = owner ?? throw new ArgumentNullException("owner");
         }
 
         public void OnSurfaceTextureAvailable(Android.Graphics.SurfaceTexture surface, int width, int height)
