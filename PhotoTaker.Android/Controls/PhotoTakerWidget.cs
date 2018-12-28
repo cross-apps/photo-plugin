@@ -35,11 +35,11 @@ namespace PhotoTaker.Droid.Controls
 
         public EventHandler SendButtonTapped { get; set; }
 
-        public ObservableCollection<string> Photos { get; set; }
+        public ObservableCollection<Java.IO.File> Photos { get; set; }
 
         public PhotoTakerWidget(Context context) : base(context)
         {
-            Photos = new ObservableCollection<string>();
+            Photos = new ObservableCollection<Java.IO.File>();
             Photos.CollectionChanged += Photos_CollectionChanged;
 
             controlsOverlayView = new PhotoTakerControlsOverlayView(context);
@@ -48,7 +48,7 @@ namespace PhotoTaker.Droid.Controls
             controlsOverlayView.CameraButtonTouched += ControlsOverlayView_CameraButtonTouched;
             controlsOverlayView.CounterButtonTouched += ControlsOverlayView_CounterButtonTouched;
 
-            cameraWidget = new CameraWidget(context);
+            cameraWidget = new CameraWidget(context, Photos);
 
             multiPhotoSelectorView = new MultiPhotoSelectorView(context, Photos);
             multiPhotoSelectorView.Visibility = ViewStates.Invisible;
@@ -67,6 +67,7 @@ namespace PhotoTaker.Droid.Controls
         void ControlsOverlayView_CounterButtonTouched(object sender, EventArgs e)
         {
             multiPhotoSelectorView.Visibility = ViewStates.Visible;
+            multiPhotoSelectorView.SetLayoutParameters();
         }
 
         void Photos_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -87,11 +88,6 @@ namespace PhotoTaker.Droid.Controls
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
         {
             cameraWidget.TakePicture();
-
-
-
-            //#TODO save image file
-            Photos.Add("asd");
             System.Diagnostics.Debug.WriteLine("Take button touched");
         }
 

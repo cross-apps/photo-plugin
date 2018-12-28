@@ -4,18 +4,23 @@ using Java.Lang;
 using Java.Nio;
 using Android.Media;
 using PhotoTaker.Droid.Controls;
+using System.Collections.ObjectModel;
+using Android.Content;
+using Android.App;
 
 namespace PhotoTaker.Droid.Listeners
 {
     public class ImageAvailableListener : Java.Lang.Object, ImageReader.IOnImageAvailableListener
     {
-        readonly File file;
+        readonly Context context;
         readonly CameraWidget owner;
+        readonly ObservableCollection<File> photos;
 
-        public ImageAvailableListener(CameraWidget cameraWidget, File file)
+        public ImageAvailableListener(CameraWidget cameraWidget, ObservableCollection<File> photos, Context context)
         {
-            owner = cameraWidget ?? throw new ArgumentNullException("cameraWidget");
-            this.file = file ?? throw new ArgumentNullException("file");
+            this.owner = cameraWidget ?? throw new ArgumentNullException("cameraWidget");
+            this.photos = photos;
+            this.context = context;
         }
 
         //public File File { get; private set; }
@@ -23,33 +28,31 @@ namespace PhotoTaker.Droid.Listeners
 
         public void OnImageAvailable(ImageReader reader)
         {
-            owner.mBackgroundHandler.Post(new ImageSaver(reader.AcquireNextImage(), file));
+            var file = new File(((Activity)context).GetExternalFilesDir(null), Guid.NewGuid().ToString() + ".jpg");
+            owner.mBackgroundHandler.Post(new ImageSaver(reader.AcquireNextImage(), file, photos));
         }
 
         // Saves a JPEG {@link Image} into the specified {@link File}.
-        private class ImageSaver : Java.Lang.Object, IRunnable
+        class ImageSaver : Java.Lang.Object, IRunnable
         {
-
-            //#TODO must add image file to an ObservableCollection
-
             // The JPEG image
-            private Image mImage;
+            File file;
+            Image image;
+            ObservableCollection<File> photos;
 
-            // The file we save the image into.
-            private File mFile;
-
-            public ImageSaver(Image image, File file)
+            public ImageSaver(Image image, File file, ObservableCollection<File> photos)
             {
-                mImage = image ?? throw new ArgumentNullException("image");
-                mFile = file ?? throw new ArgumentNullException("file");
+                this.photos = photos;
+                this.image = image ?? throw new ArgumentNullException("image");
+                this.file = file ?? throw new ArgumentNullException("file");
             }
 
             public void Run()
             {
-                ByteBuffer buffer = mImage.GetPlanes()[0].Buffer;
+                ByteBuffer buffer = image.GetPlanes()[0].Buffer;
                 byte[] bytes = new byte[buffer.Remaining()];
                 buffer.Get(bytes);
-                using (var output = new FileOutputStream(mFile))
+                using (var output = new FileOutputStream(file))
                 {
                     try
                     {
@@ -61,8 +64,10 @@ namespace PhotoTaker.Droid.Listeners
                     }
                     finally
                     {
-                        mImage.Close();
+                        image.Close();
                     }
+
+                    photos.Add(file);
                 }
             }
         }

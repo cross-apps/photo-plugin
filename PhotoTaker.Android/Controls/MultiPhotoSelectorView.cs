@@ -8,13 +8,13 @@ namespace PhotoTaker.Droid.Controls
 	public class MultiPhotoSelectorView : FrameLayout
     {
         ImageView currentImage;
+        ObservableCollection<Java.IO.File> Photos;
         CurrentTakenPhotosOverlayView takenPhotosOverlayView;
         MultiPhotoSelectioControlsOverlayView controlsOverlayView;
-        ObservableCollection<string> Photos;
 
         public EventHandler CloseButtonTouched { get; set; }
 
-        public MultiPhotoSelectorView(Context context, ObservableCollection<string> photos) : base(context)
+        public MultiPhotoSelectorView(Context context, ObservableCollection<Java.IO.File> photos) : base(context)
         {
             Photos = photos;
             SetBackgroundColor(Android.Graphics.Color.Black);
@@ -31,6 +31,28 @@ namespace PhotoTaker.Droid.Controls
 
             controlsOverlayView.CloseButtonTouched += ControlsOverlayView_CloseButtonTouched;
             controlsOverlayView.TrashButtonTouched += ControlsOverlayView_TrashButtonTouched;
+        }
+
+        public void SetLayoutParameters() 
+        {
+            takenPhotosOverlayView.LayoutParameters = new FrameLayout.LayoutParams(1080, 200, Android.Views.GravityFlags.Bottom);
+        }
+
+        protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        {
+            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+
+            // takenPhotosOverlayView.LayoutParameters = new FrameLayout.LayoutParams(Width, 200, Android.Views.GravityFlags.Bottom);
+
+            /*
+            if (Width > 0) 
+            {
+                var parameters = new FrameLayout.LayoutParams(Width, 200, Android.Views.GravityFlags.Bottom);
+                UpdateViewLayout(takenPhotosOverlayView, parameters);
+                takenPhotosOverlayView.RequestLayout();
+                this.RequestLayout();
+            }
+            */
         }
 
         void ControlsOverlayView_TrashButtonTouched(object sender, EventArgs e)

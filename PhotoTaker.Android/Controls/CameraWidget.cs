@@ -23,13 +23,16 @@ using Boolean = Java.Lang.Boolean;
 using Math = Java.Lang.Math;
 using Orientation = Android.Content.Res.Orientation;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace PhotoTaker.Droid.Controls
 {
     public class CameraWidget : View
     {
         static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
+
         static readonly string FRAGMENT_DIALOG = "dialog";
+
         public static readonly int REQUEST_CAMERA_PERMISSION = 1;
 
         // Tag for the {@link Log}.
@@ -85,9 +88,6 @@ namespace PhotoTaker.Droid.Controls
         // An {@link ImageReader} that handles still image capture.
         ImageReader mImageReader;
 
-        // This is the output file for our picture.
-        public File mFile;
-
         // This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
         // still image is ready to be saved.
         ImageAvailableListener mOnImageAvailableListener;
@@ -105,10 +105,10 @@ namespace PhotoTaker.Droid.Controls
         public Semaphore mCameraOpenCloseLock = new Semaphore(1);
 
         // Whether the current camera device supports Flash or not.
-        bool mFlashSupported;
+        bool flashSupported;
 
         // Orientation of the camera sensor
-        int mSensorOrientation;
+        int sensorOrientation;
 
         // A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
         public CameraCaptureListener mCaptureCallback;
@@ -117,7 +117,7 @@ namespace PhotoTaker.Droid.Controls
 
         CaptureRequest.Builder stillCaptureBuilder;
 
-        public CameraWidget(Context Context) : base(Context)
+        public CameraWidget(Context Context, ObservableCollection<File> Photos) : base(Context)
         {
             context = Context;
             mTextureView = new AutoFitTextureView(Context);
@@ -131,9 +131,8 @@ namespace PhotoTaker.Droid.Controls
             // SetBackgroundColor(Color.Green);
             SetBackgroundColor(Color.Black);
 
-            mFile = new File(((Activity)Context).GetExternalFilesDir(null), Guid.NewGuid().ToString() + ".jpg");
             mCaptureCallback = new CameraCaptureListener(this);
-            mOnImageAvailableListener = new ImageAvailableListener(this, mFile);
+            mOnImageAvailableListener = new ImageAvailableListener(this, Photos, Context);
         }
 
         static Size ChooseOptimalSize(Size[] choices, int textureViewWidth, 
@@ -218,20 +217,20 @@ namespace PhotoTaker.Droid.Controls
                 var activity = (Activity)context;
                 var displayRotation = activity.WindowManager.DefaultDisplay.Rotation;
                 //noinspection ConstantConditions
-                mSensorOrientation = (int)characteristics.Get(CameraCharacteristics.SensorOrientation);
+                sensorOrientation = (int)characteristics.Get(CameraCharacteristics.SensorOrientation);
                 bool swappedDimensions = false;
                 switch (displayRotation)
                 {
                     case SurfaceOrientation.Rotation0:
                     case SurfaceOrientation.Rotation180:
-                        if (mSensorOrientation == 90 || mSensorOrientation == 270)
+                        if (sensorOrientation == 90 || sensorOrientation == 270)
                         {
                             swappedDimensions = true;
                         }
                         break;
                     case SurfaceOrientation.Rotation90:
                     case SurfaceOrientation.Rotation270:
-                        if (mSensorOrientation == 0 || mSensorOrientation == 180)
+                        if (sensorOrientation == 0 || sensorOrientation == 180)
                         {
                             swappedDimensions = true;
                         }
@@ -289,11 +288,11 @@ namespace PhotoTaker.Droid.Controls
                 var available = (Boolean)characteristics.Get(CameraCharacteristics.FlashInfoAvailable);
                 if (available == null)
                 {
-                    mFlashSupported = false;
+                    flashSupported = false;
                 }
                 else
                 {
-                    mFlashSupported = (bool)available;
+                    flashSupported = (bool)available;
                 }
             }
             catch (CameraAccessException e)
@@ -612,7 +611,7 @@ namespace PhotoTaker.Droid.Controls
             // We have to take that into account and rotate JPEG properly.
             // For devices with orientation of 90, we simply return our mapping from ORIENTATIONS.
             // For devices with orientation of 270, we need to rotate the JPEG 180 degrees.
-            return (ORIENTATIONS.Get(rotation) + mSensorOrientation + 270) % 360;
+            return (ORIENTATIONS.Get(rotation) + sensorOrientation + 270) % 360;
         }
 
         // Unlock the focus. This method should be called when still image capture sequence is
@@ -637,7 +636,7 @@ namespace PhotoTaker.Droid.Controls
 
         public void SetAutoFlash(CaptureRequest.Builder requestBuilder)
         {
-            if (mFlashSupported)
+            if (flashSupported)
             {
                 requestBuilder.Set(CaptureRequest.ControlAeMode, (int)ControlAEMode.OnAutoFlash);
             }
