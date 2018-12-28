@@ -13,6 +13,7 @@ namespace PhotoTaker.Droid.Adapters
     {
         Context context;
         ObservableCollection<Java.IO.File> photos;
+        public EventHandler<int> ItemClick;
 
         public ImageAdapter(Context Context, ObservableCollection<Java.IO.File> Photos)
         {
@@ -20,41 +21,35 @@ namespace PhotoTaker.Droid.Adapters
             photos = Photos;
         }
 
-        public override int Count => photos.Count;
-
-        public override int ItemCount => throw new NotImplementedException();
-
-        public override Java.Lang.Object GetItem(int position)
-        {
-            return photos[position];
-        }
+        public override int ItemCount => photos.Count;
 
         public override long GetItemId(int position)
         {
             return position;
         }
 
-        public override View GetView(int position, View convertView, ViewGroup parent)
+        void OnClick(int position)
         {
-            var imageView = new ImageView(context);
-
-            var options = new BitmapFactory.Options();
-            options.InSampleSize = 100;
-            var bitmap = BitmapFactory.DecodeFile(photos[position].AbsolutePath, options);
-            imageView.SetImageBitmap(bitmap);
-            imageView.LayoutParameters = new ViewGroup.LayoutParams(100, 100);
-
-            return imageView;
+            ItemClick?.Invoke(this, position);
         }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            throw new NotImplementedException();
+            var options = new BitmapFactory.Options();
+            // options.InSampleSize = 1000;
+
+            var imageViewHoder = holder as ImageViewHolder;
+            var bitmap = BitmapFactory.DecodeFile(photos[position].AbsolutePath, options);
+            imageViewHoder.ImageView.SetImageBitmap(bitmap);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            throw new NotImplementedException();
+            var imageView = new ImageView(context);
+            imageView.Rotation = 90f;
+            imageView.LayoutParameters = new ViewGroup.LayoutParams(200, 200);
+            var viewHolder = new ImageViewHolder(imageView, OnClick);
+            return viewHolder;
         }
     }
 }

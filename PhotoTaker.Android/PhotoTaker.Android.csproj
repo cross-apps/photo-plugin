@@ -93,6 +93,7 @@
     <Compile Include="Controls\MultiPhotoSelectioControlsOverlayView.cs" />
     <Compile Include="Controls\CurrentTakenPhotosOverlayView.cs" />
     <Compile Include="Adapters\ImageAdapter.cs" />
+    <Compile Include="Adapters\ImageViewHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

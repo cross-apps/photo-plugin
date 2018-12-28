@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Android.Content;
+using Android.Graphics;
 using Android.Widget;
 
 namespace PhotoTaker.Droid.Controls
@@ -24,6 +25,8 @@ namespace PhotoTaker.Droid.Controls
             takenPhotosOverlayView = new CurrentTakenPhotosOverlayView(context, photos);
             takenPhotosOverlayView.ImageTapped += TakenPhotosOverlayView_ImageTapped;
             takenPhotosOverlayView.SetBackgroundColor(Android.Graphics.Color.Green);
+
+            currentImage.LayoutParameters = new FrameLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
 
             AddView(currentImage);
             AddView(controlsOverlayView);
@@ -69,10 +72,10 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
-        void TakenPhotosOverlayView_ImageTapped(object sender, EventArgs e)
+        void TakenPhotosOverlayView_ImageTapped(object sender, int position)
         {
-            // 
-
+            var bitmap = BitmapFactory.DecodeFile(Photos[position].AbsolutePath);
+            currentImage.SetImageBitmap(bitmap);
         }
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
