@@ -15,14 +15,14 @@ namespace PhotoTaker.Droid.Listeners
 
         public CameraCaptureStillPictureSessionCallback(CameraWidget owner)
         {
-            this.owner = owner ?? throw new System.ArgumentNullException("owner");
+            this.owner = owner ?? throw new ArgumentNullException("owner");
         }
 
         public override void OnCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result)
         {
             // If something goes wrong with the save (or the handler isn't even 
             // registered, this code will toast a success message regardless...)
-            owner.mFile = new File(((Activity)owner.Context).GetExternalFilesDir(null), Guid.NewGuid().ToString() + ".jpg");
+            // owner.mFile = new File(((Activity)owner.Context).GetExternalFilesDir(null), Guid.NewGuid().ToString() + ".jpg");
             System.Diagnostics.Debug.WriteLine(owner.mFile.ToString());
 
             owner.UnlockFocus();

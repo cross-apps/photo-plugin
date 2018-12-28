@@ -9,14 +9,14 @@ namespace PhotoTaker.Droid.Listeners
 {
     public class ImageAvailableListener : Java.Lang.Object, ImageReader.IOnImageAvailableListener
     {
-        public ImageAvailableListener(CameraWidget fragment, File file)
-        {
-            owner = fragment ?? throw new ArgumentNullException("fragment");
-            this.file = file ?? throw new ArgumentNullException("file");
-        }
-
         readonly File file;
         readonly CameraWidget owner;
+
+        public ImageAvailableListener(CameraWidget cameraWidget, File file)
+        {
+            owner = cameraWidget ?? throw new ArgumentNullException("cameraWidget");
+            this.file = file ?? throw new ArgumentNullException("file");
+        }
 
         //public File File { get; private set; }
         //public Camera2BasicFragment Owner { get; private set; }
@@ -29,6 +29,9 @@ namespace PhotoTaker.Droid.Listeners
         // Saves a JPEG {@link Image} into the specified {@link File}.
         private class ImageSaver : Java.Lang.Object, IRunnable
         {
+
+            //#TODO must add image file to an ObservableCollection
+
             // The JPEG image
             private Image mImage;
 

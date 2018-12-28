@@ -131,7 +131,9 @@ namespace PhotoTaker.Droid.Controls
             // SetBackgroundColor(Color.Green);
             SetBackgroundColor(Color.Black);
 
+            mFile = new File(((Activity)Context).GetExternalFilesDir(null), Guid.NewGuid().ToString() + ".jpg");
             mCaptureCallback = new CameraCaptureListener(this);
+            mOnImageAvailableListener = new ImageAvailableListener(this, mFile);
         }
 
         static Size ChooseOptimalSize(Size[] choices, int textureViewWidth, 
@@ -347,7 +349,7 @@ namespace PhotoTaker.Droid.Controls
             }
             else
             {
-
+                // 
             }
         }
 
@@ -355,7 +357,6 @@ namespace PhotoTaker.Droid.Controls
         public void OpenCamera(int width, int height)
         {
             // check permissions...
-
             var activity = (Activity)context;
             if (ContextCompat.CheckSelfPermission(activity, Manifest.Permission.Camera) != Permission.Granted)
             {
