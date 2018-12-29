@@ -22,6 +22,8 @@ namespace PhotoTaker.Droid.Controls
             SetBackgroundColor(Android.Graphics.Color.Black);
             controlsOverlayView = new MultiPhotoSelectioControlsOverlayView(context);
             currentImage = new ImageView(context);
+            currentImage.SetAdjustViewBounds(true);
+            currentImage.SetScaleType(ImageView.ScaleType.CenterCrop);
 
             takenPhotosOverlayView = new CurrentTakenPhotosOverlayView(context, photos);
             takenPhotosOverlayView.ImageTapped += TakenPhotosOverlayView_ImageTapped;
@@ -40,6 +42,7 @@ namespace PhotoTaker.Droid.Controls
         public void SetLayoutParameters() 
         {
             takenPhotosOverlayView.LayoutParameters = new FrameLayout.LayoutParams(1080, 200, Android.Views.GravityFlags.Bottom);
+            currentImage.LayoutParameters = new FrameLayout.LayoutParams(Width, Height, Android.Views.GravityFlags.Bottom);
         }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
