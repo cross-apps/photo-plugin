@@ -27,7 +27,6 @@ namespace PhotoTaker.Droid.Controls
 
             takenPhotosOverlayView = new CurrentTakenPhotosOverlayView(context, photos);
             takenPhotosOverlayView.ImageTapped += TakenPhotosOverlayView_ImageTapped;
-            // takenPhotosOverlayView.SetBackgroundColor(Android.Graphics.Color.Green);
 
             currentImage.LayoutParameters = new FrameLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
 
@@ -60,7 +59,7 @@ namespace PhotoTaker.Droid.Controls
             }
             else
             {
-                SelectLastItem();
+                takenPhotosOverlayView.SelectLastItem();
             }
         }
 
@@ -111,14 +110,6 @@ namespace PhotoTaker.Droid.Controls
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
         {
             CloseButtonTouched?.Invoke(this, new EventArgs());
-        }
-
-        public void SelectLastItem() 
-        {
-            if (Photos.Count > 0) 
-            {
-
-            }
         }
     }
 }

@@ -32,7 +32,17 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
-        public EventHandler TrashButtonTouched { get; set; }
+        public event EventHandler TrashButtonTouched 
+        { 
+            add
+            {
+                trashButton.Handler += value;
+            }
+            remove
+            {
+                trashButton.Handler -= value;
+            }
+        }
         public EventHandler SendButtonTouched { get; set; }
 
         public MultiPhotoSelectioControlsOverlayView(Context context) : base(context)
