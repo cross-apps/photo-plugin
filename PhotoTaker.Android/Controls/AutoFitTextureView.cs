@@ -7,8 +7,8 @@ namespace PhotoTaker.Droid.Controls
 {
     public class AutoFitTextureView : TextureView
     {
-        private int mRatioWidth = 0;
-        private int mRatioHeight = 0;
+        int mRatioWidth = 0;
+        int mRatioHeight = 0;
 
         public AutoFitTextureView(Context context)
             : this(context, null)

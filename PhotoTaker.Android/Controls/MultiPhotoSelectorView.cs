@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Widget;
 
 namespace PhotoTaker.Droid.Controls
@@ -24,7 +25,7 @@ namespace PhotoTaker.Droid.Controls
 
             takenPhotosOverlayView = new CurrentTakenPhotosOverlayView(context, photos);
             takenPhotosOverlayView.ImageTapped += TakenPhotosOverlayView_ImageTapped;
-            takenPhotosOverlayView.SetBackgroundColor(Android.Graphics.Color.Green);
+            // takenPhotosOverlayView.SetBackgroundColor(Android.Graphics.Color.Green);
 
             currentImage.LayoutParameters = new FrameLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
 
@@ -44,18 +45,6 @@ namespace PhotoTaker.Droid.Controls
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
-
-            // takenPhotosOverlayView.LayoutParameters = new FrameLayout.LayoutParams(Width, 200, Android.Views.GravityFlags.Bottom);
-
-            /*
-            if (Width > 0) 
-            {
-                var parameters = new FrameLayout.LayoutParams(Width, 200, Android.Views.GravityFlags.Bottom);
-                UpdateViewLayout(takenPhotosOverlayView, parameters);
-                takenPhotosOverlayView.RequestLayout();
-                this.RequestLayout();
-            }
-            */
         }
 
         void ControlsOverlayView_TrashButtonTouched(object sender, EventArgs e)
@@ -74,8 +63,46 @@ namespace PhotoTaker.Droid.Controls
 
         void TakenPhotosOverlayView_ImageTapped(object sender, int position)
         {
+            if (currentImage.Drawable != null) 
+            {
+                if (currentImage.Drawable is BitmapDrawable bitmapDrawable) 
+                {
+                    var bitmapImage = bitmapDrawable.Bitmap;
+
+                    if (!bitmapImage.IsRecycled) 
+                    {
+                        currentImage.SetImageBitmap(null);
+                        bitmapImage.Recycle();
+                        bitmapImage.Dispose();
+                        bitmapImage = null;
+                    }
+                }
+
+                /*
+                rotatedBitmap.Recycle();
+                rotatedBitmap.Dispose();
+                rotatedBitmap = null;
+                */
+            }
+
             var bitmap = BitmapFactory.DecodeFile(Photos[position].AbsolutePath);
-            currentImage.SetImageBitmap(bitmap);
+
+            var matrix = new Matrix();
+            matrix.PostRotate(90);
+
+            var rotatedBitmap = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, false);
+
+            bitmap.Recycle();
+            bitmap.Dispose();
+            bitmap = null;
+
+            currentImage.SetImageBitmap(rotatedBitmap);
+
+            /*
+            rotatedBitmap.Recycle();
+            rotatedBitmap.Dispose();
+            rotatedBitmap = null;
+            */
         }
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
