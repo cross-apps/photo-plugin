@@ -34,6 +34,8 @@ namespace PhotoTaker.Droid.Listeners
             {
                 // Auto focus should be continuous for camera preview.
                 owner.mPreviewRequestBuilder.Set(CaptureRequest.ControlAfMode, (int)ControlAFMode.ContinuousPicture);
+                //# TODO Torch Mode Android
+                owner.mPreviewRequestBuilder.Set(CaptureRequest.FlashMode, (int)FlashMode.Torch);
                 // Flash is automatically enabled when necessary.
                 owner.SetAutoFlash(owner.mPreviewRequestBuilder);
 

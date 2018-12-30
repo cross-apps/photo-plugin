@@ -82,7 +82,7 @@ namespace PhotoTaker.Droid.Controls
 
         void ControlsOverlayView_FlashButtonTouched(object sender, EventArgs e)
         {
-            // 
+            cameraWidget.IsFlashEnabled = !cameraWidget.IsFlashEnabled;
         }
 
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)

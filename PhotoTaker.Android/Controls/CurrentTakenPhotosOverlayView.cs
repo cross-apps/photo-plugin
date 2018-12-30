@@ -19,13 +19,10 @@ namespace PhotoTaker.Droid.Controls
         public CurrentTakenPhotosOverlayView(Context context, ObservableCollection<Java.IO.File> Photos) : base(context)
         {
             photos = Photos;
-            photos.CollectionChanged += Photos_CollectionChanged;
 
             var linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.Horizontal, false);
             imageAdapter = new ImageAdapter(context, photos);
-
             imageAdapter.ItemClick += ImageAdapter_ItemClick;
-
 
             SetLayoutManager(linearLayoutManager);
             SetAdapter(imageAdapter);
@@ -35,11 +32,6 @@ namespace PhotoTaker.Droid.Controls
         {
             lastTappedIndex = position;
             ImageTapped?.Invoke(this, position);
-        }
-
-        void Photos_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            // NumColumns = photos.Count;
         }
 
         public void RemoveLastTappedCell() 
@@ -53,7 +45,7 @@ namespace PhotoTaker.Droid.Controls
 
         public void SelectLastItem() 
         {
-            this.FindViewHolderForAdapterPosition(photos.Count - 1).ItemView.PerformClick();
+            FindViewHolderForAdapterPosition(photos.Count - 1).ItemView.PerformClick();
         }
     }
 }

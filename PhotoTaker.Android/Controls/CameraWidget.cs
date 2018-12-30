@@ -117,6 +117,8 @@ namespace PhotoTaker.Droid.Controls
 
         CaptureRequest.Builder stillCaptureBuilder;
 
+        public bool IsFlashEnabled { get; set; } = true;
+
         public CameraWidget(Context Context, ObservableCollection<File> Photos) : base(Context)
         {
             context = Context;
@@ -375,6 +377,8 @@ namespace PhotoTaker.Droid.Controls
                 }
 
                 manager.OpenCamera(mCameraId, mStateCallback, mBackgroundHandler);
+                //#TODO Torch mode?
+                manager.SetTorchMode(mCameraId, true);
             }
             catch (CameraAccessException e)
             {
@@ -391,7 +395,7 @@ namespace PhotoTaker.Droid.Controls
         }
 
         // Closes the current {@link CameraDevice}.
-        private void CloseCamera()
+        void CloseCamera()
         {
             try
             {
@@ -426,7 +430,7 @@ namespace PhotoTaker.Droid.Controls
         }
 
         // Starts a background thread and its {@link Handler}.
-        private void StartBackgroundThread()
+        void StartBackgroundThread()
         {
             mBackgroundThread = new HandlerThread("CameraBackground");
             mBackgroundThread.Start();
@@ -434,7 +438,7 @@ namespace PhotoTaker.Droid.Controls
         }
 
         // Stops the background thread and its {@link Handler}.
-        private void StopBackgroundThread()
+        void StopBackgroundThread()
         {
             mBackgroundThread.QuitSafely();
             try
@@ -474,6 +478,7 @@ namespace PhotoTaker.Droid.Controls
                 List<Surface> surfaces = new List<Surface>();
                 surfaces.Add(surface);
                 surfaces.Add(mImageReader.Surface);
+
                 mCameraDevice.CreateCaptureSession(surfaces, new CameraCaptureSessionCallback(this), null);
             }
             catch (CameraAccessException e)
@@ -531,7 +536,7 @@ namespace PhotoTaker.Droid.Controls
         }
 
         // Lock the focus as the first step for a still image capture.
-        private void LockFocus()
+        void LockFocus()
         {
             try
             {
@@ -638,7 +643,8 @@ namespace PhotoTaker.Droid.Controls
         {
             if (flashSupported)
             {
-                requestBuilder.Set(CaptureRequest.ControlAeMode, (int)ControlAEMode.OnAutoFlash);
+                var mode = IsFlashEnabled ? (int)ControlAEMode.OnAutoFlash : (int)ControlAEMode.Off;
+                requestBuilder.Set(CaptureRequest.ControlAeMode, mode);
             }
         }
     }
