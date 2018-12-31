@@ -59,12 +59,13 @@ namespace PhotoTaker.Droid.Controls
             AddView(multiPhotoSelectorView);
         }
 
+        /*
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
             System.Diagnostics.Debug.WriteLine("Inception!");
-
             return base.OnInterceptTouchEvent(ev);
         }
+        */
 
         public override bool OnTouchEvent(MotionEvent e)
         {

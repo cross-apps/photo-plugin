@@ -580,13 +580,12 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
-        public float finger_spacing = 0;
-        public int zoom_level = 1;
+        public float fingerSpacing = 0;
+        public int zoomLevel = 1;
 
         public override bool OnTouchEvent(MotionEvent e)
         {
             // return base.OnTouchEvent(e);
-
             System.Diagnostics.Debug.WriteLine("cameraWidget", e);
 
             try
@@ -598,35 +597,36 @@ namespace PhotoTaker.Droid.Controls
 
                 Rect m = (Rect)characteristics.Get(CameraCharacteristics.SensorInfoActiveArraySize);
                 int action = (int)e.Action;
-                float current_finger_spacing = 0;
+                float currentFingerSpacing = 0;
 
-                if (e.PointerCount > 1) {
+                if (e.PointerCount > 1) 
+                {
                     // Multi touch logic
-                    current_finger_spacing = getFingerSpacing(e);
-                    if(finger_spacing != 0)
+                    currentFingerSpacing = getFingerSpacing(e);
+                    if(fingerSpacing != 0)
                     {
-                        if(current_finger_spacing > finger_spacing && maxzoom > zoom_level)
+                        if(currentFingerSpacing > fingerSpacing && maxzoom > zoomLevel)
                         {
-                            zoom_level++;
+                            zoomLevel++;
                         } 
-                        else if (current_finger_spacing < finger_spacing && zoom_level> 1)
+                        else if (currentFingerSpacing < fingerSpacing && zoomLevel> 1)
                         {
-                            zoom_level--;
+                            zoomLevel--;
                         }
 
                         int minW = (int)(m.Width() / maxzoom);
                         int minH = (int)(m.Height() / maxzoom);
                         int difW = m.Width() - minW;
                         int difH = m.Height() - minH;
-                        int cropW = difW / 100 * (int)zoom_level;
-                        int cropH = difH / 100 * (int)zoom_level;
+                        int cropW = difW / 100 * (int)zoomLevel;
+                        int cropH = difH / 100 * (int)zoomLevel;
                         cropW -= cropW & 3;
                         cropH -= cropH & 3;
                         Rect zoom = new Rect(cropW, cropH, m.Width() - cropW, m.Height() - cropH);
                         mPreviewRequestBuilder.Set(CaptureRequest.ScalerCropRegion, zoom);
                     }
 
-                    finger_spacing = current_finger_spacing;
+                    fingerSpacing = currentFingerSpacing;
                 } 
                 else
                 {
