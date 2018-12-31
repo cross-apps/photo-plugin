@@ -137,6 +137,13 @@ namespace PhotoTaker.Droid.Controls
             mOnImageAvailableListener = new ImageAvailableListener(this, Photos, Context);
         }
 
+
+        public override bool DispatchTouchEvent(MotionEvent e)
+        {
+            var result = base.DispatchTouchEvent(e);
+            return result;
+        }
+
         static Size ChooseOptimalSize(Size[] choices, int textureViewWidth, 
                                       int textureViewHeight, int maxWidth, 
                                       int maxHeight, Size aspectRatio)
@@ -571,6 +578,86 @@ namespace PhotoTaker.Droid.Controls
             {
                 e.PrintStackTrace();
             }
+        }
+
+        public float finger_spacing = 0;
+        public int zoom_level = 1;
+
+        public override bool OnTouchEvent(MotionEvent e)
+        {
+            // return base.OnTouchEvent(e);
+
+            System.Diagnostics.Debug.WriteLine("cameraWidget", e);
+
+            try
+            {
+                Activity activity = (Activity)context;
+                var manager = (CameraManager)context.GetSystemService(Context.CameraService);
+                CameraCharacteristics characteristics = manager.GetCameraCharacteristics(mCameraId);
+                float maxzoom = ((int)characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom)) * 10;
+
+                Rect m = (Rect)characteristics.Get(CameraCharacteristics.SensorInfoActiveArraySize);
+                int action = (int)e.Action;
+                float current_finger_spacing = 0;
+
+                if (e.PointerCount > 1) {
+                    // Multi touch logic
+                    current_finger_spacing = getFingerSpacing(e);
+                    if(finger_spacing != 0)
+                    {
+                        if(current_finger_spacing > finger_spacing && maxzoom > zoom_level)
+                        {
+                            zoom_level++;
+                        } 
+                        else if (current_finger_spacing < finger_spacing && zoom_level> 1)
+                        {
+                            zoom_level--;
+                        }
+
+                        int minW = (int)(m.Width() / maxzoom);
+                        int minH = (int)(m.Height() / maxzoom);
+                        int difW = m.Width() - minW;
+                        int difH = m.Height() - minH;
+                        int cropW = difW / 100 * (int)zoom_level;
+                        int cropH = difH / 100 * (int)zoom_level;
+                        cropW -= cropW & 3;
+                        cropH -= cropH & 3;
+                        Rect zoom = new Rect(cropW, cropH, m.Width() - cropW, m.Height() - cropH);
+                        mPreviewRequestBuilder.Set(CaptureRequest.ScalerCropRegion, zoom);
+                    }
+
+                    finger_spacing = current_finger_spacing;
+                } 
+                else
+                {
+
+                }
+
+                try 
+                {
+                    mCaptureSession.SetRepeatingRequest(mPreviewRequestBuilder.Build(), mCaptureCallback, null);
+                } 
+                catch (CameraAccessException ex) 
+                {
+                    ex.PrintStackTrace();
+                } 
+                catch (NullPointerException ex) {
+                    ex.PrintStackTrace();
+                }
+            } 
+            catch (CameraAccessException ex) 
+            {
+                throw new RuntimeException("can not access camera.", ex);
+            }
+
+            return true;
+        }
+
+        private float getFingerSpacing(MotionEvent e)
+        {
+            float x = e.GetX(0) - e.GetX(1);
+            float y = e.GetY(0) - e.GetY(1);
+            return (float)Math.Sqrt(x * x + y * y);
         }
 
         // Capture a still picture. This method should be called when we get a response in

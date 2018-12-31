@@ -38,6 +38,19 @@ namespace PhotoTaker.Droid.Controls
             RequestLayout();
         }
 
+        public override bool DispatchTouchEvent(MotionEvent e)
+        {
+            base.DispatchTouchEvent(e);
+            return false;
+        }
+
+        public override bool OnTouchEvent(MotionEvent e)
+        {
+            System.Diagnostics.Debug.WriteLine("onactionfit");
+            return true;
+        }
+
+
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);

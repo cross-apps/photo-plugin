@@ -59,6 +59,23 @@ namespace PhotoTaker.Droid.Controls
             AddView(multiPhotoSelectorView);
         }
 
+        public override bool OnInterceptTouchEvent(MotionEvent ev)
+        {
+            System.Diagnostics.Debug.WriteLine("Inception!");
+
+            return base.OnInterceptTouchEvent(ev);
+        }
+
+        public override bool OnTouchEvent(MotionEvent e)
+        {
+            System.Diagnostics.Debug.WriteLine(e.ToString());
+
+            controlsOverlayView.OnTouchEvent(e);
+            cameraWidget.OnTouchEvent(e);
+
+            return true;
+        }
+
         void MultiPhotoSelectorView_CloseButtonTouched(object sender, EventArgs e)
         {
             multiPhotoSelectorView.Visibility = ViewStates.Invisible;

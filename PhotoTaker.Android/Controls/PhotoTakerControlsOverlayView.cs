@@ -232,6 +232,12 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
+        public override bool DispatchTouchEvent(MotionEvent e)
+        {
+            base.DispatchTouchEvent(e);
+            return false;
+        }
+
         public override bool OnTouchEvent(MotionEvent e)
         {
             System.Diagnostics.Debug.WriteLine(e.ToString());
@@ -251,5 +257,6 @@ namespace PhotoTaker.Droid.Controls
 
             return true;
         }
+
     }
 }

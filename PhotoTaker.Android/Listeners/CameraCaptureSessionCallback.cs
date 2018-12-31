@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Graphics;
 using Android.Hardware.Camera2;
 using PhotoTaker.Droid.Controls;
 
@@ -38,6 +39,7 @@ namespace PhotoTaker.Droid.Listeners
                 owner.mPreviewRequestBuilder.Set(CaptureRequest.FlashMode, (int)FlashMode.Torch);
                 // Flash is automatically enabled when necessary.
                 owner.SetAutoFlash(owner.mPreviewRequestBuilder);
+                owner.mPreviewRequestBuilder.Set(CaptureRequest.ScalerCropRegion, new Rect(10, 10, 10, 10));
 
                 // Finally, we start displaying the camera preview.
                 owner.mPreviewRequest = owner.mPreviewRequestBuilder.Build();
