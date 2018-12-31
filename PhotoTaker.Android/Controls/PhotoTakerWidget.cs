@@ -61,12 +61,18 @@ namespace PhotoTaker.Droid.Controls
             seekBar.Thumb.SetTint(Color.White);
             seekBar.ProgressDrawable.SetColorFilter(Color.White, PorterDuff.Mode.SrcIn);
 
+            seekBar.ProgressChanged += SeekBar_ProgressChanged;
+
             AddView(cameraWidget.mTextureView);
             AddView(seekBar);
             AddView(controlsOverlayView);
             AddView(multiPhotoSelectorView);
         }
 
+        void SeekBar_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
+        {
+            cameraWidget.ChangeZoom(e.Progress);
+        }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {

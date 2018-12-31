@@ -580,6 +580,40 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
+        public void ChangeZoom (float zoomLevel) 
+        {
+            Activity activity = (Activity)context;
+            var manager = (CameraManager)context.GetSystemService(Context.CameraService);
+            CameraCharacteristics characteristics = manager.GetCameraCharacteristics(mCameraId);
+            float maxzoom = ((int)characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom)) * 10;
+
+            Rect rect = (Rect)characteristics.Get(CameraCharacteristics.SensorInfoActiveArraySize);
+
+            int minW = (int)(rect.Width() / maxzoom);
+            int minH = (int)(rect.Height() / maxzoom);
+            int difW = rect.Width() - minW;
+            int difH = rect.Height() - minH;
+            int cropW = difW / 100 * (int)zoomLevel;
+            int cropH = difH / 100 * (int)zoomLevel;
+            cropW -= cropW & 3;
+            cropH -= cropH & 3;
+            Rect zoom = new Rect(cropW, cropH, rect.Width() - cropW, rect.Height() - cropH);
+            mPreviewRequestBuilder.Set(CaptureRequest.ScalerCropRegion, zoom);
+
+            try
+            {
+                mCaptureSession.SetRepeatingRequest(mPreviewRequestBuilder.Build(), mCaptureCallback, null);
+            }
+            catch (CameraAccessException ex)
+            {
+                ex.PrintStackTrace();
+            }
+            catch (NullPointerException ex)
+            {
+                ex.PrintStackTrace();
+            }
+        }
+
         public float fingerSpacing = 0;
         public int zoomLevel = 1;
 
