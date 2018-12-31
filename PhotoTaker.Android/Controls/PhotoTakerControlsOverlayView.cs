@@ -19,8 +19,7 @@ namespace PhotoTaker.Droid.Controls
         SvgButton cameraButton;
 
         public int Counter { get; set; } = 0;
-
-        private bool timerActive = true;
+        bool timerActive = true;
 
         List<SvgButton> buttons = new List<SvgButton>();
 

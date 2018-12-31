@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Hardware;
 using Android.Views;
 using Android.Widget;
@@ -28,6 +29,8 @@ namespace PhotoTaker.Droid.Controls
         /// focus 
         /// </summary>
         PhotoTakerControlsOverlayView controlsOverlayView;
+
+        SeekBar seekBar;
 
         public int MaxImageCount { get; set; }
 
@@ -54,9 +57,24 @@ namespace PhotoTaker.Droid.Controls
             multiPhotoSelectorView.Visibility = ViewStates.Invisible;
             multiPhotoSelectorView.CloseButtonTouched += MultiPhotoSelectorView_CloseButtonTouched;
 
+            seekBar = new SeekBar(context);
+            seekBar.Thumb.SetTint(Color.White);
+            seekBar.ProgressDrawable.SetColorFilter(Color.White, PorterDuff.Mode.SrcIn);
+
             AddView(cameraWidget.mTextureView);
+            AddView(seekBar);
             AddView(controlsOverlayView);
             AddView(multiPhotoSelectorView);
+        }
+
+
+        protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        {
+            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+
+            var layoutParameters = new FrameLayout.LayoutParams(Width, 50, Android.Views.GravityFlags.Bottom);
+            layoutParameters.SetMargins(0, 0, 0, 300);
+            seekBar.LayoutParameters = layoutParameters;
         }
 
         /*
@@ -114,7 +132,7 @@ namespace PhotoTaker.Droid.Controls
             List<string> fileNames = new List<string>();
 
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var tmp = Path.Combine(documents, "..", "tmp");
+            var tmp = System.IO.Path.Combine(documents, "..", "tmp");
 
             /*
             foreach (var image in takenPhotosOverlayView.Photos)
