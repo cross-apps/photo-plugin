@@ -31,6 +31,8 @@ namespace PhotoTaker.iOS.Controls
         /// </summary>
         UIMultiPhotoSelectorView multiPhotoSelectorView;
 
+        UISlider slider;
+
         public int MaxImageCount { get; set; } = 60;
 
         public bool TakenImagesThumbnailVisible { get; set; } = false;
@@ -42,6 +44,13 @@ namespace PhotoTaker.iOS.Controls
         /// </summary>
         /// <value>The images.</value>
         public ObservableCollection<UIImage> Photos { get; set; }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            slider.Frame = new CGRect(10, Frame.Height - 140, Frame.Width - 20, 20);
+        }
 
         public UIPhotoTakerView(CameraOptions options)
         {
@@ -62,8 +71,14 @@ namespace PhotoTaker.iOS.Controls
             multiPhotoSelectorView = new UIMultiPhotoSelectorView(Frame, Photos);
             multiPhotoSelectorView.Hidden = true;
 
+            slider = new UISlider();
+            slider.ValueChanged += Slider_ValueChanged;
+            slider.MinValue = 1f;
+            slider.SendActionForControlEvents(UIControlEvent.TouchDragInside);
+
             AddSubview(cameraPreview);
             AddSubview(controlsOverlayView);
+            AddSubview(slider);
 
             // - AddSubview(latestPhotosOverlayView);
             AddSubview(takenPhotosOverlayView);
@@ -87,19 +102,30 @@ namespace PhotoTaker.iOS.Controls
             {
                 if (gesture.State == UIGestureRecognizerState.Began || gesture.State == UIGestureRecognizerState.Changed)
                 {
-                    cameraPreview.SetZoom((float)gesture.Scale);
+                    var result = cameraPreview.SetZoom((float)gesture.Scale);
+                    slider.ValueChanged -= Slider_ValueChanged;
+                    slider.Value = result;
+                    slider.ValueChanged += Slider_ValueChanged;
+
+                    System.Diagnostics.Debug.WriteLine("pinch gesture scale " + result);
                 }
 
                 System.Diagnostics.Debug.WriteLine(gesture.Scale);
-
                 gesture.Scale = 1.0f;
             });
 
+            slider.MaxValue = cameraPreview.GetMaxZoomFactor();
 
             UserInteractionEnabled = true;
 
             AddGestureRecognizer(panGestureRecognizer);
-            // AddGestureRecognizer(tapGestureRecognizer);
+        }
+
+        void Slider_ValueChanged(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("slider value cahnged "+ slider.Value);
+
+            cameraPreview.SetZoomAbsolute(slider.Value);
         }
 
         void Images_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -223,6 +249,7 @@ namespace PhotoTaker.iOS.Controls
         {
             cameraPreview.Draw(rect);
             controlsOverlayView.Draw(rect);
+            // slider.Draw(new CGRect(0, rect.Height - 220f, rect.Width, 100f));
             takenPhotosOverlayView.Draw(new CGRect(0, rect.Height - 220f, rect.Width, 100f));
             photoEditorView.Draw(rect);
             multiPhotoSelectorView.Draw(rect);

@@ -39,7 +39,30 @@ namespace PhotoTaker.iOS.Controls
             base.LayoutSubviews();
         }
 
-        public void SetZoom(float zoom) 
+        public int GetMaxZoomFactor() 
+        {
+            return (int)captureDeviceInput.Device.MaxAvailableVideoZoomFactor;
+        }
+
+        public void SetZoomAbsolute(float zoom) 
+        {
+            if (captureDeviceInput.Device.LockForConfiguration(out NSError error))
+            {
+                var result = zoom;
+                if (result >= captureDeviceInput.Device.MaxAvailableVideoZoomFactor)
+                {
+                    result = (float)captureDeviceInput.Device.MaxAvailableVideoZoomFactor;
+                }
+                else if (result <= captureDeviceInput.Device.MinAvailableVideoZoomFactor)
+                {
+                    result = (float)captureDeviceInput.Device.MinAvailableVideoZoomFactor;
+                }
+
+                captureDeviceInput.Device.VideoZoomFactor = result;
+            }
+        }
+
+        public float SetZoom(float zoom) 
         {
             if (captureDeviceInput.Device.LockForConfiguration(out NSError error)) 
             {
@@ -54,7 +77,10 @@ namespace PhotoTaker.iOS.Controls
                 }
 
                 captureDeviceInput.Device.VideoZoomFactor = result;
+                return (float)result;
             }
+
+            return 0;
         }
 
         void SetupLiveStream()
