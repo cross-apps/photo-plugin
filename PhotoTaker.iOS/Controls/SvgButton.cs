@@ -4,7 +4,7 @@ using UIKit;
 
 namespace PhotoTaker.iOS.Controls
 {
-    public class SvgButton
+    internal class SvgButton
     {
         SKMatrix scale = SKMatrix.MakeScale(0.8f, 0.8f);
 

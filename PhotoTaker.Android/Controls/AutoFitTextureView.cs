@@ -7,21 +7,20 @@ namespace PhotoTaker.Droid.Controls
 {
     public class AutoFitTextureView : TextureView
     {
-        int mRatioWidth = 0;
-        int mRatioHeight = 0;
+        int ratioWidth = 0;
+        int ratioWeight = 0;
 
-        public AutoFitTextureView(Context context)
-            : this(context, null)
+        public AutoFitTextureView(Context context) : this(context, null)
         {
 
         }
-        public AutoFitTextureView(Context context, IAttributeSet attrs)
-            : this(context, attrs, 0)
+
+        public AutoFitTextureView(Context context, IAttributeSet attrs) : this(context, attrs, 0)
         {
 
         }
-        public AutoFitTextureView(Context context, IAttributeSet attrs, int defStyle)
-            : base(context, attrs, defStyle)
+
+        public AutoFitTextureView(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
         {
 
         }
@@ -33,8 +32,8 @@ namespace PhotoTaker.Droid.Controls
                 throw new ArgumentException("Size cannot be negative.");
             }
                 
-            mRatioWidth = width;
-            mRatioHeight = height;
+            ratioWidth = width;
+            ratioWeight = height;
             RequestLayout();
         }
 
@@ -46,29 +45,29 @@ namespace PhotoTaker.Droid.Controls
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            System.Diagnostics.Debug.WriteLine("onactionfit");
             return true;
         }
-
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+
             int width = MeasureSpec.GetSize(widthMeasureSpec);
             int height = MeasureSpec.GetSize(heightMeasureSpec);
-            if (mRatioWidth == 0 || mRatioHeight == 0)
+
+            if (ratioWidth == 0 || ratioWeight == 0)
             {
                 SetMeasuredDimension(width, height);
             }
             else
             {
-                if (width < (float)height * mRatioWidth / (float)mRatioHeight)
+                if (width < (float)height * ratioWidth / (float)ratioWeight)
                 {
-                    SetMeasuredDimension(height * mRatioWidth / mRatioHeight, height);
+                    SetMeasuredDimension(height * ratioWidth / ratioWeight, height);
                 }
                 else
                 {
-                    SetMeasuredDimension(width, width * mRatioHeight / mRatioWidth);
+                    SetMeasuredDimension(width, width * ratioWeight / ratioWidth);
                 }
             }
         }

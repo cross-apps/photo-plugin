@@ -27,7 +27,7 @@ using System.Collections.ObjectModel;
 
 namespace PhotoTaker.Droid.Controls
 {
-    public class CameraWidget : View
+    internal class CameraWidget : View
     {
         static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
 
@@ -36,7 +36,6 @@ namespace PhotoTaker.Droid.Controls
         public static readonly int REQUEST_CAMERA_PERMISSION = 1;
 
         // Tag for the {@link Log}.
-
         // Camera state: Showing camera preview.
         public const int STATE_PREVIEW = 0;
 
@@ -119,6 +118,10 @@ namespace PhotoTaker.Droid.Controls
 
         public bool IsFlashEnabled { get; set; } = true;
 
+        public float fingerSpacing = 0;
+
+        public int zoomLevel = 1;
+
         public CameraWidget(Context Context, ObservableCollection<File> Photos) : base(Context)
         {
             context = Context;
@@ -136,7 +139,6 @@ namespace PhotoTaker.Droid.Controls
             mCaptureCallback = new CameraCaptureListener(this);
             mOnImageAvailableListener = new ImageAvailableListener(this, Photos, Context);
         }
-
 
         public override bool DispatchTouchEvent(MotionEvent e)
         {
@@ -548,7 +550,6 @@ namespace PhotoTaker.Droid.Controls
             try
             {
                 // This is how to tell the camera to lock focus.
-
                 mPreviewRequestBuilder.Set(CaptureRequest.ControlAfTrigger, (int)ControlAFTrigger.Start);
                 // Tell #mCaptureCallback to wait for the lock.
                 mState = STATE_WAITING_LOCK;
@@ -614,14 +615,11 @@ namespace PhotoTaker.Droid.Controls
             }
         }
 
-        public float fingerSpacing = 0;
-        public int zoomLevel = 1;
+
 
         public override bool OnTouchEvent(MotionEvent e)
         {
             // return base.OnTouchEvent(e);
-            System.Diagnostics.Debug.WriteLine("cameraWidget", e);
-
             try
             {
                 Activity activity = (Activity)context;
@@ -662,10 +660,6 @@ namespace PhotoTaker.Droid.Controls
 
                     fingerSpacing = currentFingerSpacing;
                 } 
-                else
-                {
-
-                }
 
                 try 
                 {

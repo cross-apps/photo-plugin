@@ -8,7 +8,7 @@ namespace PhotoTaker.iOS.Controls
     /// <summary>
     /// Used for editing an image or deleting it from series.
     /// </summary>
-    public class UIPhotoEditorView : UIView
+    internal class UIPhotoEditorView : UIView
     {
         UIPhotoEditorControlsOverlayView controlsOverlayView = null;
         UIImageView currentImage = null;

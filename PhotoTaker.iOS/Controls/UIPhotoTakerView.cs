@@ -106,11 +106,7 @@ namespace PhotoTaker.iOS.Controls
                     slider.ValueChanged -= Slider_ValueChanged;
                     slider.Value = result;
                     slider.ValueChanged += Slider_ValueChanged;
-
-                    System.Diagnostics.Debug.WriteLine("pinch gesture scale " + result);
                 }
-
-                System.Diagnostics.Debug.WriteLine(gesture.Scale);
                 gesture.Scale = 1.0f;
             });
 
@@ -123,8 +119,6 @@ namespace PhotoTaker.iOS.Controls
 
         void Slider_ValueChanged(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("slider value cahnged "+ slider.Value);
-
             cameraPreview.SetZoomAbsolute(slider.Value);
         }
 

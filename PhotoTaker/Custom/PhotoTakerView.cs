@@ -10,12 +10,8 @@ namespace PhotoTaker.Custom
             nameof(Camera), typeof(CameraOptions), typeof(PhotoTakerView), CameraOptions.Rear
         );
 
-        public static BindableProperty GalleryVisibleProperty = BindableProperty.Create(
-            nameof(GalleryVisible), typeof(bool), typeof(PhotoTakerView), false
-        );
-
         public static BindableProperty MaxImageCountProperty = BindableProperty.Create(
-            nameof(MaxImageCount), typeof(int), typeof(PhotoTakerView), 6
+            nameof(MaxImageCount), typeof(int), typeof(PhotoTakerView), 0
         );
 
         public static BindableProperty CameraSwithVisibleProperty = BindableProperty.Create(
@@ -25,6 +21,16 @@ namespace PhotoTaker.Custom
         public static BindableProperty TakenImagesThunbmailVisibleProperty = BindableProperty.Create(
             nameof(TakenImagesThumbnailVisible), typeof(bool), typeof(PhotoTakerView), false
         );
+
+        public static BindableProperty SliderVisibleProperty = BindableProperty.Create(
+            nameof(SliderVisible), typeof(bool), typeof(PhotoTakerView), false
+        );
+
+        public bool SliderVisible  
+        {
+            get { return (bool)GetValue(SliderVisibleProperty); }
+            set { SetValue(SliderVisibleProperty, value); }
+        }
 
         public bool CameraSwitchVisible 
         {
@@ -36,12 +42,6 @@ namespace PhotoTaker.Custom
         {
             get { return (int)GetValue(MaxImageCountProperty); }
             set { SetValue(MaxImageCountProperty, value); }
-        }
-
-        public bool GalleryVisible 
-        {
-            get { return (bool)GetValue(GalleryVisibleProperty); }
-            set { SetValue(GalleryVisibleProperty, value); }
         }
 
         public bool TakenImagesThumbnailVisible 

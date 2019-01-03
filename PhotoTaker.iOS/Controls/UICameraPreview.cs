@@ -10,7 +10,7 @@ using UIKit;
 
 namespace PhotoTaker.iOS.Controls
 {
-    public class UICameraPreview: UIView
+    internal class UICameraPreview: UIView
     {
         AVCaptureVideoPreviewLayer previewLayer;
         CameraOptions cameraOptions;

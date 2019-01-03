@@ -6,7 +6,7 @@ using UIKit;
 
 namespace PhotoTaker.iOS.Controls
 {
-    public class UILatestPhotosOverlayView : UICollectionView, IUICollectionViewDataSource
+    internal class UILatestPhotosOverlayView : UICollectionView, IUICollectionViewDataSource
     {
         static NSString imageViewCellId = new NSString("UIImageViewCell");
         PHFetchResult fetchResults = null;

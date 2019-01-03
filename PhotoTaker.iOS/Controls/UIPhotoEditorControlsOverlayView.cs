@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace PhotoTaker.iOS.Controls
 {
-    public class UIPhotoEditorControlsOverlayView : SKCanvasView
+    internal class UIPhotoEditorControlsOverlayView : SKCanvasView
     {
         SvgButton trashButton = new SvgButton("trash_button.svg", "trash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
         SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
@@ -100,16 +100,12 @@ namespace PhotoTaker.iOS.Controls
             {
                 TrashButtonTouched?.Invoke(this, new EventArgs());
                 // fire Event
-               // TakeButtonTouched?.Invoke(this, new EventArgs());
-
-                System.Diagnostics.Debug.WriteLine("trash button touched!");
+                // TakeButtonTouched?.Invoke(this, new EventArgs());
             }
 
             if (closeButton.TouchUpInside(rect))
             {
                 CloseButtonTouched?.Invoke(this, new EventArgs());
-
-                System.Diagnostics.Debug.WriteLine("close button touched!");
             }
 
             trashButton.Touched = false;

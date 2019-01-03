@@ -12,7 +12,7 @@ namespace PhotoTaker.iOS.Controls
     /// <summary>
     /// Custom controlls for deleten item from series
     /// </summary>
-    public class UIMultiPhotoSelectorControlsOverlayView : SKCanvasView
+    internal class UIMultiPhotoSelectorControlsOverlayView : SKCanvasView
     {
         readonly SKPaint paint = new SKPaint();
 

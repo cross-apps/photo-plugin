@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Foundation;
 using PhotoTaker.Custom;
 using PhotoTaker.iOS.Controls;
 using PhotoTaker.iOS.Renderer;
@@ -20,6 +21,8 @@ namespace PhotoTaker.iOS.Renderer
 
             if (Control == null)
             {
+                String BundleId = NSBundle.MainBundle.BundleIdentifier;
+
                 formsView = e.NewElement;
                 photoTakerView = new UIPhotoTakerView(e.NewElement.Camera);
                 photoTakerView.MaxImageCount = e.NewElement.MaxImageCount;

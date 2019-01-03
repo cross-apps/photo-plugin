@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace PhotoTaker.iOS.Controls
 {
-    public class UIPhotoTakerControlsOverlayView : SKCanvasView 
+    internal class UIPhotoTakerControlsOverlayView : SKCanvasView 
     {
         SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
         SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));

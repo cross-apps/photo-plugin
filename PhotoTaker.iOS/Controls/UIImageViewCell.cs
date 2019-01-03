@@ -6,7 +6,7 @@ using UIKit;
 
 namespace PhotoTaker.iOS.Controls
 {
-    public class UIImageViewCell : UICollectionViewCell
+    internal class UIImageViewCell : UICollectionViewCell
     {
         public static NSString CellId = new NSString("UIImageViewCell");
 

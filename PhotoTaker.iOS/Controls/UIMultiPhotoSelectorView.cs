@@ -9,7 +9,7 @@ namespace PhotoTaker.iOS.Controls
     /// <summary>
     /// Dsiplay all taken images as thumbnails and allow deletion and send
     /// </summary>
-    public class UIMultiPhotoSelectorView : UIView
+    internal class UIMultiPhotoSelectorView : UIView
     {
         UIImageView currentImage = null;
         UICurrentTakenPhotosOverlayView takenPhotosOverlayView;

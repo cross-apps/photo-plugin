@@ -3,7 +3,7 @@ using UIKit;
 
 namespace PhotoTaker.iOS.Controls
 {
-    public class UIHorizontalScrollLayout : UICollectionViewFlowLayout
+    internal class UIHorizontalScrollLayout : UICollectionViewFlowLayout
     {
         public UIHorizontalScrollLayout()
         {
