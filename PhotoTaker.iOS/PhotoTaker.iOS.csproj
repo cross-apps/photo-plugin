@@ -160,8 +160,12 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\test.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\test.imageset\Unterschrift_small.jpg" />
+    <ImageAsset Include="Assets.xcassets\test.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\test.imageset\Unterschrift_small.jpg">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
