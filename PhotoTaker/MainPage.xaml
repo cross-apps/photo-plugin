@@ -2,8 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:local="clr-namespace:PhotoTaker" 
-             xmlns:custom="clr-namespace:PhotoTaker.Custom"
-             xmlns:effects="clr-namespace:PhotoTaker.Effects"
+             xmlns:crossapps="clr-namespace:CrossAppsPhotoPlugin;assembly=CrossAppsPhotoPlugin"
+             xmlns:effects="clr-namespace:CrossAppsPhotoPlugin.Effects;assembly=CrossAppsPhotoPlugin"
              Title="MainPage"
              x:Class="PhotoTaker.MainPage">
     <ContentPage.Effects>
@@ -15,7 +15,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <custom:PhotoTakerView x:Name="photoTakerView" Grid.Row="0" Camera="Rear" 
+        <crossapps:PhotoTakerView x:Name="photoTakerView" Grid.Row="0" Camera="Front"
                                HorizontalOptions="FillAndExpand" MaxImageCount="60" VerticalOptions="FillAndExpand"/>
     </Grid>
 </ContentPage>

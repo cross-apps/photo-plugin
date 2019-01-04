@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace PhotoTaker.Custom
+namespace CrossAppsPhotoPlugin
 {
     public class PhotoTakerView : View
     {
@@ -26,25 +26,25 @@ namespace PhotoTaker.Custom
             nameof(SliderVisible), typeof(bool), typeof(PhotoTakerView), false
         );
 
-        public bool SliderVisible  
+        public bool SliderVisible
         {
             get { return (bool)GetValue(SliderVisibleProperty); }
             set { SetValue(SliderVisibleProperty, value); }
         }
 
-        public bool CameraSwitchVisible 
+        public bool CameraSwitchVisible
         {
             get { return (bool)GetValue(CameraSwithVisibleProperty); }
             set { SetValue(CameraSwithVisibleProperty, value); }
         }
 
-        public int MaxImageCount 
+        public int MaxImageCount
         {
             get { return (int)GetValue(MaxImageCountProperty); }
             set { SetValue(MaxImageCountProperty, value); }
         }
 
-        public bool TakenImagesThumbnailVisible 
+        public bool TakenImagesThumbnailVisible
         {
             get { return (bool)GetValue(TakenImagesThunbmailVisibleProperty); }
             set { SetValue(TakenImagesThunbmailVisibleProperty, value); }

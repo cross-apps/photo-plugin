@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace PhotoTaker.Custom
+namespace CrossAppsPhotoPlugin
 {
     public static class CrossAppsLicenseManager
     {
         public static string LicenseKey { get; set; }
         public static string AppName { get; set; }
 
-        public static bool IsValid() 
+        public static bool IsValid()
         {
             bool isValid = false;
 
@@ -24,7 +25,7 @@ namespace PhotoTaker.Custom
                 result += String.Format("{0:x2}", x);
             }
 
-            if (result.ToLowerInvariant() == LicenseKey.ToLowerInvariant()) 
+            if (result.ToLowerInvariant() == LicenseKey.ToLowerInvariant())
             {
                 isValid = true;
             }
