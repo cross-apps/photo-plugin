@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -74,26 +74,6 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderer\PhotoTakerRenderer.cs" />
-    <Compile Include="Controls\PhotoTakerWidget.cs" />
-    <Compile Include="Controls\PhotoTakerControlsOverlayView.cs" />
-    <Compile Include="Controls\CameraWidget.cs" />
-    <Compile Include="Listeners\Camera2BasicSurfaceTextureListener.cs" />
-    <Compile Include="Listeners\CameraCaptureListener.cs" />
-    <Compile Include="Listeners\CameraCaptureSessionCallback.cs" />
-    <Compile Include="Listeners\CameraCaptureStillPictureSessionCallback.cs" />
-    <Compile Include="Listeners\CameraStateListener.cs" />
-    <Compile Include="Listeners\ImageAvailableListener.cs" />
-    <Compile Include="Controls\AutoFitTextureView.cs" />
-    <Compile Include="Controls\CompareSizesByArea.cs" />
-    <Compile Include="Controls\ConfirmationDialog.cs" />
-    <Compile Include="Controls\ErrorDialog.cs" />
-    <Compile Include="Controls\SvgButton.cs" />
-    <Compile Include="Controls\MultiPhotoSelectorView.cs" />
-    <Compile Include="Controls\MultiPhotoSelectioControlsOverlayView.cs" />
-    <Compile Include="Controls\CurrentTakenPhotosOverlayView.cs" />
-    <Compile Include="Adapters\ImageAdapter.cs" />
-    <Compile Include="Adapters\ImageViewHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -120,44 +100,21 @@
     <AndroidResource Include="Resources\layout\fragment_camera2_basic.axml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable\" />
     <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Resources\drawable-xhdpi\" />
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
-    <Folder Include="Renderer\" />
-    <Folder Include="Controls\" />
-    <Folder Include="Listeners\" />
-    <Folder Include="Adapters\" />
+    <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CrossAppsPhotoPlugin.Android\CrossAppsPhotoPlugin.Android.csproj">
+      <Project>{57d0b07f-4f4f-471c-9bca-e4a6275cea05}</Project>
+      <Name>CrossAppsPhotoPlugin.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PhotoTaker\PhotoTaker.csproj">
       <Project>{3EB60500-6B05-4CAC-8339-8304C19AA370}</Project>
       <Name>PhotoTaker</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\camera_button.svg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Resources\close_button.svg" />
-    <AndroidAsset Include="Resources\close_button_touched.svg" />
-    <AndroidAsset Include="Assets\close_button.svg" />
-    <AndroidAsset Include="Assets\close_button_touched.svg" />
-    <AndroidAsset Include="Assets\camera_button_front.svg" />
-    <AndroidAsset Include="Assets\camera_button.svg" />
-    <AndroidAsset Include="Assets\counter_button.svg" />
-    <AndroidAsset Include="Assets\flash_button_touched.svg" />
-    <AndroidAsset Include="Assets\flash_button.svg" />
-    <AndroidAsset Include="Assets\gallery_button.svg" />
-    <AndroidAsset Include="Assets\gray_circle.svg" />
-    <AndroidAsset Include="Assets\image.svg" />
-    <AndroidAsset Include="Assets\send_button_touched.svg" />
-    <AndroidAsset Include="Assets\send_button.svg" />
-    <AndroidAsset Include="Assets\take_button_touched.svg" />
-    <AndroidAsset Include="Assets\take_button.svg" />
-    <AndroidAsset Include="Assets\trash_button_touched.svg" />
-    <AndroidAsset Include="Assets\trash_button.svg" />
-  </ItemGroup>
- <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

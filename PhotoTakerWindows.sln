@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoTaker.UITests", "Photo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoTaker", "PhotoTaker\PhotoTaker.csproj", "{3EB60500-6B05-4CAC-8339-8304C19AA370}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossAppsPhotoPlugin", "CrossAppsPhotoPlugin\CrossAppsPhotoPlugin.csproj", "{3A725DD0-73AF-42E4-B837-718DDA710658}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossAppsPhotoPlugin", "CrossAppsPhotoPlugin\CrossAppsPhotoPlugin.csproj", "{3A725DD0-73AF-42E4-B837-718DDA710658}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossAppsPhotoPlugin.iOS", "CrossAppsPhotoPlugin.iOS\CrossAppsPhotoPlugin.iOS.csproj", "{E71F3053-056C-4381-9638-048ED73BDFF6}"
 EndProject
@@ -50,6 +50,7 @@ Global
 		{B1FCEE95-029F-47D1-BF10-78A040CB9EB0}.AppStore|iPhoneSimulator.Deploy.0 = Release|Any CPU
 		{B1FCEE95-029F-47D1-BF10-78A040CB9EB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B1FCEE95-029F-47D1-BF10-78A040CB9EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1FCEE95-029F-47D1-BF10-78A040CB9EB0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{B1FCEE95-029F-47D1-BF10-78A040CB9EB0}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{B1FCEE95-029F-47D1-BF10-78A040CB9EB0}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{B1FCEE95-029F-47D1-BF10-78A040CB9EB0}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
