@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Assets\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\SvgButton.cs" />
@@ -92,23 +93,23 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="camera_button.svg" />
-    <Content Include="camera_button_front.svg" />
-    <Content Include="close_button.svg" />
-    <Content Include="close_button_touched.svg" />
-    <Content Include="counter_button.svg" />
-    <Content Include="flash_button.svg" />
-    <Content Include="flash_button_touched.svg" />
     <Content Include="freesample.svg" />
-    <Content Include="gallery_button.svg" />
     <Content Include="gray_circle.svg" />
     <Content Include="image.svg" />
-    <Content Include="send_button.svg" />
-    <Content Include="send_button_touched.svg" />
-    <Content Include="take_button.svg" />
-    <Content Include="take_button_touched.svg" />
-    <Content Include="trash_button.svg" />
-    <Content Include="trash_button_touched.svg" />
+    <Content Include="Assets\flash_button.svg" />
+    <Content Include="Assets\flash_button_touched.svg" />
+    <Content Include="Assets\camera_button.svg" />
+    <Content Include="Assets\camera_button_front.svg" />
+    <Content Include="Assets\close_button.svg" />
+    <Content Include="Assets\close_button_touched.svg" />
+    <Content Include="Assets\counter_button.svg" />
+    <Content Include="Assets\take_button.svg" />
+    <Content Include="Assets\take_button_touched.svg" />
+    <Content Include="Assets\send_button.svg" />
+    <Content Include="Assets\send_button_touched.svg" />
+    <Content Include="Assets\trash_button.svg" />
+    <Content Include="Assets\trash_button_touched.svg" />
+    <Content Include="Assets\gallery_button.svg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

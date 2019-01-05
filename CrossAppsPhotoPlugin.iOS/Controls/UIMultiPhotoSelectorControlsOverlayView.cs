@@ -16,9 +16,9 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
     {
         readonly SKPaint paint = new SKPaint();
 
-        SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        SvgButton trashButton = new SvgButton("trash_button.svg", "trash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        SvgButton sendButton = new SvgButton("send_button.svg", "send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton closeButton = new SvgButton("Assets/close_button.svg", "Assets/close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton trashButton = new SvgButton("Assets/trash_button.svg", "Assets/trash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton sendButton = new SvgButton("Assets/send_button.svg", "Assets/send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
 
         List<SvgButton> buttons = new List<SvgButton>();
 

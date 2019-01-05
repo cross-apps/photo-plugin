@@ -10,8 +10,8 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 {
     internal class UIPhotoEditorControlsOverlayView : SKCanvasView
     {
-        SvgButton trashButton = new SvgButton("trash_button.svg", "trash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton trashButton = new SvgButton("Assets/trash_button.svg", "Assets/trash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton closeButton = new SvgButton("Assets/close_button.svg", "Assets/close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
 
         public EventHandler CloseButtonTouched { get; set; }
         public EventHandler TrashButtonTouched { get; set; }
