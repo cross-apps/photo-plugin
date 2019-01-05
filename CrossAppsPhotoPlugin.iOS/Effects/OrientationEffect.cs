@@ -5,7 +5,7 @@ using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ResolutionGroupName("PhotoTaker")]
+[assembly: ResolutionGroupName("CrossAppsPhotoPlugin")]
 [assembly: ExportEffect(typeof(OrientationEffect), "OrientationEffect")]
 namespace CrossAppsPhotoPlugin.iOS.Effects
 {

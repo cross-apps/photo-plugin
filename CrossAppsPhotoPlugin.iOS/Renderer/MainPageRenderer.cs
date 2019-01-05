@@ -8,6 +8,7 @@ using Xamarin.Forms.Platform.iOS;
 // [assembly: ExportRenderer(typeof(MainPage), typeof(MainPageRenderer))]
 namespace CrossAppsPhotoPlugin.iOS.Renderer
 {
+    /*
     public class MainPageRenderer : PageRenderer
     {
         public override bool ShouldAutorotate()
@@ -15,4 +16,5 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
             return false;
         }
     }
+    */
 }

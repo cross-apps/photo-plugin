@@ -23,6 +23,8 @@ namespace PhotoTaker.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             Xamarin.Calabash.Start();
+            CrossAppsPhotoPlugin.iOS.Renderer.PhotoTakerRenderer.Init();
+
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 

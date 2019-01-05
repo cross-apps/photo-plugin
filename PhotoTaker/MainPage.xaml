@@ -14,7 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
+        
         <crossapps:PhotoTakerView x:Name="photoTakerView" Grid.Row="0" Camera="Front"
                                HorizontalOptions="FillAndExpand" MaxImageCount="60" VerticalOptions="FillAndExpand"/>
     </Grid>

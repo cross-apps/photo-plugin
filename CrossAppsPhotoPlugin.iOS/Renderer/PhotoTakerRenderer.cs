@@ -15,6 +15,16 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
         UIPhotoTakerView photoTakerView;
         PhotoTakerView formsView;
 
+        public PhotoTakerRenderer()
+        {
+
+        }
+
+        new public static void Init() 
+        {
+
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<PhotoTakerView> e)
         {
             base.OnElementChanged(e);

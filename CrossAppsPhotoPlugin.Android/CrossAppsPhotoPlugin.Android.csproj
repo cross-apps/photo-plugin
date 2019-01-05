@@ -167,7 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrossAppsPhotoPlugin\CrossAppsPhotoPlugin.csproj">
-      <Project>{3A725DD0-73AF-42E4-B837-718DDA710658}</Project>
+      <Project>{458A034B-7CAB-4F2D-9149-FAB5E30290A4}</Project>
       <Name>CrossAppsPhotoPlugin</Name>
     </ProjectReference>
   </ItemGroup>
