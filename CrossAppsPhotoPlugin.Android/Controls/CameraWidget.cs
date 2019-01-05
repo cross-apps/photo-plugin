@@ -132,8 +132,8 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             mStateCallback = new CameraStateListener(this);
             StartBackgroundThread();
 
-            mTextureView.SetBackgroundColor(Color.Black);
-            // SetBackgroundColor(Color.Green);
+            // mTextureView.SetBackgroundColor(Color.Black);
+
             SetBackgroundColor(Color.Black);
 
             mCaptureCallback = new CameraCaptureListener(this);
