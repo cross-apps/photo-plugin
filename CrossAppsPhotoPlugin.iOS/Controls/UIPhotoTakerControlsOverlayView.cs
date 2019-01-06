@@ -44,7 +44,7 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 
             buttons.AddRange(new [] { 
                 closeButton, galleryButton, takeButton, sendButton, 
-                counterButton,flashButton,cameraButton });
+                counterButton,flashButton, cameraButton });
 
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / 60), () =>
             {
@@ -68,17 +68,19 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
                 paint.IsAntialias = true;
 
                 float scale = 1.5f;
+                float fontScale = 1f;
 
                 // 667 iphone 8, // 813 iphone x // 736 iphone 8 plus
                 var max = (float)UIScreen.MainScreen.Bounds.Height;
 
                 if (UIScreen.MainScreen.Scale > 2) 
                 {
+                    fontScale = 1.5f;
                     scale *= 1.5f;
                 }
 
-                var x = e.Info.Width / 2 - (takeButton.SvgDefault.Picture.CullRect.Width * scale) / 2;
-                var y = e.Info.Height - 2 * takeButton.SvgDefault.Picture.CullRect.Height;
+                var x = e.Info.Width / 2 - (takeButton.SvgTouched.Picture.CullRect.Width * scale) / 2;
+                var y = e.Info.Height - takeButton.SvgTouched.Picture.CullRect.Height * takeButton.scale.ScaleY - 50f;
 
                 float xOffset = 0f;
                 if (max > 800) 
@@ -90,6 +92,7 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
                 surface.Canvas.Translate(x, y);
 
                 takeButton.Draw(surface.Canvas, x, y, paint);
+
 
                 x = 0 + 30f + xOffset;
 
@@ -104,15 +107,15 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
                     StrokeWidth = 2f,
                     Style = SKPaintStyle.Fill,
                     TextAlign = SKTextAlign.Center,
-                    TextSize = 48
+                    TextSize = 48 * fontScale
                 };
 
                 var textBounds = new SKRect();
                 paintText.MeasureText(Counter.ToString(), ref textBounds);
 
                 surface.Canvas.ResetMatrix();
-                var halfButton = (galleryButton.SvgDefault.Picture.CullRect.Width * 2.5f) / 2;
-                var halfHeightButton = (galleryButton.SvgDefault.Picture.CullRect.Height * 2.5f) / 2;
+                var halfButton = (galleryButton.SvgDefault.Picture.CullRect.Width *  galleryButton.scale.ScaleX) / 2;
+                var halfHeightButton = (galleryButton.SvgDefault.Picture.CullRect.Height * galleryButton.scale.ScaleY) / 2;
 
                 var coord = new SKPoint(galleryPositionX + textBounds.Left + halfButton,
                                         galleryPositionY + halfHeightButton + textBounds.Top * -1 - textBounds.Height / 2);
@@ -128,7 +131,7 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
                 float sendPoisitonY = y + (cameraButton.SvgTouched.Picture.CullRect.Height * scale);
                 sendButton.Draw(surface.Canvas, sendPositionX, sendPoisitonY, paint);
 
-                float flashPositionX = e.Info.Width - xOffset - flashButton.SvgTouched.Picture.CullRect.Width;
+                float flashPositionX = e.Info.Width - xOffset - flashButton.SvgTouched.Picture.CullRect.Width * flashButton.scale.ScaleX;
                 float flashPositionY = xOffset + flashButton.SvgTouched.Picture.CullRect.Height;
                 flashButton.Draw(surface.Canvas, flashPositionX, flashPositionY, paint);
 

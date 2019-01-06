@@ -6,7 +6,7 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 {
     internal class SvgButton
     {
-        SKMatrix scale = SKMatrix.MakeScale(0.8f, 0.8f);
+        public SKMatrix scale = SKMatrix.MakeScale(0.8f, 0.8f);
 
         public bool Touched { get; set; } = false;
 
