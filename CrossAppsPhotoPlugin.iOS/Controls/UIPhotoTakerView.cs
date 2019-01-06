@@ -31,7 +31,7 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
         /// </summary>
         UIMultiPhotoSelectorView multiPhotoSelectorView;
 
-        UISlider slider;
+        // UISlider slider;
 
         public int MaxImageCount { get; set; } = 60;
 
@@ -49,7 +49,7 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
         {
             base.LayoutSubviews();
 
-            slider.Frame = new CGRect(10, Frame.Height - 140, Frame.Width - 20, 20);
+            // slider.Frame = new CGRect(10, Frame.Height - 140, Frame.Width - 20, 20);
         }
 
         public UIPhotoTakerView(CameraOptions options)
@@ -70,15 +70,15 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 
             multiPhotoSelectorView = new UIMultiPhotoSelectorView(Frame, Photos);
             multiPhotoSelectorView.Hidden = true;
-
+            /*
             slider = new UISlider();
             slider.ValueChanged += Slider_ValueChanged;
             slider.MinValue = 1f;
             slider.SendActionForControlEvents(UIControlEvent.TouchDragInside);
-
+            */
             AddSubview(cameraPreview);
             AddSubview(controlsOverlayView);
-            AddSubview(slider);
+            // AddSubview(slider);
 
             // - AddSubview(latestPhotosOverlayView);
             AddSubview(takenPhotosOverlayView);
@@ -103,24 +103,28 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
                 if (gesture.State == UIGestureRecognizerState.Began || gesture.State == UIGestureRecognizerState.Changed)
                 {
                     var result = cameraPreview.SetZoom((float)gesture.Scale);
+                    /*
                     slider.ValueChanged -= Slider_ValueChanged;
                     slider.Value = result;
                     slider.ValueChanged += Slider_ValueChanged;
+                    */
                 }
                 gesture.Scale = 1.0f;
             });
 
-            slider.MaxValue = cameraPreview.GetMaxZoomFactor();
+            // slider.MaxValue = cameraPreview.GetMaxZoomFactor();
 
             UserInteractionEnabled = true;
 
             AddGestureRecognizer(panGestureRecognizer);
         }
 
+        /*
         void Slider_ValueChanged(object sender, EventArgs e)
         {
             cameraPreview.SetZoomAbsolute(slider.Value);
         }
+        */
 
         void Images_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
