@@ -127,8 +127,6 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            System.Diagnostics.Debug.WriteLine(e.ToString());
-
             var point = new SKPoint(e.RawX, e.RawY);
             var rect = new SKRect(point.X - 25f, point.Y - 25f, point.X + 50f, point.Y + 50f);
 

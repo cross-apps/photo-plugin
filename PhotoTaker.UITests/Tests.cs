@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
@@ -29,6 +30,8 @@ namespace PhotoTaker.UITests
         public void WelcomeTextIsDisplayed()
         {
             // AppResult[] results = app.WaitForElement(c => c.Marked("Welcome to Xamarin.Forms!"));
+
+            Thread.Sleep(5000);
             app.Screenshot("Welcome screen.");
 
             // Assert.IsTrue(results.Any());

@@ -33,7 +33,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         /// </summary>
         PhotoTakerControlsOverlayView controlsOverlayView;
 
-        SeekBar seekBar;
+        // SeekBar seekBar;
 
         public int MaxImageCount { get; set; }
 
@@ -60,14 +60,14 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             multiPhotoSelectorView.Visibility = ViewStates.Invisible;
             multiPhotoSelectorView.CloseButtonTouched += MultiPhotoSelectorView_CloseButtonTouched;
 
+            /*
             seekBar = new SeekBar(context);
             seekBar.Thumb.SetTint(Color.White);
             seekBar.ProgressDrawable.SetColorFilter(Color.White, PorterDuff.Mode.SrcIn);
-
             seekBar.ProgressChanged += SeekBar_ProgressChanged;
-
+            */
             AddView(cameraWidget.mTextureView);
-            AddView(seekBar);
+            // AddView(seekBar);
             AddView(controlsOverlayView);
             AddView(multiPhotoSelectorView);
         }
@@ -83,21 +83,18 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
             var layoutParameters = new FrameLayout.LayoutParams(Width, 50, GravityFlags.Bottom);
             layoutParameters.SetMargins(0, 0, 0, 300);
-            seekBar.LayoutParameters = layoutParameters;
+            // seekBar.LayoutParameters = layoutParameters;
         }
 
         /*
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
-            System.Diagnostics.Debug.WriteLine("Inception!");
             return base.OnInterceptTouchEvent(ev);
         }
         */
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            System.Diagnostics.Debug.WriteLine(e.ToString());
-
             controlsOverlayView.OnTouchEvent(e);
             cameraWidget.OnTouchEvent(e);
 
@@ -133,7 +130,6 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
         {
             cameraWidget.TakePicture();
-            System.Diagnostics.Debug.WriteLine("Take button touched");
         }
 
         public List<string> SaveFiles()

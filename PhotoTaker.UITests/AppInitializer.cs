@@ -13,7 +13,7 @@ namespace PhotoTaker.UITests
                 return ConfigureApp.Android.StartApp();
             }
 
-            return ConfigureApp.iOS.StartApp();
+            return ConfigureApp.iOS.EnableLocalScreenshots().StartApp();
         }
     }
 }
