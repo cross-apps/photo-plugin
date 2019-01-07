@@ -52,7 +52,18 @@ namespace CrossAppsPhotoPlugin.Android.Controls
                 trashButton.Handler -= value;
             }
         }
-        public EventHandler SendButtonTouched { get; set; }
+
+        public event EventHandler SendButtonTouched 
+        { 
+            add 
+            {
+                sendButton.Handler += value;
+            }
+            remove 
+            {
+                sendButton.Handler -= value;
+            }
+        }
 
         public MultiPhotoSelectioControlsOverlayView(Context context) : base(context)
         {

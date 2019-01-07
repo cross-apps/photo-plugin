@@ -59,7 +59,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             multiPhotoSelectorView = new MultiPhotoSelectorView(context, Photos);
             multiPhotoSelectorView.Visibility = ViewStates.Invisible;
             multiPhotoSelectorView.CloseButtonTouched += MultiPhotoSelectorView_CloseButtonTouched;
-
+            multiPhotoSelectorView.SendButtonTouched += MultiPhotoSelectorView_SendButtonTouched;
             /*
             seekBar = new SeekBar(context);
             seekBar.Thumb.SetTint(Color.White);
@@ -70,6 +70,11 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             // AddView(seekBar);
             AddView(controlsOverlayView);
             AddView(multiPhotoSelectorView);
+        }
+
+        void MultiPhotoSelectorView_SendButtonTouched(object sender, EventArgs e)
+        {
+            SendButtonTapped?.Invoke(this, new EventArgs());
         }
 
         void SeekBar_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
@@ -132,12 +137,27 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             cameraWidget.TakePicture();
         }
 
+        public void SwitchCamera() 
+        {
+            cameraWidget.SwitchCamera();
+        }
+
+        public void SetCameraSwitchVisible(bool isVisible) 
+        {
+            controlsOverlayView.SetCameraButtonVisible(isVisible);
+        }
+
         public List<string> SaveFiles()
         {
             List<string> fileNames = new List<string>();
 
             var documents = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
             var tmp = System.IO.Path.Combine(documents, "..", "tmp");
+
+            foreach (var photoFile in Photos)
+            {
+                fileNames.Add(photoFile.AbsolutePath);
+            }
 
             /*
             foreach (var image in takenPhotosOverlayView.Photos)

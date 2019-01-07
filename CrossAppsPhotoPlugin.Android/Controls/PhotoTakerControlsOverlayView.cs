@@ -263,5 +263,9 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             return true;
         }
 
+        public void SetCameraButtonVisible(bool isVisible) 
+        {
+            cameraButton.IsVisible = isVisible;
+        }
     }
 }

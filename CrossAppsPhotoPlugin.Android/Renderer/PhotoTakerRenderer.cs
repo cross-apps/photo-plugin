@@ -28,9 +28,10 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
                 var name = Context.PackageName;
 
                 formsView = e.NewElement;
+                formsView.PropertyChanged += FormsView_PropertyChanged;
                 photoTakerWidget = new PhotoTakerWidget(Context);
                 photoTakerWidget.MaxImageCount = e.NewElement.MaxImageCount;
-                photoTakerWidget.TakenImagesThumbnailVisible = e.NewElement.TakenImagesThumbnailVisible;
+                // photoTakerWidget.TakenImagesThumbnailVisible = e.NewElement.TakenImagesThumbnailVisible;
 
                 formsView.SaveFilesCommand = new Command(() =>
                 {
@@ -43,19 +44,44 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
                 SetNativeControl(photoTakerWidget);
             }
 
-            if (e.OldElement != null)
+            if (e.NewElement != e.OldElement) 
             {
-                // photoTakerView.RemoveTouchEvents();
+                if (e.OldElement != null)
+                {
+                    e.OldElement.PropertyChanged -= FormsView_PropertyChanged;
+                }
+
+                if (e.NewElement != null)
+                {
+                    e.NewElement.PropertyChanged += FormsView_PropertyChanged;
+                }
+            }
+        }
+
+        void FormsView_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                /*
+                case nameof(formsView.Camera):
+                    photoTakerWidget.SwitchCamera();
+                    break;
+                    */
+                case nameof(formsView.CameraSwitchVisible):
+                    photoTakerWidget.SetCameraSwitchVisible(formsView.CameraSwitchVisible);
+                    break;
+                case nameof(formsView.MaxImageCount):
+                    photoTakerWidget.MaxImageCount = formsView.MaxImageCount;
+                    break;
             }
 
-            if (e.NewElement != null)
-            {
-                // photoTakerView.AddTouchEvents();
-            }
+            System.Diagnostics.Debug.WriteLine(e.PropertyName);
         }
 
         void PhotoTagerWidget_SendButtonTapped(object sender, EventArgs e)
         {
+
+
             formsView?.SaveFilesCommand.Execute(null);
         }
 

@@ -33,32 +33,45 @@ namespace CrossAppsPhotoPlugin.Android.Listeners
 
         public override void OnConfigured(CameraCaptureSession session)
         {
-            // The camera is already closed
-            if (null == owner.mCameraDevice)
-            {
-                return;
-            }
-
-            // When the session is ready, we start displaying the preview.
-            owner.mCaptureSession = session;
             try
             {
-                // Auto focus should be continuous for camera preview.
-                owner.mPreviewRequestBuilder.Set(CaptureRequest.ControlAfMode, (int)ControlAFMode.ContinuousPicture);
-                //# TODO Torch Mode Android
-                owner.mPreviewRequestBuilder.Set(CaptureRequest.FlashMode, (int)FlashMode.Torch);
-                // Flash is automatically enabled when necessary.
-                owner.SetAutoFlash(owner.mPreviewRequestBuilder);
-                owner.mPreviewRequestBuilder.Set(CaptureRequest.ScalerCropRegion, new Rect(10, 10, 10, 10));
+                this.owner.mCameraOpenCloseLock.Acquire();
 
-                // Finally, we start displaying the camera preview.
-                owner.mPreviewRequest = owner.mPreviewRequestBuilder.Build();
-                owner.mCaptureSession.SetRepeatingRequest(owner.mPreviewRequest,
-                        owner.mCaptureCallback, owner.mBackgroundHandler);
+                // The camera is already closed
+                if (null == owner.mCameraDevice)
+                {
+                    return;
+                }
+
+                // When the session is ready, we start displaying the preview.
+                owner.mCaptureSession = session;
+                try
+                {
+                    // Auto focus should be continuous for camera preview.
+                    owner.mPreviewRequestBuilder.Set(CaptureRequest.ControlAfMode, (int)ControlAFMode.ContinuousPicture);
+                    //# TODO Torch Mode Android
+                    owner.mPreviewRequestBuilder.Set(CaptureRequest.FlashMode, (int)FlashMode.Torch);
+                    // Flash is automatically enabled when necessary.
+                    owner.SetAutoFlash(owner.mPreviewRequestBuilder);
+                    owner.mPreviewRequestBuilder.Set(CaptureRequest.ScalerCropRegion, new Rect(10, 10, 10, 10));
+
+                    // Finally, we start displaying the camera preview.
+                    owner.mPreviewRequest = owner.mPreviewRequestBuilder.Build();
+                    owner.mCaptureSession.SetRepeatingRequest(owner.mPreviewRequest,
+                            owner.mCaptureCallback, owner.mBackgroundHandler);
+                }
+                catch (CameraAccessException e)
+                {
+                    e.PrintStackTrace();
+                }
             }
-            catch (CameraAccessException e)
+            catch (Exception ex)
             {
-                e.PrintStackTrace();
+
+            }
+            finally 
+            {
+                this.owner.mCameraOpenCloseLock.Release();
             }
         }
     }

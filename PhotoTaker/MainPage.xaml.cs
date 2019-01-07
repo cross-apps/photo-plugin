@@ -23,12 +23,14 @@ namespace PhotoTaker
             photoTakerView.SaveFilesCommand?.Execute(null);
         }
 
+        void Handle_Clicked(object sender, System.EventArgs e)
+        {
+            photoTakerView.CameraSwitchVisible = !photoTakerView.CameraSwitchVisible;
+        }
+
         void PhotoTakerView_FilesSaved(object sender, EventArgs e)
         {
             var files = photoTakerView.FileNames;
-
-            // var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            // var tmp = Path.Combine(documents, "..", "tmp");
 
             foreach (var file in files)
             {

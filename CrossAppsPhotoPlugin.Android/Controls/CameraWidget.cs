@@ -615,11 +615,8 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             }
         }
 
-
-
         public override bool OnTouchEvent(MotionEvent e)
         {
-            // return base.OnTouchEvent(e);
             try
             {
                 Activity activity = (Activity)context;
@@ -663,7 +660,10 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
                 try
                 {
-                    mCaptureSession.SetRepeatingRequest(mPreviewRequestBuilder.Build(), mCaptureCallback, null);
+                    if (mCaptureSession != null) 
+                    {
+                        mCaptureSession.SetRepeatingRequest(mPreviewRequestBuilder.Build(), mCaptureCallback, null);
+                    }
                 }
                 catch (CameraAccessException ex)
                 {
