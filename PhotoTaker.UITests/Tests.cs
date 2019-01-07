@@ -34,6 +34,25 @@ namespace PhotoTaker.UITests
             Thread.Sleep(5000);
             app.Screenshot("Welcome screen.");
 
+
+            try
+            {
+                app.Tap("OK");
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            Thread.Sleep(2000);
+
+            app.TapCoordinates(400, 800);
+
+            Thread.Sleep(2000);
+
+            app.Screenshot("aufter one tap");
+
+            // app.Repl();
             // Assert.IsTrue(results.Any());
         }
     }
