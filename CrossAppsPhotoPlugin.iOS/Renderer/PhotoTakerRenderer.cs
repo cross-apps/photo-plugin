@@ -34,9 +34,9 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
                 String BundleId = NSBundle.MainBundle.BundleIdentifier;
 
                 formsView = e.NewElement;
-                photoTakerView = new UIPhotoTakerView(e.NewElement.Camera);
+                photoTakerView = new UIPhotoTakerView(CameraOptions.Front);
                 photoTakerView.MaxImageCount = e.NewElement.MaxImageCount;
-                photoTakerView.TakenImagesThumbnailVisible = e.NewElement.TakenImagesThumbnailVisible;
+                // photoTakerView.TakenImagesThumbnailVisible = e.NewElement.TakenImagesThumbnailVisible;
 
                 formsView.SaveFilesCommand = new Command(() =>
                 {
