@@ -11,13 +11,13 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 {
     internal class UIPhotoTakerControlsOverlayView : SKCanvasView 
     {
-        SvgButton closeButton = new SvgButton("Assets/close_button.svg", "Assets/close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        SvgButton galleryButton = new SvgButton("Assets/gallery_button.svg", "Assets/gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
-        SvgButton takeButton = new SvgButton("Assets/take_button.svg", "Assets/take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
-        SvgButton sendButton = new SvgButton("Assets/send_button.svg", "Assets/send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
-        SvgButton counterButton = new SvgButton("Assets/counter_button.svg", "Assets/counter_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
-        SvgButton flashButton = new SvgButton("Assets/flash_button.svg", "Assets/flash_button_touched.svg", "Assets/flash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
-        SvgButton cameraButton = new SvgButton("Assets/camera_button.svg", "Assets/camera_button_front.svg", "Assets/camera_button_front.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton closeButton = new SvgButton("close_button.svg", "close_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton galleryButton = new SvgButton("gallery_button.svg", "gallery_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton takeButton = new SvgButton("take_button.svg", "take_button_touched.svg", SKMatrix.MakeScale(1.5f, 1.5f));
+        SvgButton sendButton = new SvgButton("send_button.svg", "send_button_touched.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton counterButton = new SvgButton("counter_button.svg", "counter_button.svg", SKMatrix.MakeScale(2.5f, 2.5f));
+        SvgButton flashButton = new SvgButton("flash_button.svg", "flash_button_touched.svg", "flash_button_touched.svg", SKMatrix.MakeScale(0.8f, 0.8f));
+        SvgButton cameraButton = new SvgButton("camera_button.svg", "camera_button_front.svg", "camera_button_front.svg", SKMatrix.MakeScale(2.5f, 2.5f));
 
         public EventHandler TakeButtonTouched { get; set; }
         public EventHandler FlashButtonTouched { get; set; }

@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata minClientVersion="">
+    <id>CrossAppsNuget</id>
+    <version>1.0.0</version>
+    <title></title>
+    <authors>ty</authors>
+    <owners>ty</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>CrossAppsNuget</description>
+    <summary></summary>
+    <releaseNotes></releaseNotes>
+    <copyright></copyright>
+    <language></language>
+    <tags></tags>
+    <dependencies>
+      <group targetFramework="MonoAndroid8.1">
+        <dependency id="SkiaSharp" version="1.60.0" />
+        <dependency id="SkiaSharp.Svg" version="1.60.0" />
+        <dependency id="SkiaSharp.Views" version="1.60.0" />
+        <dependency id="Xamarin.Android.Arch.Core.Common" version="1.0.0" />
+        <dependency id="Xamarin.Android.Arch.Lifecycle.Common" version="1.0.3" />
+        <dependency id="Xamarin.Android.Arch.Lifecycle.Runtime" version="1.0.3" />
+        <dependency id="Xamarin.Android.Support.Animated.Vector.Drawable" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.Annotations" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.Compat" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.Core.UI" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.Core.Utils" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.Design" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.Fragment" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.Media.Compat" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.Transition" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.v13" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.v4" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.v7.AppCompat" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.v7.CardView" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.v7.MediaRouter" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.v7.Palette" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.v7.RecyclerView" version="27.0.2" />
+        <dependency id="Xamarin.Android.Support.Vector.Drawable" version="27.0.2" />
+        <dependency id="Xamarin.Forms" version="3.0.0.482510" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Xamarin.Forms" version="3.0.0.482510" />
+      </group>
+      <group targetFramework="Xamarin.iOS1.0">
+        <dependency id="SkiaSharp" version="1.60.0" />
+        <dependency id="SkiaSharp.Svg" version="1.60.0" />
+        <dependency id="SkiaSharp.Views" version="1.60.0" />
+        <dependency id="Xamarin.Forms" version="3.0.0.482510" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Java.Interop" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="Mono.Android" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="mscorlib" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="System" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="System.Xml" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="Xamarin.iOS1.0" />
+      <frameworkAssembly assemblyName="System" targetFramework="Xamarin.iOS1.0" />
+      <frameworkAssembly assemblyName="System.Xml" targetFramework="Xamarin.iOS1.0" />
+      <frameworkAssembly assemblyName="Xamarin.iOS" targetFramework="Xamarin.iOS1.0" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin.Android/bin/Debug/CrossAppsPhotoPlugin.Android.dll" target="lib/monoandroid81/CrossAppsPhotoPlugin.Android.dll" />
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin.Android/bin/Debug/CrossAppsPhotoPlugin.Android.pdb" target="lib/monoandroid81/CrossAppsPhotoPlugin.Android.pdb" />
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin/bin/Debug/netstandard2.0/CrossAppsPhotoPlugin.dll" target="lib/monoandroid81/CrossAppsPhotoPlugin.dll" />
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin/bin/Debug/netstandard2.0/CrossAppsPhotoPlugin.pdb" target="lib/monoandroid81/CrossAppsPhotoPlugin.pdb" />
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin/bin/Debug/netstandard2.0/CrossAppsPhotoPlugin.dll" target="lib/netstandard2.0/CrossAppsPhotoPlugin.dll" />
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin/bin/Debug/netstandard2.0/CrossAppsPhotoPlugin.pdb" target="lib/netstandard2.0/CrossAppsPhotoPlugin.pdb" />
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin.iOS/bin/Debug/CrossAppsPhotoPlugin.iOS.dll" target="lib/xamarinios10/CrossAppsPhotoPlugin.iOS.dll" />
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin.iOS/bin/Debug/CrossAppsPhotoPlugin.iOS.pdb" target="lib/xamarinios10/CrossAppsPhotoPlugin.iOS.pdb" />
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin/bin/Debug/netstandard2.0/CrossAppsPhotoPlugin.dll" target="lib/xamarinios10/CrossAppsPhotoPlugin.dll" />
+    <file src="/Users/ty/Projects/Cross-Apps/PhotoTaker/CrossAppsPhotoPlugin/bin/Debug/netstandard2.0/CrossAppsPhotoPlugin.pdb" target="lib/xamarinios10/CrossAppsPhotoPlugin.pdb" />
+  </files>
+</package>

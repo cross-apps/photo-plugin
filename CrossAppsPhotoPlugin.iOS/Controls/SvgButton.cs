@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using SkiaSharp;
 using UIKit;
 
@@ -6,6 +8,8 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 {
     internal class SvgButton
     {
+        const string RESOURCE_PREFIX = "CrossAppsPhotoPlugin.iOS.Resources.";
+
         public SKMatrix scale = SKMatrix.MakeScale(0.8f, 0.8f);
 
         public bool Touched { get; set; } = false;
@@ -27,17 +31,30 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
         public SvgButton(string DefaultFile, string ToggledFile, string TouchedFile, SKMatrix Scale) 
             : this(DefaultFile, TouchedFile, Scale)
         {
+            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(UIPhotoTakerView)).Assembly;
+
             SvgToggled = new SkiaSharp.Extended.Svg.SKSvg(190f);
-            SvgToggled.Load(ToggledFile);
+            using (var stream = new StreamReader(assembly.GetManifestResourceStream(RESOURCE_PREFIX + ToggledFile)))
+            {
+                SvgToggled.Load(stream.BaseStream);
+            }
         }
 
         public SvgButton(string DefaultFile, string TouchedFile, SKMatrix Scale)
         {
+            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(UIPhotoTakerView)).Assembly;
+
             SvgTouched = new SkiaSharp.Extended.Svg.SKSvg(190f);
-            SvgTouched.Load(TouchedFile);
+            using (var stream = new StreamReader(assembly.GetManifestResourceStream(RESOURCE_PREFIX + TouchedFile))) 
+            {
+                SvgTouched.Load(stream.BaseStream);
+            }
 
             SvgDefault = new SkiaSharp.Extended.Svg.SKSvg(190f);
-            SvgDefault.Load(DefaultFile);
+            using (var stream = new StreamReader(assembly.GetManifestResourceStream(RESOURCE_PREFIX + DefaultFile)))
+            {
+                SvgDefault.Load(stream.BaseStream);
+            }
 
             if (UIScreen.MainScreen.Scale > 2) 
             {

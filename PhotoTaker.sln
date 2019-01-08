@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossAppsPhotoPlugin.iOS", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossAppsPhotoPlugin.Android", "CrossAppsPhotoPlugin.Android\CrossAppsPhotoPlugin.Android.csproj", "{57D0B07F-4F4F-471C-9BCA-E4A6275CEA05}"
 EndProject
+Project("{5DD5E4FA-CB73-4610-85AB-557B54E96AA9}") = "CrossAppsNuget.NuGet", "CrossAppsNuget.NuGet\CrossAppsNuget.NuGet.nuproj", "{EA56AC08-44F2-48FA-B950-93DFB070BF13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,5 +141,21 @@ Global
 		{57D0B07F-4F4F-471C-9BCA-E4A6275CEA05}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
 		{57D0B07F-4F4F-471C-9BCA-E4A6275CEA05}.AppStore|iPhone.ActiveCfg = Release|Any CPU
 		{57D0B07F-4F4F-471C-9BCA-E4A6275CEA05}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Release|iPhone.Build.0 = Release|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{EA56AC08-44F2-48FA-B950-93DFB070BF13}.AppStore|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
