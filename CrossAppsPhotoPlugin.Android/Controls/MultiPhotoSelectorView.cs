@@ -89,35 +89,41 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
         async void TakenPhotosOverlayView_ImageTapped(object sender, int position)
         {
-            if (currentImage.Drawable != null)
+            try
             {
-                if (currentImage.Drawable is BitmapDrawable bitmapDrawable)
+                if (currentImage.Drawable != null)
                 {
-                    var bitmapImage = bitmapDrawable.Bitmap;
-
-                    if (!bitmapImage.IsRecycled)
+                    if (currentImage.Drawable is BitmapDrawable bitmapDrawable)
                     {
-                        currentImage.SetImageBitmap(null);
-                        bitmapImage.Recycle();
-                        bitmapImage.Dispose();
-                        bitmapImage = null;
+                        var bitmapImage = bitmapDrawable.Bitmap;
+
+                        if (!bitmapImage.IsRecycled)
+                        {
+                            currentImage.SetImageBitmap(null);
+                            bitmapImage.Recycle();
+                            bitmapImage.Dispose();
+                            bitmapImage = null;
+                        }
                     }
                 }
+
+                var bitmap = await BitmapFactory.DecodeFileAsync(Photos[position].AbsolutePath);
+
+                var matrix = new Matrix();
+                matrix.PostRotate(90);
+
+                var rotatedBitmap = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, false);
+
+                bitmap.Recycle();
+                bitmap.Dispose();
+                bitmap = null;
+
+                currentImage.SetImageBitmap(rotatedBitmap);
             }
+            catch (Exception ex)
+            {
 
-            var bitmap = await BitmapFactory.DecodeFileAsync(Photos[position].AbsolutePath);
-
-            var matrix = new Matrix();
-            matrix.PostRotate(90);
-
-            var rotatedBitmap = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, false);
-
-            bitmap.Recycle();
-            bitmap.Dispose();
-            bitmap = null;
-
-            currentImage.SetImageBitmap(rotatedBitmap);
-
+            }
         }
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)

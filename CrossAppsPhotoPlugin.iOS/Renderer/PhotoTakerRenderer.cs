@@ -33,6 +33,11 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
             {
                 String BundleId = NSBundle.MainBundle.BundleIdentifier;
 
+                if (!CrossAppsLicenseManager.IsValid()) 
+                {
+                    System.Diagnostics.Debug.WriteLine("CrossApps.Photo.Plugin is not activated, please visit https://cross-apps.easy-host.biz/xamarin/photo-plugin/");
+                }
+
                 formsView = e.NewElement;
                 photoTakerView = new UIPhotoTakerView(CameraOptions.Front);
                 photoTakerView.MaxImageCount = e.NewElement.MaxImageCount;

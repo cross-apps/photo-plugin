@@ -7,8 +7,8 @@ namespace CrossAppsPhotoPlugin
 {
     public static class CrossAppsLicenseManager
     {
-        public static string LicenseKey { get; set; }
-        public static string AppName { get; set; }
+        public static string LicenseKey { get; set; } = "";
+        public static string AppName { get; set; } = "";
 
         public static bool IsValid()
         {

@@ -45,8 +45,15 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         {
             if (lastTappedIndex > -1)
             {
-                photos.RemoveAt(lastTappedIndex);
-                imageAdapter.NotifyItemRemoved(lastTappedIndex);
+                try
+                {
+                    photos.RemoveAt(lastTappedIndex);
+                    imageAdapter.NotifyItemRemoved(lastTappedIndex);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
 

@@ -32,6 +32,11 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
             {
                 var name = Context.PackageName;
 
+                if (!CrossAppsLicenseManager.IsValid())
+                {
+                    System.Diagnostics.Debug.WriteLine("CrossApps.Photo.Plugin is not activated, please visit https://cross-apps.easy-host.biz/xamarin/photo-plugin/");
+                }
+
                 formsView = e.NewElement;
                 formsView.PropertyChanged += FormsView_PropertyChanged;
                 photoTakerWidget = new PhotoTakerWidget(Context);
