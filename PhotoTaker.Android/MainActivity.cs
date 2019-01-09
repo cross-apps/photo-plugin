@@ -19,6 +19,8 @@ namespace PhotoTaker.Droid
 
             base.OnCreate(bundle);
 
+            CrossAppsPhotoPlugin.Android.Renderer.PhotoTakerRenderer.Init();
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
         }

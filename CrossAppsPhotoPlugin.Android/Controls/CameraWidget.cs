@@ -410,11 +410,13 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             {
                 mCameraOpenCloseLock.Acquire();
 
+                /*
                 if (null != mCaptureSession)
                 {
                     mCaptureSession.Close();
                     mCaptureSession = null;
                 }
+                */
 
                 if (null != mCameraDevice)
                 {
@@ -660,9 +662,16 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
                 try
                 {
-                    if (mCaptureSession != null) 
+                    if (mCaptureSession != null && mCameraDevice != null) 
                     {
-                        mCaptureSession.SetRepeatingRequest(mPreviewRequestBuilder.Build(), mCaptureCallback, null);
+                        try
+                        {
+                            mCaptureSession.SetRepeatingRequest(mPreviewRequestBuilder.Build(), mCaptureCallback, null);
+                        }
+                        catch (System.Exception ex)
+                        {
+
+                        }
                     }
                 }
                 catch (CameraAccessException ex)

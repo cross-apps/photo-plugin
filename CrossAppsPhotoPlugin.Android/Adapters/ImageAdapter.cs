@@ -39,10 +39,10 @@ namespace CrossAppsPhotoPlugin.Android.Adapters
             ItemClick?.Invoke(this, position);
         }
 
-        public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+        public override async void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var options = new BitmapFactory.Options();
-            options.InSampleSize = 4;
+            options.InSampleSize = 8; // 4
 
             var imageViewHoder = holder as ImageViewHolder;
 
@@ -59,7 +59,7 @@ namespace CrossAppsPhotoPlugin.Android.Adapters
                 imageViewHoder.ImageView.SetImageBitmap(null);
             }
 
-            var bitmap = BitmapFactory.DecodeFile(photos[position].AbsolutePath, options);
+            var bitmap = await BitmapFactory.DecodeFileAsync(photos[position].AbsolutePath, options);
             imageViewHoder.ImageView.SetImageBitmap(bitmap);
         }
 

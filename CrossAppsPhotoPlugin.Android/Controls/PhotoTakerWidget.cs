@@ -115,6 +115,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         {
             multiPhotoSelectorView.Visibility = ViewStates.Visible;
             multiPhotoSelectorView.SetLayoutParameters();
+            multiPhotoSelectorView.SelectLastItem();
         }
 
         void Photos_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

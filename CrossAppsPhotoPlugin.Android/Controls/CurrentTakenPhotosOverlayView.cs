@@ -52,7 +52,13 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
         public void SelectLastItem()
         {
-            FindViewHolderForAdapterPosition(photos.Count - 1).ItemView.PerformClick();
+            this.PostDelayed(() =>
+            {
+                if (FindViewHolderForAdapterPosition(photos.Count - 1) != null) 
+                {
+                    FindViewHolderForAdapterPosition(photos.Count - 1).ItemView.PerformClick();
+                }
+            }, 50);
         }
     }
 }

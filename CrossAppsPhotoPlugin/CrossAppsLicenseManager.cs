@@ -14,16 +14,12 @@ namespace CrossAppsPhotoPlugin
         {
             bool isValid = false;
 
-            byte[] bytes = Encoding.ASCII.GetBytes(AppName);
-            byte[] secret = Encoding.ASCII.GetBytes("B73819F82CBBA9D38781EF495B36F");
-            var hashString = new HMACSHA256(secret);
+            byte[] bytes = Encoding.UTF8.GetBytes(AppName.ToLowerInvariant());
+            byte[] key = Encoding.UTF8.GetBytes("B73819F82CBBA9D38781EF495B36F".ToLowerInvariant());
+            var hashString = new HMACSHA256(key);
             byte[] hash = hashString.ComputeHash(bytes);
-            string result = string.Empty;
 
-            foreach (var x in hash)
-            {
-                result += String.Format("{0:x2}", x);
-            }
+            var result = Convert.ToBase64String(hash);
 
             if (result.ToLowerInvariant() == LicenseKey.ToLowerInvariant())
             {

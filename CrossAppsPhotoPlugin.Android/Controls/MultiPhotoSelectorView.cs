@@ -60,6 +60,14 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             currentImage.LayoutParameters = new FrameLayout.LayoutParams(Width, Height, GravityFlags.Bottom);
         }
 
+        public void SelectLastItem() 
+        {
+            if (Photos.Count > 0) 
+            {
+                takenPhotosOverlayView.SelectLastItem();
+            }
+        }
+
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -79,7 +87,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             }
         }
 
-        void TakenPhotosOverlayView_ImageTapped(object sender, int position)
+        async void TakenPhotosOverlayView_ImageTapped(object sender, int position)
         {
             if (currentImage.Drawable != null)
             {
@@ -95,15 +103,9 @@ namespace CrossAppsPhotoPlugin.Android.Controls
                         bitmapImage = null;
                     }
                 }
-
-                /*
-                rotatedBitmap.Recycle();
-                rotatedBitmap.Dispose();
-                rotatedBitmap = null;
-                */
             }
 
-            var bitmap = BitmapFactory.DecodeFile(Photos[position].AbsolutePath);
+            var bitmap = await BitmapFactory.DecodeFileAsync(Photos[position].AbsolutePath);
 
             var matrix = new Matrix();
             matrix.PostRotate(90);
@@ -116,11 +118,6 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
             currentImage.SetImageBitmap(rotatedBitmap);
 
-            /*
-            rotatedBitmap.Recycle();
-            rotatedBitmap.Dispose();
-            rotatedBitmap = null;
-            */
         }
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)

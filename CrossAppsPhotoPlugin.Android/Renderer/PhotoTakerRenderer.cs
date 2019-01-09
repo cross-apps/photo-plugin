@@ -16,6 +16,11 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
 
         public PhotoTakerRenderer(Context context) : base(context)
         {
+            // sfsdf sdfsdf jlkdsdf
+        }
+
+        public static void Init() 
+        {
             
         }
 
