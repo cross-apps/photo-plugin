@@ -1,18 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata minClientVersion="">
-    <id>CrossAppsNuget</id>
-    <version>0.9.0</version>
-    <title></title>
+    <id>CrossApps.Photo.Plugin</id>
+    <version>0.9.1-beta</version>
+    <title>Cross Platform Photo Plugin to take multiple images</title>
     <authors>Cross-Apps</authors>
     <owners>Cross-Apps</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>CrossAppsNuget</description>
+    <description>This plugin allows you to take multiple photos within one view.</description>
     <summary></summary>
     <releaseNotes></releaseNotes>
     <copyright></copyright>
     <language></language>
-    <tags></tags>
+    <licenseUrl>https://cross-apps.easy-host.biz/xamarin/photo-plugin/license</licenseUrl>
+    <iconUrl>https://cross-apps.easy-host.biz/wp-content/uploads/2019/01/camera3.png</iconUrl>
+    <projectUrl>https://cross-apps.easy-host.biz/xamarin/photo-plugin/</projectUrl>
+    <tags>Xamarin, Media, Xamarin Forms Photo, Photo, Picker</tags>
     <dependencies>
       <group targetFramework="MonoAndroid8.1">
         <dependency id="SkiaSharp" version="1.60.0" />
