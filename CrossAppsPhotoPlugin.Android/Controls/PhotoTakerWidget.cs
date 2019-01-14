@@ -42,6 +42,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         public bool TakenImagesThumbnailVisible { get; set; } = false;
 
         public EventHandler SendButtonTapped { get; set; }
+        public EventHandler CloseButtonTapped { get; set; }
 
         public ObservableCollection<Java.IO.File> Photos { get; set; }
 
@@ -55,6 +56,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             controlsOverlayView.FlashButtonTouched += ControlsOverlayView_FlashButtonTouched;
             controlsOverlayView.CameraButtonTouched += ControlsOverlayView_CameraButtonTouched;
             controlsOverlayView.CounterButtonTouched += ControlsOverlayView_CounterButtonTouched;
+            controlsOverlayView.CloseButtonTouched += ControlsOverlayView_CloseButtonTouched;
 
             cameraWidget = new CameraWidget(context, Photos);
 
@@ -62,6 +64,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             multiPhotoSelectorView.Visibility = ViewStates.Invisible;
             multiPhotoSelectorView.CloseButtonTouched += MultiPhotoSelectorView_CloseButtonTouched;
             multiPhotoSelectorView.SendButtonTouched += MultiPhotoSelectorView_SendButtonTouched;
+            multiPhotoSelectorView.TrashButtonTouched += MultiPhotoSelectorView_TrashButtonTouched;
             /*
             seekBar = new SeekBar(context);
             seekBar.Thumb.SetTint(Color.White);
@@ -80,6 +83,16 @@ namespace CrossAppsPhotoPlugin.Android.Controls
                 licenseInfoView.SetTextColor(Color.Red);
                 AddView(licenseInfoView);
             }
+        }
+
+        void MultiPhotoSelectorView_TrashButtonTouched(object sender, EventArgs e)
+        {
+            controlsOverlayView.SetTakeVisibility(Photos.Count > MaxImageCount);
+        }
+
+        void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
+        {
+            CloseButtonTapped?.Invoke(this, new EventArgs());
         }
 
         void MultiPhotoSelectorView_SendButtonTouched(object sender, EventArgs e)
@@ -151,6 +164,8 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         void ControlsOverlayView_TakeButtonTouched(object sender, EventArgs e)
         {
             cameraWidget.TakePicture();
+
+            controlsOverlayView.SetTakeVisibility(Photos.Count > MaxImageCount);
         }
 
         public void SwitchCamera() 
@@ -185,6 +200,11 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             */
 
             return fileNames;
+        }
+
+        public void SetCloseVisibility(bool isVisible)
+        {
+            controlsOverlayView.SetCloseVisibility(isVisible);
         }
     }
 }

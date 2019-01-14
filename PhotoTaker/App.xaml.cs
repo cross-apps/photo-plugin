@@ -12,7 +12,7 @@ namespace PhotoTaker
             InitializeComponent();
 
             // MainPage = new NavigationPage(new MainPage());
-            MainPage = new MainPage();
+            MainPage = new SecondPage();
         }
 
         protected override void OnStart()

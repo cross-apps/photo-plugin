@@ -15,7 +15,13 @@ namespace PhotoTaker
             InitializeComponent();
 
             photoTakerView.FilesSaved += PhotoTakerView_FilesSaved;
+            photoTakerView.Closed += PhotoTakerView_Closed;
             // saveButton.Clicked += SaveButton_Clicked;
+        }
+
+        void PhotoTakerView_Closed(object sender, EventArgs e)
+        {
+            this.Navigation.PopModalAsync();
         }
 
         void SaveButton_Clicked(object sender, EventArgs e)

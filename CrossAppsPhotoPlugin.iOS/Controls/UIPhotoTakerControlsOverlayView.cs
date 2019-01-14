@@ -96,6 +96,11 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 
                 x = 0 + 30f + xOffset;
 
+                float closePositionX = x;
+                float closePositionY = xOffset + closeButton.SvgTouched.Picture.CullRect.Height;
+                closeButton.Draw(surface.Canvas, closePositionX, closePositionY, paint);
+
+
                 float galleryPositionX = x;
                 float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
                 galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
@@ -231,6 +236,11 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
         public void SetTakeVisibility(bool isVisible) 
         {
             takeButton.IsVisible = isVisible;
+        }
+
+        public void SetCloseVisibility(bool isVisible) 
+        {
+            closeButton.IsVisible = isVisible;
         }
 
         protected override void Dispose(bool disposing)

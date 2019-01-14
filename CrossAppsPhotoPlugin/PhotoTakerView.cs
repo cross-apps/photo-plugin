@@ -20,6 +20,16 @@ namespace CrossAppsPhotoPlugin
             nameof(CameraSwitchVisible), typeof(bool), typeof(PhotoTakerView), true
         );
 
+        public static BindableProperty CloseButtonVisibleProperty = BindableProperty.Create(
+            nameof(CloseButtonVisible), typeof(bool), typeof(PhotoTakerView), false
+        );
+
+        public bool CloseButtonVisible 
+        {
+            get { return (bool)GetValue(CloseButtonVisibleProperty); }
+            set { SetValue(CloseButtonVisibleProperty, value); } 
+        }
+
         /*
         public static BindableProperty TakenImagesThunbmailVisibleProperty = BindableProperty.Create(
             nameof(TakenImagesThumbnailVisible), typeof(bool), typeof(PhotoTakerView), false
@@ -67,5 +77,7 @@ namespace CrossAppsPhotoPlugin
         public EventHandler FilesSaved { get; set; }
 
         public Command SaveFilesCommand { get; set; }
+
+        public EventHandler Closed { get; set; }
     }
 }

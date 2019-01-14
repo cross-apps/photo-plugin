@@ -33,11 +33,13 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 
         // UISlider slider;
 
-        public int MaxImageCount { get; set; } = 60;
+        public int MaxImageCount { get; set; } = 10;
 
         public bool TakenImagesThumbnailVisible { get; set; } = false;
 
         public EventHandler SendButtonTapped { get; set; }
+
+        public EventHandler CloseButtonTapped { get; set; }
 
         /// <summary>
         /// Temp for current taken images.
@@ -109,6 +111,7 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
             photoEditorView.TrashButtonTapped += PhotoEditorView_TrashButtonTapped;
 
             multiPhotoSelectorView.CloseButtonTapped += MultiPhotoSelectorView_CloseButtonTapped;
+            multiPhotoSelectorView.TrashButtonTapped += MultiPhotoSelectorView_TrashButtonTapped;
 
             var panGestureRecognizer = new UIPinchGestureRecognizer((gesture) =>
             {
@@ -130,6 +133,13 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 
             AddGestureRecognizer(panGestureRecognizer);
         }
+
+        void MultiPhotoSelectorView_TrashButtonTapped(object sender, EventArgs e)
+        {
+            controlsOverlayView.SetSendVisibility(takenPhotosOverlayView.Photos.Count > 0);
+            controlsOverlayView.SetTakeVisibility(takenPhotosOverlayView.Photos.Count < MaxImageCount);
+        }
+
 
         /*
         void Slider_ValueChanged(object sender, EventArgs e)
@@ -214,7 +224,7 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
         {
-            // 
+            CloseButtonTapped?.Invoke(this, new EventArgs());
         }
 
         void ControlsOverlayView_FlashButtonTouched(object sender, EventArgs e)
@@ -273,6 +283,11 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
             }
 
             base.Dispose(disposing);
+        }
+
+        public void SetCloseVisibility(bool isVisible) 
+        {
+            controlsOverlayView.SetCloseVisibility(isVisible);
         }
     }
 }

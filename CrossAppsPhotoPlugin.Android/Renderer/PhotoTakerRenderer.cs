@@ -42,6 +42,8 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
                 formsView.PropertyChanged += FormsView_PropertyChanged;
                 photoTakerWidget = new PhotoTakerWidget(Context);
                 photoTakerWidget.MaxImageCount = e.NewElement.MaxImageCount;
+                photoTakerWidget.CloseButtonTapped += PhotoTakerWidget_CloseButtonTapped;
+                photoTakerWidget.SetCloseVisibility(e.NewElement.CloseButtonVisible);
                 // photoTakerWidget.TakenImagesThumbnailVisible = e.NewElement.TakenImagesThumbnailVisible;
 
                 formsView.SaveFilesCommand = new Command(() =>
@@ -68,6 +70,12 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
                 }
             }
         }
+
+        void PhotoTakerWidget_CloseButtonTapped(object sender, EventArgs e)
+        {
+            formsView.Closed?.Invoke(this, new EventArgs());
+        }
+
 
         void FormsView_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

@@ -196,6 +196,10 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
                 x = 0 + 30f + xOffset;
 
+                float closePositionX = x;
+                float closePositionY = xOffset + closeButton.SvgTouched.Picture.CullRect.Height;
+                closeButton.Draw(surface.Canvas, closePositionX, closePositionY, paint);
+
                 float galleryPositionX = x;
                 float galleryPositionY = y + (galleryButton.SvgTouched.Picture.CullRect.Height * scale);
                 galleryButton.Draw(surface.Canvas, galleryPositionX, galleryPositionY, paint);
@@ -266,6 +270,16 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         public void SetCameraButtonVisible(bool isVisible) 
         {
             cameraButton.IsVisible = isVisible;
+        }
+
+        public void SetCloseVisibility(bool isVisible)
+        {
+            closeButton.IsVisible = isVisible;
+        }
+
+        public void SetTakeVisibility(bool isVisible)
+        {
+            takeButton.IsVisible = isVisible;
         }
     }
 }

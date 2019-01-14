@@ -41,6 +41,7 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
                 formsView = e.NewElement;
                 photoTakerView = new UIPhotoTakerView(CameraOptions.Front);
                 photoTakerView.MaxImageCount = e.NewElement.MaxImageCount;
+                photoTakerView.SetCloseVisibility(e.NewElement.CloseButtonVisible);
                 // photoTakerView.TakenImagesThumbnailVisible = e.NewElement.TakenImagesThumbnailVisible;
 
                 formsView.SaveFilesCommand = new Command(() =>
@@ -50,6 +51,8 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
                     formsView.FilesSaved?.Invoke(this, new EventArgs());
                 });
 
+
+                photoTakerView.CloseButtonTapped += PhotoTakerView_CloseButtonTapped;
                 photoTakerView.SendButtonTapped += PhotoTakerView_SendButtonTapped;
                 SetNativeControl(photoTakerView);
             }
@@ -64,6 +67,12 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
                 // photoTakerView.AddTouchEvents();
             }
         }
+
+        void PhotoTakerView_CloseButtonTapped(object sender, EventArgs e)
+        {
+            formsView.Closed?.Invoke(this, new EventArgs());
+        }
+
 
         void PhotoTakerView_SendButtonTapped(object sender, EventArgs e)
         {

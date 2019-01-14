@@ -16,8 +16,8 @@
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         
-        <crossapps:PhotoTakerView x:Name="photoTakerView" Grid.Row="0" 
-                                  HorizontalOptions="FillAndExpand" MaxImageCount="60" 
+        <crossapps:PhotoTakerView x:Name="photoTakerView" Grid.Row="0" CloseButtonVisible="true"
+                                  HorizontalOptions="FillAndExpand" MaxImageCount="6" 
                                   VerticalOptions="FillAndExpand"/>
         
         <Button Grid.Row="1" Text="Testing" Clicked="Handle_Clicked" />

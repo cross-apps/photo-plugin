@@ -17,6 +17,8 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
         ObservableCollection<UIImage> Photos;
 
         public EventHandler CloseButtonTapped { get; set; }
+        public EventHandler TrashButtonTapped { get; set; }
+        public EventHandler SendButtonTapped { get; set; }
 
         public UIMultiPhotoSelectorView(CGRect frame, ObservableCollection<UIImage> photos): base(frame)
         {
@@ -33,11 +35,19 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
 
             controlsOverlayView.CloseButtonTouched += ControlsOverlayView_CloseButtonTouched;
             controlsOverlayView.TrashButtonTouched += ControlsOverlayView_TrashButtonTouched;
+            controlsOverlayView.SendButtonTouched += ControlsOverlayView_SendButtonTouched;
+        }
+
+        void ControlsOverlayView_SendButtonTouched(object sender, EventArgs e)
+        {
+            SendButtonTapped?.Invoke(this, new EventArgs());
         }
 
         void ControlsOverlayView_TrashButtonTouched(object sender, EventArgs e)
         {
             takenPhotosOverlayView.RemoveLastTappedCell();
+
+            TrashButtonTapped?.Invoke(this, new EventArgs());
 
             if (Photos.Count == 0) 
             {

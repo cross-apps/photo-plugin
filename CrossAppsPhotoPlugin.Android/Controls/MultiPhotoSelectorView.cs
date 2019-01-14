@@ -23,6 +23,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         MultiPhotoSelectioControlsOverlayView controlsOverlayView;
 
         public EventHandler CloseButtonTouched { get; set; }
+        public EventHandler TrashButtonTouched { get; set; }
         public EventHandler SendButtonTouched { get; set; }
 
         public MultiPhotoSelectorView(Context context, ObservableCollection<Java.IO.File> photos) : base(context)
@@ -76,6 +77,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         void ControlsOverlayView_TrashButtonTouched(object sender, EventArgs e)
         {
             takenPhotosOverlayView.RemoveLastTappedCell();
+            TrashButtonTouched?.Invoke(this, new EventArgs());
 
             if (Photos.Count == 0)
             {

@@ -130,6 +130,11 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
                 TrashButtonTouched?.Invoke(this, new EventArgs());
             }
 
+            if (sendButton.TouchUpInside(rect)) 
+            {
+                SendButtonTouched?.Invoke(this, new EventArgs());
+            }
+
             buttons.ForEach((btn) => btn.Touched = false);
         }
 
