@@ -12,9 +12,9 @@
     <releaseNotes></releaseNotes>
     <copyright></copyright>
     <language></language>
-    <licenseUrl>https://cross-apps.easy-host.biz/xamarin/photo-plugin/license</licenseUrl>
-    <iconUrl>https://cross-apps.easy-host.biz/wp-content/uploads/2019/01/camera3.png</iconUrl>
-    <projectUrl>https://cross-apps.easy-host.biz/xamarin/photo-plugin/</projectUrl>
+    <licenseUrl>https://cross-apps.com</licenseUrl>
+    <iconUrl>https://cross-apps.com/wp-content/uploads/2019/01/camera3.png</iconUrl>
+    <projectUrl>https://cross-apps.com</projectUrl>
     <tags>Xamarin, Media, Xamarin Forms Photo, Photo, Picker</tags>
     <dependencies>
       <group targetFramework="MonoAndroid8.1">
