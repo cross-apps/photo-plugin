@@ -18,7 +18,7 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
         UICameraPreview cameraPreview;
         UIPhotoEditorView photoEditorView;
         UIPhotoTakerControlsOverlayView controlsOverlayView;
-
+        UILabel licenseInfoView;
         // UILatestPhotosOverlayView latestPhotosOverlayView = null;
 
         /// <summary>
@@ -49,6 +49,10 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
         {
             base.LayoutSubviews();
 
+            if (licenseInfoView != null) 
+            {
+                licenseInfoView.Frame = new CGRect(10, Frame.Height - 140, Frame.Width - 20, 20);
+            }
             // slider.Frame = new CGRect(10, Frame.Height - 140, Frame.Width - 20, 20);
         }
 
@@ -84,6 +88,14 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
             AddSubview(takenPhotosOverlayView);
             AddSubview(multiPhotoSelectorView);
             AddSubview(photoEditorView);
+
+            if (!CrossAppsLicenseManager.IsValid()) 
+            {
+                licenseInfoView = new UILabel();
+                licenseInfoView.Text = "Trial License";
+                licenseInfoView.TextColor = UIColor.Red;
+                AddSubview(licenseInfoView);
+            }
 
             // Register all events...
             controlsOverlayView.TakeButtonTouched += ControlsOverlayView_TakeButtonTouched;

@@ -33,6 +33,8 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         /// </summary>
         PhotoTakerControlsOverlayView controlsOverlayView;
 
+        TextView licenseInfoView;
+
         // SeekBar seekBar;
 
         public int MaxImageCount { get; set; }
@@ -70,6 +72,14 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             // AddView(seekBar);
             AddView(controlsOverlayView);
             AddView(multiPhotoSelectorView);
+
+            if (!CrossAppsLicenseManager.IsValid()) 
+            {
+                licenseInfoView = new TextView(context);
+                licenseInfoView.Text = "Trial License";
+                licenseInfoView.SetTextColor(Color.Red);
+                AddView(licenseInfoView);
+            }
         }
 
         void MultiPhotoSelectorView_SendButtonTouched(object sender, EventArgs e)
@@ -88,6 +98,11 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
             var layoutParameters = new FrameLayout.LayoutParams(Width, 50, GravityFlags.Bottom);
             layoutParameters.SetMargins(0, 0, 0, 300);
+
+            if (licenseInfoView != null) 
+            {
+                licenseInfoView.LayoutParameters = layoutParameters;
+            }
             // seekBar.LayoutParameters = layoutParameters;
         }
 

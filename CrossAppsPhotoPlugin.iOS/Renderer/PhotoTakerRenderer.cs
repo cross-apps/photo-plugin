@@ -17,12 +17,12 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
 
         public PhotoTakerRenderer()
         {
-
+            // placeholder
         }
 
-        new public static void Init() 
+        new public static void Init(string LicenseKey) 
         {
-
+            CrossAppsLicenseManager.LicenseKey = LicenseKey;
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<PhotoTakerView> e)
@@ -31,11 +31,11 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
 
             if (Control == null)
             {
-                String BundleId = NSBundle.MainBundle.BundleIdentifier;
+                CrossAppsLicenseManager.BundlePackageId = NSBundle.MainBundle.BundleIdentifier;
 
                 if (!CrossAppsLicenseManager.IsValid()) 
                 {
-                    System.Diagnostics.Debug.WriteLine("CrossApps.Photo.Plugin is not activated, please visit https://cross-apps.easy-host.biz/xamarin/photo-plugin/");
+                    System.Diagnostics.Debug.WriteLine("CrossApps.Photo.Plugin is not activated, please visit https://cross-apps.com");
                 }
 
                 formsView = e.NewElement;

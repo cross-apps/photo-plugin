@@ -16,12 +16,12 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
 
         public PhotoTakerRenderer(Context context) : base(context)
         {
-            // sfsdf sdfsdf jlkdsdf
+            // placeholder
         }
 
-        public static void Init() 
+        public static void Init(string LicenseKey) 
         {
-            
+            CrossAppsLicenseManager.LicenseKey = LicenseKey;
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<PhotoTakerView> e)
@@ -31,10 +31,11 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
             if (Control == null)
             {
                 var name = Context.PackageName;
+                CrossAppsLicenseManager.BundlePackageId = Context.PackageName;
 
                 if (!CrossAppsLicenseManager.IsValid())
                 {
-                    System.Diagnostics.Debug.WriteLine("CrossApps.Photo.Plugin is not activated, please visit https://cross-apps.easy-host.biz/xamarin/photo-plugin/");
+                    System.Diagnostics.Debug.WriteLine("CrossApps.Photo.Plugin is not activated, please visit https://cross-apps.com");
                 }
 
                 formsView = e.NewElement;
@@ -90,8 +91,6 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
 
         void PhotoTagerWidget_SendButtonTapped(object sender, EventArgs e)
         {
-
-
             formsView?.SaveFilesCommand.Execute(null);
         }
 
