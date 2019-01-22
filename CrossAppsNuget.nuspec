@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata minClientVersion="">
     <id>CrossApps.Photo.Plugin</id>
-    <version>0.9.1-beta</version>
+    <version>1.0.0</version>
     <title>Cross Platform Photo Plugin to take multiple images</title>
     <authors>Cross-Apps</authors>
     <owners>Cross-Apps</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This plugin allows you to take multiple photos within one view.</description>
+    <description>This plugin allows you to take multiple photos within one view. You can change camera and max allowed photos.</description>
     <summary></summary>
     <releaseNotes></releaseNotes>
     <copyright></copyright>
