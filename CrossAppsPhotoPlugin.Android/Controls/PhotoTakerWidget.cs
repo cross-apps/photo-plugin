@@ -165,7 +165,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
         {
             cameraWidget.TakePicture();
 
-            controlsOverlayView.SetTakeVisibility(Photos.Count > MaxImageCount);
+            controlsOverlayView.SetTakeVisibility(Photos.Count < MaxImageCount);
         }
 
         public void SwitchCamera() 

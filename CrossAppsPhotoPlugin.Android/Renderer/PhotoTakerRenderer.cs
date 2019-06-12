@@ -50,7 +50,7 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
                 {
                     var files = photoTakerWidget.SaveFiles();
                     formsView.FileNames.AddRange(files);
-                    formsView.FilesSaved?.Invoke(this, new EventArgs());
+                    // formsView.FilesSaved?.Invoke(this, new EventArgs());
                 });
 
                 photoTakerWidget.SendButtonTapped += PhotoTagerWidget_SendButtonTapped;
