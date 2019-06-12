@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -87,7 +86,7 @@ namespace CrossAppsPhotoPlugin.Android.Controls
 
         void MultiPhotoSelectorView_TrashButtonTouched(object sender, EventArgs e)
         {
-            controlsOverlayView.SetTakeVisibility(Photos.Count > MaxImageCount);
+            controlsOverlayView.SetTakeVisibility(Photos.Count < MaxImageCount);
         }
 
         void ControlsOverlayView_CloseButtonTouched(object sender, EventArgs e)
