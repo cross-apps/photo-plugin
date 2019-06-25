@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata minClientVersion="">
     <id>CrossApps.Photo.Plugin</id>
-    <version>1.0.3</version>
+    <version>1.0.1</version>
     <title>Cross Platform Photo Plugin to take multiple images</title>
     <authors>Cross-Apps</authors>
     <owners>Cross-Apps</owners>
