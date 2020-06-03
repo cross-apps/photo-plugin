@@ -7,7 +7,7 @@
     <ProjectGuid>{EA56AC08-44F2-48FA-B950-93DFB070BF13}</ProjectGuid>
     <Description>CrossAppsNuget</Description>
     <PackageId>CrossAppsNuget</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.2</PackageVersion>
     <Authors>ty</Authors>
     <DevelopmentDependency>false</DevelopmentDependency>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

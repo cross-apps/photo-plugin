@@ -56,6 +56,7 @@
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignProvision>VS: WildCard Development</CodesignProvision>
+    <MtouchLink>None</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -160,7 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />
-    <PackageReference Include="Xamarin.TestCloud.Agent" Version="0.21.7" />
+    <PackageReference Include="Xamarin.TestCloud.Agent" Version="0.21.9" />
     <PackageReference Include="SkiaSharp.Views">
       <Version>1.68.3</Version>
     </PackageReference>
