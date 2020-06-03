@@ -20,24 +20,12 @@ namespace CrossAppsPhotoPlugin.iOS.Renderer
             // placeholder
         }
 
-        new public static void Init(string LicenseKey) 
-        {
-            CrossAppsLicenseManager.LicenseKey = LicenseKey;
-        }
-
         protected override void OnElementChanged(ElementChangedEventArgs<PhotoTakerView> e)
         {
             base.OnElementChanged(e);
 
             if (Control == null)
             {
-                CrossAppsLicenseManager.BundlePackageId = NSBundle.MainBundle.BundleIdentifier;
-
-                if (!CrossAppsLicenseManager.IsValid()) 
-                {
-                    System.Diagnostics.Debug.WriteLine("CrossApps.Photo.Plugin is not activated, please visit https://cross-apps.com");
-                }
-
                 formsView = e.NewElement;
                 photoTakerView = new UIPhotoTakerView(CameraOptions.Front);
                 photoTakerView.MaxImageCount = e.NewElement.MaxImageCount;

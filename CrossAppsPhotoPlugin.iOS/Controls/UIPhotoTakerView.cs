@@ -91,14 +91,6 @@ namespace CrossAppsPhotoPlugin.iOS.Controls
             AddSubview(multiPhotoSelectorView);
             AddSubview(photoEditorView);
 
-            if (!CrossAppsLicenseManager.IsValid()) 
-            {
-                licenseInfoView = new UILabel();
-                licenseInfoView.Text = "Trial License";
-                licenseInfoView.TextColor = UIColor.Red;
-                AddSubview(licenseInfoView);
-            }
-
             // Register all events...
             controlsOverlayView.TakeButtonTouched += ControlsOverlayView_TakeButtonTouched;
             controlsOverlayView.FlashButtonTouched += ControlsOverlayView_FlashButtonTouched;

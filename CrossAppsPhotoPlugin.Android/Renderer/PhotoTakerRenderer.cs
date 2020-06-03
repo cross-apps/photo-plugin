@@ -19,11 +19,6 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
             // placeholder
         }
 
-        public static void Init(string LicenseKey) 
-        {
-            CrossAppsLicenseManager.LicenseKey = LicenseKey;
-        }
-
         protected override void OnElementChanged(ElementChangedEventArgs<PhotoTakerView> e)
         {
             base.OnElementChanged(e);
@@ -31,13 +26,7 @@ namespace CrossAppsPhotoPlugin.Android.Renderer
             if (Control == null)
             {
                 var name = Context.PackageName;
-                CrossAppsLicenseManager.BundlePackageId = Context.PackageName;
-
-                if (!CrossAppsLicenseManager.IsValid())
-                {
-                    System.Diagnostics.Debug.WriteLine("CrossApps.Photo.Plugin is not activated, please visit https://cross-apps.com");
-                }
-
+                
                 formsView = e.NewElement;
                 formsView.PropertyChanged += FormsView_PropertyChanged;
                 photoTakerWidget = new PhotoTakerWidget(Context);

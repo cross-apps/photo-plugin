@@ -74,14 +74,6 @@ namespace CrossAppsPhotoPlugin.Android.Controls
             // AddView(seekBar);
             AddView(controlsOverlayView);
             AddView(multiPhotoSelectorView);
-
-            if (!CrossAppsLicenseManager.IsValid()) 
-            {
-                licenseInfoView = new TextView(context);
-                licenseInfoView.Text = "Trial License";
-                licenseInfoView.SetTextColor(Color.Red);
-                AddView(licenseInfoView);
-            }
         }
 
         void MultiPhotoSelectorView_TrashButtonTouched(object sender, EventArgs e)
