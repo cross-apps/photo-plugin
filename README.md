@@ -1,2 +1,2 @@
-# Cross.Apps.Photo.Plugin
+# CrossApps.Photo.Plugin
 
